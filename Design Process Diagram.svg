@@ -1,0 +1,370 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1960 660" width="1960" height="660" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f1a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="collab" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d7a5e"/>
+      <stop offset="100%" style="stop-color:#1e5a44"/>
+    </linearGradient>
+    <linearGradient id="human" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1d6fa4"/>
+      <stop offset="100%" style="stop-color:#155a86"/>
+    </linearGradient>
+    <linearGradient id="ai" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7B5EA7"/>
+      <stop offset="100%" style="stop-color:#5a3d8a"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#555577"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1960" height="660" fill="url(#bg)" rx="12"/>
+
+  <!-- Title -->
+  <text x="980" y="40" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="700" letter-spacing="0.5">AI-ASSISTED PRODUCT DESIGN</text>
+  <text x="980" y="62" text-anchor="middle" fill="#7B5EA7" font-size="12" letter-spacing="2">VANGUARD SELL &amp; REBALANCE TOOL · FEBRUARY 2026</text>
+
+  <!-- Legend — centered -->
+  <rect x="740" y="76" width="14" height="14" rx="3" fill="url(#collab)"/>
+  <text x="760" y="87" fill="#aaffcc" font-size="12">Collaborative</text>
+  <rect x="880" y="76" width="14" height="14" rx="3" fill="url(#human)"/>
+  <text x="900" y="87" fill="#88ccff" font-size="12">Human-led</text>
+  <rect x="1010" y="76" width="14" height="14" rx="3" fill="url(#ai)"/>
+  <text x="1030" y="87" fill="#ddaaff" font-size="12">AI-generated</text>
+
+  <!--
+    11 cards. Canvas 1960px. Margins 30px each side = 1900px usable.
+    Cards 1–10: 148px wide. Card 11 (Dev Handoff): 180px wide.
+    Total card width: 10×148 + 180 = 1660px
+    Remaining for gaps: 1900 - 1660 = 240px / 10 gaps = 24px gap
+    Card x positions:
+      C1:  30
+      C2:  202   (30+148+24)
+      C3:  374
+      C4:  546
+      C5:  718
+      C6:  890
+      C7:  1062
+      C8:  1234  (HTML→Figma, human-led)
+      C9:  1406
+      C10: 1578
+      C11: 1750  (width 180, right edge 1930)
+  -->
+
+  <!-- Phase labels -->
+  <text x="104"  y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">DISCOVER</text>
+  <text x="276"  y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">DEFINE</text>
+  <text x="448"  y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">IDEATE</text>
+  <text x="620"  y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">DEFINE</text>
+  <text x="792"  y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">IDEATE</text>
+  <text x="964"  y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">DESIGN</text>
+  <text x="1136" y="110" text-anchor="middle" fill="#2d7a5e" font-size="10" font-weight="700" letter-spacing="1.5">DESIGN</text>
+  <text x="1308" y="110" text-anchor="middle" fill="#1d6fa4" font-size="10" font-weight="700" letter-spacing="1.5">IMPORT</text>
+  <text x="1480" y="110" text-anchor="middle" fill="#1d6fa4" font-size="10" font-weight="700" letter-spacing="1.5">PROTOTYPE</text>
+  <text x="1652" y="110" text-anchor="middle" fill="#1d6fa4" font-size="10" font-weight="700" letter-spacing="1.5">PROTOTYPE</text>
+  <text x="1840" y="110" text-anchor="middle" fill="#1d6fa4" font-size="10" font-weight="700" letter-spacing="1.5">HANDOFF</text>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 1 — User Research (Collaborative)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="30" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <circle cx="66" cy="146" r="9" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <path d="M54,163 Q66,154 78,163" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <circle cx="84" cy="149" r="7" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <path d="M75,163 Q84,157 93,163" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <text x="104" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">User</text>
+  <text x="104" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Research</text>
+  <line x1="46" y1="224" x2="162" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="66" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="66" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="80" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="80" y="252" fill="#aaffcc" font-size="9">Secondary research</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="179" y1="213" x2="199" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 2 — Problem Framing (Collaborative)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="202" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <circle cx="238" cy="146" r="9" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <path d="M226,163 Q238,154 250,163" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <rect x="254" y="137" width="18" height="18" rx="4" fill="none" stroke="#ddaaff" stroke-width="1.8"/>
+  <circle cx="263" cy="146" r="3.5" fill="#ddaaff"/>
+  <text x="276" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Problem</text>
+  <text x="276" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Framing</text>
+  <line x1="218" y1="224" x2="334" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="242" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="242" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="256" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="256" y="252" fill="#aaffcc" font-size="9">Sonnet 4.5</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="351" y1="213" x2="371" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 3 — Ideation (Collaborative) *** NEW ***
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="374" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <!-- Phase icon: lightbulb -->
+  <circle cx="420" cy="147" r="13" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <path d="M414,160 Q414,167 420,167 Q426,167 426,160" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <line x1="416" y1="167" x2="424" y2="167" stroke="#aaffcc" stroke-width="1.5"/>
+  <line x1="420" y1="170" x2="420" y2="173" stroke="#aaffcc" stroke-width="1.5"/>
+  <text x="448" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Ideation</text>
+  <line x1="390" y1="224" x2="506" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="410" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="410" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="424" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="424" y="252" fill="#aaffcc" font-size="9">Sonnet 4.5</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="523" y1="213" x2="543" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 4 — Data Model (Collaborative)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="546" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <ellipse cx="600" cy="144" rx="20" ry="7" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <line x1="580" y1="144" x2="580" y2="159" stroke="#aaffcc" stroke-width="1.8"/>
+  <line x1="620" y1="144" x2="620" y2="159" stroke="#aaffcc" stroke-width="1.8"/>
+  <ellipse cx="600" cy="159" rx="20" ry="7" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <text x="620" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Data</text>
+  <text x="620" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Model</text>
+  <line x1="562" y1="224" x2="678" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="582" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="582" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="596" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="596" y="252" fill="#aaffcc" font-size="9">Sonnet 4.5</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="695" y1="213" x2="715" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 5 — User Flows (Collaborative)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="718" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <rect x="736" y="132" width="20" height="13" rx="3" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <rect x="772" y="132" width="20" height="13" rx="3" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <rect x="754" y="154" width="20" height="13" rx="3" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <line x1="756" y1="145" x2="764" y2="154" stroke="#aaffcc" stroke-width="1.8"/>
+  <line x1="782" y1="145" x2="774" y2="154" stroke="#aaffcc" stroke-width="1.8"/>
+  <text x="792" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">User</text>
+  <text x="792" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Flows</text>
+  <line x1="734" y1="224" x2="850" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="754" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="754" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="768" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="768" y="252" fill="#aaffcc" font-size="9">Sonnet 4.5</text>
+
+  <!-- Arrow 5→6 -->
+  <line x1="867" y1="213" x2="887" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 6 — Design System (Collaborative)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="890" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <rect x="912" y="132" width="36" height="28" rx="3" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <rect x="918" y="138" width="8" height="8" rx="1" fill="#aaffcc" opacity="0.6"/>
+  <rect x="930" y="138" width="12" height="4" rx="1" fill="#aaffcc" opacity="0.4"/>
+  <rect x="918" y="150" width="24" height="3" rx="1" fill="#aaffcc" opacity="0.3"/>
+  <text x="964" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Design</text>
+  <text x="964" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">System</text>
+  <line x1="906" y1="224" x2="1022" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="922" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="922" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="936" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="936" y="252" fill="#aaffcc" font-size="9">+ Figma Tokens</text>
+
+  <!-- Arrow 6→7 -->
+  <line x1="1039" y1="213" x2="1059" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 7 — Hi-Fi Wireframes (Collaborative)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="1062" y="118" width="148" height="190" rx="10" fill="url(#collab)" opacity="0.92"/>
+  <rect x="1080" y="130" width="52" height="38" rx="4" fill="none" stroke="#aaffcc" stroke-width="1.8"/>
+  <line x1="1080" y1="140" x2="1132" y2="140" stroke="#aaffcc" stroke-width="0.8" opacity="0.4"/>
+  <rect x="1086" y="144" width="16" height="12" rx="2" fill="#aaffcc" opacity="0.3"/>
+  <rect x="1106" y="144" width="20" height="5" rx="1" fill="#aaffcc" opacity="0.3"/>
+  <rect x="1106" y="152" width="14" height="3" rx="1" fill="#aaffcc" opacity="0.2"/>
+  <text x="1136" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Hi-Fi</text>
+  <text x="1136" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Wireframes</text>
+  <line x1="1078" y1="224" x2="1194" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="1092" cy="242" r="9" fill="#7B5EA7" opacity="0.9"/>
+  <text x="1092" y="246" text-anchor="middle" fill="white" font-size="8" font-weight="700">AI</text>
+  <text x="1106" y="240" fill="#ddaaff" font-size="10" font-weight="600">Claude.ai</text>
+  <text x="1106" y="252" fill="#aaffcc" font-size="9">→ HTML</text>
+
+  <!-- Arrow 7→8 -->
+  <line x1="1211" y1="213" x2="1231" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 8 — HTML → Figma Import (Human-led) *** NEW ***
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="1234" y="118" width="148" height="190" rx="10" fill="url(#human)" opacity="0.95"/>
+  <!-- Phase icon: browser → Figma arrow -->
+  <rect x="1250" y="133" width="28" height="20" rx="3" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <line x1="1250" y1="139" x2="1278" y2="139" stroke="#88ccff" stroke-width="1.2" opacity="0.5"/>
+  <text x="1264" y="152" text-anchor="middle" fill="#88ccff" font-size="8">&lt;/&gt;</text>
+  <line x1="1282" y1="143" x2="1294" y2="143" stroke="#88ccff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <rect x="1296" y="133" width="20" height="20" rx="3" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <text x="1306" y="148" text-anchor="middle" fill="#88ccff" font-size="12" font-weight="700">F</text>
+  <!-- 3 failed badge -->
+  <rect x="1248" y="160" width="110" height="16" rx="3" fill="#0a1828" stroke="#c84444" stroke-width="1" opacity="0.9"/>
+  <text x="1303" y="172" text-anchor="middle" fill="#ff8888" font-size="9">3 failed attempts first</text>
+  <text x="1308" y="196" text-anchor="middle" fill="white" font-size="12" font-weight="700">HTML → Figma</text>
+  <text x="1308" y="212" text-anchor="middle" fill="white" font-size="12" font-weight="700">Import</text>
+  <line x1="1250" y1="224" x2="1366" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <!-- Tool: Claude Code -->
+  <rect x="1252" y="234" width="18" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <text x="1261" y="247" text-anchor="middle" fill="#88ccff" font-size="10" font-weight="700">&gt;_</text>
+  <text x="1276" y="240" fill="#88ccff" font-size="10" font-weight="600">Claude Code</text>
+  <text x="1276" y="252" fill="#aaaacc" font-size="9">+ Figma MCP</text>
+
+  <!-- Arrow 8→9 -->
+  <line x1="1383" y1="213" x2="1403" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 9 — Figma Component Build (Human-led)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="1406" y="118" width="148" height="190" rx="10" fill="url(#human)" opacity="0.92"/>
+  <rect x="1424" y="130" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <rect x="1444" y="130" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <rect x="1424" y="154" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <rect x="1444" y="154" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <text x="1480" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Figma</text>
+  <text x="1480" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Component Build</text>
+  <line x1="1422" y1="224" x2="1538" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <rect x="1428" y="234" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <text x="1436" y="247" text-anchor="middle" fill="#88ccff" font-size="11" font-weight="700">F</text>
+  <text x="1452" y="240" fill="#88ccff" font-size="10" font-weight="600">Figma</text>
+  <text x="1452" y="252" fill="#aaaacc" font-size="9">+ Figma</text>
+
+  <!-- Arrow 9→10 -->
+  <line x1="1555" y1="213" x2="1575" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 10 — Interactive Prototype (Human-led)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="1578" y="118" width="148" height="190" rx="10" fill="url(#human)" opacity="0.92"/>
+  <circle cx="1630" cy="153" r="20" fill="none" stroke="#88ccff" stroke-width="1.8"/>
+  <path d="M1622,142 L1644,153 L1622,164 Z" fill="#88ccff"/>
+  <text x="1652" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Interactive</text>
+  <text x="1652" y="212" text-anchor="middle" fill="white" font-size="13" font-weight="700">Prototype</text>
+  <line x1="1594" y1="224" x2="1710" y2="224" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <rect x="1604" y="234" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <text x="1612" y="247" text-anchor="middle" fill="#88ccff" font-size="11" font-weight="700">F</text>
+  <text x="1628" y="240" fill="#88ccff" font-size="10" font-weight="600">Figma</text>
+  <text x="1628" y="252" fill="#aaaacc" font-size="9">Prototype mode</text>
+
+  <!-- Arrow 10→11 -->
+  <line x1="1727" y1="213" x2="1747" y2="213" stroke="#555577" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CARD 11 — Dev Handoff (Human-led)
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="1750" y="118" width="180" height="190" rx="10" fill="url(#human)" opacity="0.92"/>
+  <text x="1790" y="172" fill="#88ccff" font-size="36" font-weight="300">&lt;/&gt;</text>
+  <text x="1840" y="196" text-anchor="middle" fill="white" font-size="13" font-weight="700">Dev Handoff</text>
+  <text x="1840" y="212" text-anchor="middle" fill="#88ccff" font-size="11">Figma Dev Mode</text>
+  <text x="1840" y="226" text-anchor="middle" fill="#88ccff" font-size="11">Annotations + Specs</text>
+  <line x1="1766" y1="238" x2="1914" y2="238" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
+  <rect x="1774" y="244" width="16" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <text x="1782" y="257" text-anchor="middle" fill="#88ccff" font-size="10" font-weight="700">F</text>
+  <text x="1798" y="250" fill="#88ccff" font-size="10" font-weight="600">Figma</text>
+  <text x="1798" y="261" fill="#aaaacc" font-size="9">Dev Mode</text>
+
+  <!-- ═══════════════════════════════════════════════════════
+       OUTPUT ARTIFACTS ROW
+  ═══════════════════════════════════════════════════════ -->
+  <text x="30" y="340" fill="#444466" font-size="10" font-weight="700" letter-spacing="2">OUTPUT ARTIFACTS</text>
+
+  <rect x="30"   y="348" width="126" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="93"   y="364" text-anchor="middle" fill="#aaffcc" font-size="10">research synthesis</text>
+
+  <rect x="164"  y="348" width="106" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="217"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">problem brief</text>
+
+  <rect x="278"  y="348" width="98" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="327"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">ideation doc</text>
+
+  <rect x="384"  y="348" width="110" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="439"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">data-model.md</text>
+
+  <rect x="502"  y="348" width="120" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="562"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">flow-diagram.html</text>
+
+  <rect x="630"  y="348" width="132" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="696"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">design-system.html</text>
+
+  <rect x="770"  y="348" width="130" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="835"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">hifi-wireframe.html</text>
+
+  <rect x="908"  y="348" width="140" height="24" rx="12" fill="#0e1a14" stroke="#2d7a5e" stroke-width="1.2"/>
+  <text x="978"  y="364" text-anchor="middle" fill="#aaffcc" font-size="10">interaction-spec.md</text>
+
+  <rect x="1056" y="348" width="140" height="24" rx="12" fill="#0e1624" stroke="#1d6fa4" stroke-width="1.2"/>
+  <text x="1126" y="364" text-anchor="middle" fill="#88ccff" font-size="10">migration playbook</text>
+
+  <rect x="1204" y="348" width="124" height="24" rx="12" fill="#0e1624" stroke="#1d6fa4" stroke-width="1.2"/>
+  <text x="1266" y="364" text-anchor="middle" fill="#88ccff" font-size="10">component library</text>
+
+  <rect x="1336" y="348" width="118" height="24" rx="12" fill="#0e1624" stroke="#1d6fa4" stroke-width="1.2"/>
+  <text x="1395" y="364" text-anchor="middle" fill="#88ccff" font-size="10">figma prototype</text>
+
+  <rect x="1462" y="348" width="140" height="24" rx="12" fill="#0e1624" stroke="#1d6fa4" stroke-width="1.2"/>
+  <text x="1532" y="364" text-anchor="middle" fill="#88ccff" font-size="10">dev annotations</text>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TOOLS ROW
+  ═══════════════════════════════════════════════════════ -->
+  <text x="30" y="406" fill="#444466" font-size="10" font-weight="700" letter-spacing="2">TOOLS</text>
+
+  <rect x="30"  y="414" width="118" height="34" rx="7" fill="#1e1030" stroke="#7B5EA7" stroke-width="1.2"/>
+  <circle cx="50" cy="431" r="10" fill="#7B5EA7"/>
+  <text x="50"  y="435" text-anchor="middle" fill="white" font-size="9" font-weight="700">AI</text>
+  <text x="68"  y="428" fill="#ddaaff" font-size="11" font-weight="700">Claude.ai</text>
+  <text x="68"  y="441" fill="#bbaadd" font-size="9">Sonnet 4.5 / 4.6</text>
+
+  <rect x="156" y="414" width="150" height="34" rx="7" fill="#101830" stroke="#1d6fa4" stroke-width="1.2"/>
+  <rect x="170" y="422" width="22" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <path d="M175,431 L180,425 L185,431 L188,428" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <text x="200" y="428" fill="#88ccff" font-size="11" font-weight="700">Figma Design</text>
+  <text x="200" y="441" fill="#88ccff" font-size="9">+ Tokens Studio</text>
+
+  <rect x="314" y="414" width="148" height="34" rx="7" fill="#101830" stroke="#1d6fa4" stroke-width="1.2"/>
+  <rect x="328" y="422" width="22" height="18" rx="3" fill="none" stroke="#88ccff" stroke-width="1.5"/>
+  <text x="339" y="435" text-anchor="middle" fill="#88ccff" font-size="10" font-weight="700">&gt;_</text>
+  <text x="358" y="428" fill="#88ccff" font-size="11" font-weight="700">Claude Code</text>
+  <text x="358" y="441" fill="#88ccff" font-size="9">+ Figma MCP</text>
+
+  <rect x="470" y="414" width="136" height="34" rx="7" fill="#101830" stroke="#1d6fa4" stroke-width="1.2"/>
+  <text x="488" y="432" fill="#88ccff" font-size="16">▶</text>
+  <text x="508" y="428" fill="#88ccff" font-size="11" font-weight="700">Figma Make</text>
+  <text x="508" y="441" fill="#88ccff" font-size="9">Portfolio site</text>
+
+  <rect x="624" y="414" width="310" height="34" rx="7" fill="#160e24" stroke="#7B5EA7" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="638" y="428" fill="#ddaaff" font-size="10" font-weight="700">Claude models used:</text>
+  <text x="638" y="441" fill="#bbaadd" font-size="10">Sonnet 4.5 (Sessions 1–2)  ·  Sonnet 4.6 (Session 3 + portfolio)</text>
+
+  <!-- ═══════════════════════════════════════════════════════
+       CONTRIBUTION BARS
+  ═══════════════════════════════════════════════════════ -->
+  <rect x="30"  y="464" width="920" height="42" rx="8" fill="#160e24" stroke="#7B5EA7" stroke-width="1.2"/>
+  <rect x="44"  y="474" width="14" height="14" rx="3" fill="url(#ai)"/>
+  <text x="66"  y="484" fill="#ddaaff" font-size="12" font-weight="700">Claude AI generated:</text>
+  <text x="66"  y="498" fill="#888899" font-size="10">Research synthesis · Problem brief · Ideation doc · Data model · Flow diagram (v1–v4) · Design tokens · HTML wireframes · Interaction spec</text>
+
+  <rect x="30"  y="514" width="920" height="42" rx="8" fill="#0e1628" stroke="#1d6fa4" stroke-width="1.2"/>
+  <rect x="44"  y="524" width="14" height="14" rx="3" fill="url(#human)"/>
+  <text x="66"  y="534" fill="#88ccff" font-size="12" font-weight="700">Human-led:</text>
+  <text x="66"  y="548" fill="#888899" font-size="10">All design decisions · Domain knowledge · Research direction · Discovered Claude Code to Figma · Figma build · Prototype wiring · Dev handoff</text>
+
+  <!-- Footer -->
+  <text x="980" y="648" text-anchor="middle" fill="#2a2a44" font-size="10">Vanguard Sell &amp; Rebalance Tool · AI-Assisted Product Design · Michael Casey · 2026</text>
+</svg>
