@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell &amp; Rebalance Tool — User Flow Diagram v4</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f2f5;
+  --paper: #fff;
+  --border: #e0e0e0;
+  --text: #040505;
+  --text-mid: #555;
+  --text-muted: #767676;
+  --interactive: #1255CC;
+  --positive: #007A00;
+  --warning: #E07000;
+  --highlight: #FFF8F0;
+  --brand-red: #C8102E;
+
+  --col-a: #1a3a6c;       /* Workflow A — Automated */
+  --col-a-light: #dce8f8;
+  --col-a-mid: #5a80b8;
+  --col-b: #1a5c30;       /* Workflow B — Manual */
+  --col-b-light: #d8eed8;
+  --col-b-mid: #5aaa70;
+  --col-merge: #4a1a70;   /* Convergence */
+  --col-merge-light: #ede0f8;
+  --col-alert: #8a4a00;   /* Wait & Save */
+  --col-alert-light: #fff0dc;
+  --col-screen: #3a4a60;  /* Screen badge */
+}
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.pg-header {
+  background: var(--text);
+  color: white;
+  padding: 18px 32px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.pg-header h1 { font-size: 17px; font-weight: 700; }
+.pg-header .sub { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.05em; }
+.v-badge {
+  display: inline-block;
+  background: var(--brand-red);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.04em;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ── LEGEND ── */
+.legend {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+.leg { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-mid); }
+.leg-stripe { width: 24px; height: 4px; border-radius: 2px; flex-shrink: 0; }
+.leg-box { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── CANVAS ── */
+.canvas { max-width: 1160px; margin: 0 auto; padding: 28px 32px 48px; }
+
+/* ── SCREEN CHIPS ── */
+.scr {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px 2px 5px;
+  border-radius: 100px;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.scr-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+.scr0  { background: #f0f0f8; color: var(--text);      } .scr0  .scr-num { background: var(--text);      color: white; }
+.scr1  { background: var(--col-a-light); color: var(--col-a); } .scr1  .scr-num { background: var(--col-a);      color: white; }
+.scr23 { background: var(--col-b-light); color: var(--col-b); } .scr23 .scr-num { background: var(--col-b);      color: white; }
+.scr4  { background: var(--col-merge-light); color: var(--col-merge); } .scr4 .scr-num { background: var(--col-merge); color: white; }
+.scr5  { background: var(--col-alert-light); color: var(--col-alert); } .scr5 .scr-num { background: var(--col-alert);  color: white; }
+
+/* ── CTA CHIPS ── */
+.cta { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }
+.cta-primary   { background: var(--text); color: white; }
+.cta-secondary { background: white; color: var(--text); border: 1.5px solid var(--text); }
+.cta-ghost     { color: var(--interactive); text-decoration: underline; background: none; font-weight: 600; }
+.cta-alert     { background: var(--col-alert-light); color: var(--col-alert); border: 1px solid #e8c88a; }
+.cta-toggle    { background: var(--col-a); color: white; border-radius: 100px; } /* Auto toggle active */
+
+/* ── SECTION DIVIDER ── */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 28px 0 20px;
+}
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--text-muted); white-space: nowrap;
+}
+
+/* ── CONNECTOR ARROWS ── */
+.arrow { color: var(--text-muted); font-size: 18px; line-height: 1; }
+.arrow-label { font-size: 9px; color: var(--text-muted); display: block; text-align: center; margin-top: 1px; }
+
+/* ── FLOW CARDS ── */
+.flow-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.flow-card-head {
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700;
+}
+.flow-card-body {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+.flow-card-body ul { padding-left: 14px; }
+.flow-card-body li { margin-bottom: 3px; }
+.flow-card-foot {
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  display: flex; flex-wrap: wrap; gap: 5px;
+  font-size: 10px;
+}
+
+/* ── TOP-LEVEL FLOW (main diagram) ── */
+.main-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── ENTRY ROW ── */
+.entry-row {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr;
+  gap: 0;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+.entry-connector {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--text-muted); padding-top: 28px;
+}
+
+/* ── WORKFLOW PAIR ── */
+.wf-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+/* ── STEP ROWS (horizontal within a workflow) ── */
+.step-row {
+  display: grid;
+  align-items: start;
+  gap: 8px;
+}
+.step-row-a { grid-template-columns: 1fr 36px 1fr 36px 1fr; }
+.step-row-b { grid-template-columns: 1fr 36px 1fr 36px 1fr; }
+
+.step-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 28px;
+  gap: 2px;
+}
+
+/* ── CONVERGENCE BAND ── */
+.converge-band {
+  border: 2px solid #c0a0e0;
+  border-top: 4px solid var(--col-merge);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0;
+}
+.converge-head {
+  background: var(--col-merge);
+  color: white;
+  padding: 10px 16px;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+.converge-body {
+  background: white;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  gap: 0;
+}
+.converge-col {
+  padding: 0 16px;
+}
+.converge-col:first-child { padding-left: 0; }
+.converge-col:last-child { padding-right: 0; }
+.converge-divider {
+  background: var(--border);
+  width: 1px;
+  margin: 4px 0;
+}
+.converge-col-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted);
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── WAIT & SAVE INTERRUPT ── */
+.interrupt {
+  background: var(--col-alert-light);
+  border: 1.5px solid #e8c88a;
+  border-left: 4px solid var(--warning);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 14px;
+  font-size: 11px;
+}
+.interrupt-title { font-weight: 700; color: var(--col-alert); margin-bottom: 4px; font-size: 12px; }
+.interrupt-desc { color: #7a4400; line-height: 1.55; }
+
+/* ── VERTICAL MERGE ARROWS ── */
+.merge-arrows {
+  display: flex; gap: 16px;
+  justify-content: center;
+  padding: 10px 0;
+}
+.merge-arrow {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  font-size: 18px; color: var(--col-merge);
+}
+.merge-arrow-label { font-size: 9px; color: var(--text-muted); }
+
+/* ── SCREEN INVENTORY GRID ── */
+.screen-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+.screen-tile {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 11px;
+}
+.screen-tile-head {
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex; align-items: center; gap: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.screen-tile-body {
+  padding: 8px 10px;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+.screen-tile-body ul { padding-left: 12px; }
+.screen-tile-body li { font-size: 10px; margin-bottom: 2px; }
+.screen-tile-foot {
+  padding: 5px 10px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  font-size: 9px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── STEP DETAIL (flow-step list) ── */
+.fstep { display: flex; gap: 10px; margin-bottom: 10px; position: relative; }
+.fstep:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 13px; top: 28px;
+  width: 2px; height: calc(100% - 8px);
+  background: var(--border);
+}
+.fstep-dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0; z-index: 1;
+}
+.fstep-body { flex: 1; padding-top: 3px; }
+.fstep-title { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.fstep-desc { font-size: 11px; color: var(--text-mid); line-height: 1.5; }
+
+/* ── REVISION HISTORY TOGGLE BUTTON ── */
+.rev-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 100px;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  background: transparent; color: rgba(255,255,255,0.75);
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  letter-spacing: 0.02em; white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.rev-btn:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.6);
+  color: white;
+}
+.rev-btn.active {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.7);
+  color: white;
+}
+.rev-btn svg { opacity: 0.75; flex-shrink: 0; }
+.rev-btn.active svg { opacity: 1; }
+
+/* ── CHANGE LOG ── */
+.changelog {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+}
+.changelog h3 {
+  font-size: 12px; font-weight: 700;
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--col-merge);
+}
+.cl-item { display: flex; gap: 8px; margin-bottom: 6px; font-size: 11px; color: var(--text-mid); line-height: 1.5; }
+.cl-badge {
+  font-size: 9px; font-weight: 700; padding: 2px 6px;
+  border-radius: 3px; flex-shrink: 0; align-self: flex-start; margin-top: 1px;
+}
+.cl-new     { background: #e8f5e9; color: #1a5c30; }
+.cl-changed { background: #fff3cd; color: #856404; }
+.cl-removed { background: #fce8e8; color: #c00; }
+.cl-renamed { background: var(--col-a-light); color: var(--col-a); }
+</style>
+</head>
+<body>
+
+<div class="pg-header" style="align-items:center;">
+  <div>
+    <h1>Sell &amp; Rebalance Tool — User Flow Diagram <span class="v-badge">v4 · Feb 2026</span></h1>
+    <div class="sub" style="margin-top:3px;">SYNCHRONIZED WITH HIFI MOCKUPS v3 · 6 SCREENS · 2 WORKFLOWS</div>
+  </div>
+  <button class="rev-btn" id="revBtn" onclick="toggleRevHistory()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
+    Revision history
+  </button>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="leg-stripe" style="background:var(--col-a);"></div><strong>Workflow A</strong> — Automated (Portfolio → Fund List Auto mode)</div>
+  <div class="leg"><div class="leg-stripe" style="background:var(--col-b);"></div><strong>Workflow B</strong> — Manual (Fund List → Manual mode)</div>
+  <div class="leg"><div class="leg-stripe" style="background:var(--col-merge);"></div><strong>Convergence</strong> — Scenario Analysis (both arrive here)</div>
+  <div class="leg"><div class="leg-stripe" style="background:var(--warning);"></div><strong>Wait &amp; Save Alert</strong> — interruptive modal, threshold-triggered</div>
+  <div class="leg" style="margin-left:auto;">
+    <span class="scr scr0"><span class="scr-num">0</span>S0</span>
+    <span class="scr scr1"><span class="scr-num">1</span>S1</span>
+    <span class="scr scr23"><span class="scr-num">2</span>S2</span>
+    <span class="scr scr23"><span class="scr-num">3</span>S3</span>
+    <span class="scr scr4"><span class="scr-num">4</span>S4</span>
+    <span class="scr scr5"><span class="scr-num">5</span>S5</span>
+    &nbsp;= screen numbers in mockup
+  </div>
+</div>
+
+<div class="canvas">
+
+  <!-- CHANGE LOG — hidden by default, toggled via header button -->
+  <div class="changelog" id="revHistory" style="display:none;">
+    <h3>What changed v3 → v4 (this diagram is now synchronized with wireframe set v3)</h3>
+    <div class="cl-item"><span class="cl-badge cl-new">NEW</span><span><strong>Screen 0 — Portfolio · Balances</strong> added as the true starting point for Workflow A. The "Sell from this account" button appears on hover next to the balance of any investment account (Brokerage, IRA), routing to Fund List in Auto mode with that account pre-selected.</span></div>
+    <div class="cl-item"><span class="cl-badge cl-renamed">RENAMED</span><span><strong>"Recommendation Summary"</strong> is now <strong>Screen 1 — Fund List · Automated Mode</strong>. Same content, reframed: it is the Fund List page viewed in Auto mode (toggled via the Auto/Manual switch in the page header).</span></div>
+    <div class="cl-item"><span class="cl-badge cl-new">NEW</span><span><strong>Auto / Manual toggle</strong> appears in the Fund List header on all Fund List screens (S1 Auto, S2 Manual-Table, S3 Manual-Card). Switching Auto→Manual routes to S2; Manual→Auto routes to S1. Replaces the old "Get Recommendation" ghost link.</span></div>
+    <div class="cl-item"><span class="cl-badge cl-new">NEW</span><span><strong>"Total Amount to Sell" input bar</strong> appears exclusively in Auto mode (S1), below the page header. The user enters a dollar amount; the optimization engine allocates it across funds to minimize taxes.</span></div>
+    <div class="cl-item"><span class="cl-badge cl-changed">CHANGED</span><span><strong>Workflow A entry point</strong> is now Portfolio · Balances (S0), not the Fund List. The flow is: S0 Balances → hover "Sell from this account" → S1 Fund List Auto → optionally S4 Scenario Analysis → Execute.</span></div>
+    <div class="cl-item"><span class="cl-badge cl-changed">CHANGED</span><span><strong>Workflow B entry point</strong> is the Fund List in Manual mode (S2 Table or S3 Card), reached directly via the Transact menu. The Auto/Manual toggle is available to switch to Workflow A at any time.</span></div>
+    <div class="cl-item"><span class="cl-badge cl-removed">REMOVED</span><span><strong>"Get Recommendation"</strong> ghost link removed from Manual Fund List. Its role is replaced by the <strong>Auto/Manual toggle</strong> — switching to Automated mode is the new entry into the optimization engine.</span></div>
+  </div>
+
+  <!-- ═══════════════════════════
+       SECTION 1 — THE FULL FLOW
+  ═══════════════════════════ -->
+  <div class="divider"><div class="divider-line"></div><div class="divider-label">Complete User Flow</div><div class="divider-line"></div></div>
+
+  <!-- ROW 1: Two entry points side by side -->
+  <div style="display:grid;grid-template-columns:1fr 20px 1fr;gap:0;margin-bottom:0;align-items:end;">
+
+    <!-- WORKFLOW A ENTRY -->
+    <div class="flow-card" style="border-top:4px solid var(--col-a);">
+      <div class="flow-card-head" style="background:var(--col-a);color:white;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Workflow A — Automated Entry
+      </div>
+      <div class="flow-card-body">
+        <div class="fstep">
+          <div class="fstep-dot" style="background:var(--col-a-light);color:var(--col-a);">1</div>
+          <div class="fstep-body">
+            <div class="fstep-title">Portfolio · Balances <span class="scr scr0"><span class="scr-num">0</span>S0</span></div>
+            <div class="fstep-desc">User is on the Portfolio section, "Balances" tab. Active top-level nav: <strong>Portfolio</strong>. Lists all accounts with balances. User spots the account they want to withdraw from.</div>
+          </div>
+        </div>
+        <div class="fstep">
+          <div class="fstep-dot" style="background:var(--col-a-light);color:var(--col-a);">2</div>
+          <div class="fstep-body">
+            <div class="fstep-title">Hover reveals "Sell from this account"</div>
+            <div class="fstep-desc">A button appears to the left of the balance amount on hover, for any investment account (Brokerage, Traditional IRA, Roth IRA). Cash Plus and 529 accounts do not expose this action.</div>
+            <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;">
+              <span class="cta cta-secondary" style="border-color:var(--col-a);color:var(--col-a);">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Sell from this account
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="fstep" style="margin-bottom:0;">
+          <div class="fstep-dot" style="background:var(--col-a-light);color:var(--col-a);">3</div>
+          <div class="fstep-body">
+            <div class="fstep-title">Routes to Fund List · Auto Mode</div>
+            <div class="fstep-desc">Selected account is pre-populated. Fund selection toggle shows <strong>⚡ Automated</strong> as active. Active top-level nav shifts to <strong>Transact</strong>, sub-tab: <strong>Fund List</strong>.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-card-foot">
+        <span class="scr scr0"><span class="scr-num">0</span>S0</span> → <span class="scr scr1"><span class="scr-num">1</span>S1 Auto</span>
+      </div>
+    </div>
+
+    <!-- OR divider -->
+    <div style="display:flex;align-items:center;justify-content:center;padding-bottom:40px;">
+      <div style="font-size:10px;font-weight:700;color:var(--text-muted);writing-mode:vertical-lr;letter-spacing:0.1em;">OR</div>
+    </div>
+
+    <!-- WORKFLOW B ENTRY -->
+    <div class="flow-card" style="border-top:4px solid var(--col-b);">
+      <div class="flow-card-head" style="background:var(--col-b);color:white;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Workflow B — Manual Entry
+      </div>
+      <div class="flow-card-body">
+        <div class="fstep">
+          <div class="fstep-dot" style="background:var(--col-b-light);color:var(--col-b);">1</div>
+          <div class="fstep-body">
+            <div class="fstep-title">Navigates to Sell &amp; Rebalance</div>
+            <div class="fstep-desc">User arrives via <strong>Transact</strong> top-level menu → "Sell &amp; Rebalance." Lands on the Fund List with <strong>Manual</strong> mode active by default. Active section tab: <strong>Sell &amp; Rebalance</strong>.</div>
+          </div>
+        </div>
+        <div class="fstep">
+          <div class="fstep-dot" style="background:var(--col-b-light);color:var(--col-b);">2</div>
+          <div class="fstep-body">
+            <div class="fstep-title">Fund List · Manual Mode <span class="scr scr23"><span class="scr-num">2</span>S2</span><span class="scr scr23" style="margin-left:3px;"><span class="scr-num">3</span>S3</span></div>
+            <div class="fstep-desc">User selects <strong>Table</strong> or <strong>Card</strong> view using the view toggle. Types sell amounts directly into each fund row. Real-time tax impact shown in sticky footer. WAIT &amp; SAVE badges surface on eligible rows.</div>
+          </div>
+        </div>
+        <div class="fstep" style="margin-bottom:0;">
+          <div class="fstep-dot" style="background:var(--col-b-light);color:var(--col-b);">3</div>
+          <div class="fstep-body">
+            <div class="fstep-title">Optional: Switch to Automated</div>
+            <div class="fstep-desc">User may tap <strong>⚡ Automated</strong> on the mode toggle at any point to let the engine allocate instead. This transitions to Workflow A (S1) with amounts carried over.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-card-foot">
+        Transact menu → <span class="scr scr23"><span class="scr-num">2</span>S2 Table</span> or <span class="scr scr23"><span class="scr-num">3</span>S3 Card</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWN ARROWS FROM ENTRIES TO FUND LIST DETAIL -->
+  <div style="display:grid;grid-template-columns:1fr 20px 1fr;margin-bottom:0;">
+    <div style="text-align:center;padding:8px 0;font-size:20px;color:var(--col-a);">↓</div>
+    <div></div>
+    <div style="text-align:center;padding:8px 0;font-size:20px;color:var(--col-b);">↓</div>
+  </div>
+
+  <!-- ROW 2: Fund List detail side by side -->
+  <div style="display:grid;grid-template-columns:1fr 20px 1fr;gap:0;margin-bottom:0;">
+
+    <!-- WF-A: Fund List Auto mode detail -->
+    <div style="background:white;border:1px solid var(--col-a-mid);border-radius:8px;overflow:hidden;">
+      <div style="background:var(--col-a-light);padding:8px 14px;font-size:11px;font-weight:700;color:var(--col-a);border-bottom:1px solid var(--col-a-mid);">
+        Fund List · Automated Mode — Screen 1
+      </div>
+      <div style="padding:12px 14px;font-size:11px;color:var(--text-mid);">
+        <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+          <strong style="color:var(--text);font-size:12px;">Mode toggle:</strong>
+          <span class="cta cta-toggle">⚡ Automated</span>
+          <span style="font-size:10px;color:var(--text-muted);">← active</span>
+          <span class="cta" style="background:#f0f0f0;color:var(--text-muted);">Manual</span>
+        </div>
+        <div style="background:var(--col-a-light);border:1px solid var(--col-a-mid);border-radius:4px;padding:8px 10px;margin-bottom:8px;">
+          <div style="font-size:10px;font-weight:700;color:var(--col-a);margin-bottom:4px;">Total Amount to Sell (Auto mode only)</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="background:white;border:2px solid var(--interactive);border-radius:3px;padding:4px 8px;font-size:14px;font-weight:700;color:var(--text);">$10,000</div>
+            <span class="cta cta-secondary" style="font-size:9px;">Recalculate</span>
+          </div>
+          <div style="font-size:10px;color:var(--col-a);margin-top:4px;">Engine allocates across funds to minimize tax + improve balance</div>
+        </div>
+        <div style="margin-bottom:6px;"><strong style="font-size:11px;">Auto results shown below input:</strong></div>
+        <ul style="padding-left:14px;margin-bottom:8px;">
+          <li>Dark stat bar: Sale Amount · Est. Tax · Eff. Tax Rate · Rebalancing Impact</li>
+          <li>Wait &amp; Save banner (if applicable — medium severity, dismissible)</li>
+          <li>Plain-language rationale ("Why this allocation: …")</li>
+          <li>Fund table with recommended sell amounts (read-optimized display)</li>
+          <li>Columns: Fund · Method · Recommended Sell · ST G/L · LT G/L · Est. Tax · Rebalancing · Rationale</li>
+        </ul>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
+          <span class="cta cta-ghost" style="font-size:9px;">← Back to Balances</span>
+          <span class="cta cta-secondary" style="font-size:9px;">Switch to Manual</span>
+          <span class="cta cta-ghost" style="font-size:9px;">Analyze Scenarios</span>
+          <span class="cta cta-primary" style="font-size:9px;">Execute This Recommendation →</span>
+        </div>
+      </div>
+    </div>
+
+    <div></div>
+
+    <!-- WF-B: Fund List Manual mode detail -->
+    <div style="background:white;border:1px solid var(--col-b-mid);border-radius:8px;overflow:hidden;">
+      <div style="background:var(--col-b-light);padding:8px 14px;font-size:11px;font-weight:700;color:var(--col-b);border-bottom:1px solid var(--col-b-mid);">
+        Fund List · Manual Mode — Screens 2 &amp; 3
+      </div>
+      <div style="padding:12px 14px;font-size:11px;color:var(--text-mid);">
+        <div style="margin-bottom:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+          <strong style="color:var(--text);font-size:12px;">Mode toggle:</strong>
+          <span class="cta" style="background:#f0f0f0;color:var(--text-muted);">⚡ Automated</span>
+          <span class="cta" style="background:var(--text);color:white;border-radius:100px;">Manual</span>
+          <span style="font-size:10px;color:var(--text-muted);">← active</span>
+        </div>
+        <div style="margin-bottom:6px;display:flex;gap:6px;align-items:center;">
+          <strong style="font-size:11px;">View:</strong>
+          <span class="cta cta-secondary" style="font-size:9px;">⊞ Table (S2)</span>
+          <span class="cta cta-secondary" style="font-size:9px;">⊟ Cards (S3)</span>
+          <span style="font-size:10px;color:var(--text-muted);">toggle between views</span>
+        </div>
+        <ul style="padding-left:14px;margin-bottom:8px;">
+          <li>No total input field — user enters amounts per fund row</li>
+          <li>Columns (Table): Fund · Method · Total Value · ST G/L · LT G/L · Total G/L · Sell ($) · ≈ Shares</li>
+          <li>Card view: one card per fund, same fields laid out vertically</li>
+          <li>Real-time tax impact in sticky footer as amounts are typed</li>
+          <li>Lot expansion per fund (Table view)</li>
+          <li>WAIT &amp; SAVE row badge for low-severity lots (inline, non-blocking)</li>
+          <li>Taxable and IRA sections shown separately (IRA suppresses cap gains columns)</li>
+        </ul>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
+          <span class="cta cta-secondary" style="font-size:9px;">Save Scenario</span>
+          <span class="cta cta-primary" style="font-size:9px;">Analyze Scenario →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAIT & SAVE INTERRUPT -->
+  <div style="display:grid;grid-template-columns:1fr 20px 1fr;margin:0;">
+    <!-- WF-A: arrow down (no interrupt at this point for Auto) -->
+    <div style="text-align:center;padding:8px 0;font-size:20px;color:var(--col-a);">↓</div>
+    <div></div>
+    <!-- WF-B: arrow down then W&S interrupt -->
+    <div style="text-align:center;padding:8px 0;font-size:20px;color:var(--col-b);">↓</div>
+  </div>
+
+  <!-- WAIT & SAVE ALERT ROW -->
+  <div style="display:grid;grid-template-columns:1fr 20px 1fr;gap:0;margin-bottom:0;align-items:start;">
+
+    <!-- WF-A side: no blocking modal — W&S shown as banner on S1 -->
+    <div class="interrupt" style="opacity:0.55;">
+      <div class="interrupt-title">⏱ Wait &amp; Save — Banner variant (non-blocking)</div>
+      <div class="interrupt-desc">When short-term lots are flagged in Auto mode, a dismissible <strong>banner</strong> appears below the stat bar on S1. Not a blocking modal — user can proceed without an explicit choice. Medium-severity variant.</div>
+      <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;">
+        <span class="cta cta-alert" style="font-size:9px;">Remind me in 40 days</span>
+        <span class="cta cta-ghost" style="font-size:9px;">Proceed with today's recommendation</span>
+      </div>
+      <div style="font-size:9px;color:var(--text-muted);margin-top:5px;font-style:italic;">Workflow A: shown inline on Fund List Auto (S1) — does not block progress</div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text-muted);padding-top:16px;">VS</div>
+
+    <!-- WF-B side: blocking modal -->
+    <div class="interrupt">
+      <div class="interrupt-title">⏱ Wait &amp; Save Alert — Screen 5 <span class="scr scr5"><span class="scr-num">5</span>S5</span> (blocking modal)</div>
+      <div class="interrupt-desc">Triggered when savings exceed configurable threshold (default <strong>$500</strong>). Intercepts transition from Fund List Manual → Scenario Analysis. Requires an explicit choice before proceeding.</div>
+      <div style="margin-top:6px;">
+        <div style="font-size:10px;margin-bottom:4px;font-weight:700;">Lots that will convert: table (Fund · Lot Date · Converts LT · Tax Saving)</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;">
+          <span class="cta cta-alert" style="font-size:9px;">Remind me in 60 days</span>
+          <span class="cta cta-ghost" style="font-size:9px;">Proceed anyway</span>
+          <span class="cta cta-primary" style="font-size:9px;">Adjust sale to avoid these lots</span>
+        </div>
+        <div style="font-size:9px;color:var(--text-muted);margin-top:5px;">✕ dismiss (upper-right) = same as Proceed anyway · threshold configurable inline</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MERGE ARROWS DOWN TO SCENARIO ANALYSIS -->
+  <div style="padding:12px 0;display:flex;gap:16px;justify-content:center;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <div style="font-size:20px;color:var(--col-a);">↓</div>
+      <div style="font-size:9px;color:var(--text-muted);">Wf-A: "Analyze Scenarios"</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <div style="font-size:20px;color:var(--col-b);">↓</div>
+      <div style="font-size:9px;color:var(--text-muted);">Wf-B: "Analyze Scenario →"</div>
+    </div>
+  </div>
+
+  <!-- ═══ CONVERGENCE: SCENARIO ANALYSIS ═══ -->
+  <div class="converge-band">
+    <div class="converge-head">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Scenario Analysis — Screen 4 &nbsp;<span class="scr scr4"><span class="scr-num">4</span>S4</span>&nbsp;— Both workflows converge here
+    </div>
+    <div class="converge-body">
+
+      <!-- Col 1: Entry state differences -->
+      <div class="converge-col">
+        <div class="converge-col-title">How each workflow arrives</div>
+        <div style="font-size:11px;color:var(--text-mid);line-height:1.6;">
+          <div style="margin-bottom:8px;">
+            <span style="background:var(--col-a-light);color:var(--col-a);font-size:10px;font-weight:700;padding:1px 7px;border-radius:100px;">Wf-A</span>
+            <div style="margin-top:3px;">Scenario A pre-filled from optimization engine. <strong>"Reset to Recommendation"</strong> button visible (↺). Helper text: "Pre-filled from Recommendation · Edit any amount to recalculate."</div>
+          </div>
+          <div>
+            <span style="background:var(--col-b-light);color:var(--col-b);font-size:10px;font-weight:700;padding:1px 7px;border-radius:100px;">Wf-B</span>
+            <div style="margin-top:3px;">Scenario A pre-filled from user's manual amounts. <strong>"Reset to Recommendation" button hidden.</strong> No implied "correct" answer.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="converge-divider"></div>
+
+      <!-- Col 2: Screen content -->
+      <div class="converge-col">
+        <div class="converge-col-title">Screen structure</div>
+        <div style="font-size:11px;color:var(--text-mid);line-height:1.6;">
+          <div style="margin-bottom:5px;"><strong>Top action bar:</strong> helper text · Reset to Recommendation (Wf-A only) · Save All Scenarios · <span class="cta cta-primary" style="font-size:9px;">Execute Best Scenario</span></div>
+          <div style="margin-bottom:5px;"><strong>Scenario columns</strong> (up to 3, side-by-side):
+            <ul style="padding-left:12px;margin-top:2px;">
+              <li>Name (dashed underline → hover tooltip with sell breakdown, tax, note)</li>
+              <li>⋮ kebab menu → Rename / Duplicate / Delete</li>
+              <li>Fund rows with editable sell $ amounts</li>
+              <li>G/L popup per cell: ST vs LT breakdown</li>
+              <li>Per-scenario tax summary section</li>
+            </ul>
+          </div>
+          <div><strong>Asset Mix Impact</strong> section: stacked before/after/target bars + expandable fund-level table</div>
+          <div style="margin-top:5px;"><strong>+ Add Scenario</strong> column (max 3 for v1)</div>
+        </div>
+      </div>
+
+      <div class="converge-divider"></div>
+
+      <!-- Col 3: Exits -->
+      <div class="converge-col">
+        <div class="converge-col-title">Exits from Scenario Analysis</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:11px;">
+          <div style="background:#e8f5e9;border:1px solid var(--col-b-mid);border-radius:4px;padding:8px 10px;">
+            <div style="font-weight:700;color:var(--col-b);margin-bottom:3px;">Execute Scenario A (or B)</div>
+            <span class="cta cta-primary" style="font-size:9px;">Execute Scenario A ← saves $582 in tax</span>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Footer CTA. Proceeds to trade confirmation flow.</div>
+          </div>
+          <div style="background:#e8f5e9;border:1px solid var(--col-b-mid);border-radius:4px;padding:8px 10px;">
+            <div style="font-weight:700;color:var(--col-b);margin-bottom:3px;">Execute Best Scenario (top bar)</div>
+            <span class="cta cta-primary" style="font-size:9px;">Execute Best Scenario</span>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Auto-picks scenario with lowest effective tax rate. Confirmation dialog before execution.</div>
+          </div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px 10px;">
+            <div style="font-weight:700;margin-bottom:3px;">← Back to Fund List</div>
+            <div style="font-size:10px;color:var(--text-muted);">Via "Fund List" sub-tab. Amounts preserved in session. Mode toggle still available.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════
+       SECTION 2 — SCREEN INVENTORY
+  ═══════════════════════ -->
+  <div class="divider" style="margin-top:32px;"><div class="divider-line"></div><div class="divider-label">Screen Inventory (all 6 mockup screens)</div><div class="divider-line"></div></div>
+
+  <div class="screen-grid">
+
+    <!-- S0 -->
+    <div class="screen-tile">
+      <div class="screen-tile-head" style="background:#f0f0f8;color:var(--text);">
+        <span style="background:var(--text);color:white;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">0</span>
+        Portfolio · Balances
+      </div>
+      <div class="screen-tile-body">
+        <ul>
+          <li>Top-level nav: <strong>Portfolio</strong> active</li>
+          <li>Section tab: <strong>Balances</strong> active</li>
+          <li>Hero shows portfolio total ($580,745.29)</li>
+          <li>Account list: Cash Plus, Brokerage, Trad IRA, Roth IRA, 529</li>
+          <li>"Sell from this account" on hover (left of amount)</li>
+          <li>Only on investment accounts (not Cash Plus, 529)</li>
+        </ul>
+      </div>
+      <div class="screen-tile-foot">Entry point — Workflow A only</div>
+    </div>
+
+    <!-- S1 -->
+    <div class="screen-tile">
+      <div class="screen-tile-head" style="background:var(--col-a-light);color:var(--col-a);">
+        <span style="background:var(--col-a);color:white;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">1</span>
+        Fund List · Auto
+      </div>
+      <div class="screen-tile-body">
+        <ul>
+          <li>Mode toggle: <strong>⚡ Automated</strong> active</li>
+          <li><strong>Total Amount to Sell</strong> input + Recalculate</li>
+          <li>Dark stat bar: Amount, Tax, Rate, Rebalancing</li>
+          <li>Wait &amp; Save banner (non-blocking)</li>
+          <li>Plain-language rationale</li>
+          <li>Fund table: Recommended Sell (read-optimized)</li>
+          <li>Table view only in this mode</li>
+        </ul>
+      </div>
+      <div class="screen-tile-foot">Workflow A · from S0 via "Sell from this account"</div>
+    </div>
+
+    <!-- S2 -->
+    <div class="screen-tile">
+      <div class="screen-tile-head" style="background:var(--col-b-light);color:var(--col-b);">
+        <span style="background:var(--col-b);color:white;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">2</span>
+        Fund List · Manual · Table
+      </div>
+      <div class="screen-tile-body">
+        <ul>
+          <li>Mode toggle: <strong>Manual</strong> active</li>
+          <li>View toggle: Table active</li>
+          <li>No total amount input field</li>
+          <li>Editable Sell ($) input per fund row</li>
+          <li>Columns: Fund · Method · Value · ST/LT G/L · Sell · Shares</li>
+          <li>Lot expansion (per fund)</li>
+          <li>WAIT &amp; SAVE row badges (low-severity)</li>
+          <li>Taxable + IRA sections</li>
+        </ul>
+      </div>
+      <div class="screen-tile-foot">Workflow B · primary entry via Transact menu</div>
+    </div>
+
+    <!-- S3 -->
+    <div class="screen-tile">
+      <div class="screen-tile-head" style="background:var(--col-b-light);color:var(--col-b);">
+        <span style="background:var(--col-b);color:white;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">3</span>
+        Fund List · Manual · Card
+      </div>
+      <div class="screen-tile-body">
+        <ul>
+          <li>Mode toggle: <strong>Manual</strong> active</li>
+          <li>View toggle: Cards active</li>
+          <li>One card per fund, collapsible</li>
+          <li>Metrics as labeled fields</li>
+          <li>Portfolio weight mini-bars</li>
+          <li>IRA cards suppress cap gains fields</li>
+          <li>WAIT &amp; SAVE card variant (amber border)</li>
+        </ul>
+      </div>
+      <div class="screen-tile-foot">Workflow B · toggles from S2 Table</div>
+    </div>
+
+    <!-- S4 -->
+    <div class="screen-tile">
+      <div class="screen-tile-head" style="background:var(--col-merge-light);color:var(--col-merge);">
+        <span style="background:var(--col-merge);color:white;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">4</span>
+        Scenario Analysis
+      </div>
+      <div class="screen-tile-body">
+        <ul>
+          <li>Sub-tab: <strong>Scenario Analysis</strong> active</li>
+          <li>1–3 scenario columns side-by-side</li>
+          <li>Name tooltip (hover) → sell breakdown</li>
+          <li>⋮ kebab: Rename / Duplicate / Delete</li>
+          <li>Editable amounts + G/L popup per cell</li>
+          <li>Tax summary per scenario</li>
+          <li>Asset Mix Impact section</li>
+          <li>"Reset to Recommendation" (Wf-A only)</li>
+          <li>+ Add Scenario (max 3)</li>
+        </ul>
+      </div>
+      <div class="screen-tile-foot">Convergence · both workflows arrive here</div>
+    </div>
+
+    <!-- S5 -->
+    <div class="screen-tile">
+      <div class="screen-tile-head" style="background:var(--col-alert-light);color:var(--col-alert);">
+        <span style="background:var(--col-alert);color:white;width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;">5</span>
+        Wait &amp; Save Alert
+      </div>
+      <div class="screen-tile-body">
+        <ul>
+          <li>Modal overlay on Scenario Analysis entry</li>
+          <li>Trigger: savings &gt; threshold (default $500)</li>
+          <li>✕ dismiss button (upper-right)</li>
+          <li>Scrollable content area</li>
+          <li>Pinned action footer</li>
+          <li>Lot conversion table shown</li>
+          <li>Threshold configurable inline</li>
+          <li>Primarily Wf-B; Wf-A shows banner only</li>
+        </ul>
+      </div>
+      <div class="screen-tile-foot">Screen 5 · blocking modal · explicit choice required</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════
+       SECTION 3 — WAIT & SAVE VARIANTS
+  ═══════════════════════ -->
+  <div class="divider" style="margin-top:32px;"><div class="divider-line"></div><div class="divider-label">Wait &amp; Save — Three Severity Variants</div><div class="divider-line"></div></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:4px;">
+
+    <div style="background:white;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+      <div style="background:var(--col-b-light);color:var(--col-b);padding:8px 12px;font-size:11px;font-weight:700;border-bottom:1px solid var(--border);">Variant 1 — Inline Row Badge (Low severity)</div>
+      <div style="padding:10px 12px;font-size:11px;color:var(--text-mid);">
+        <div style="background:var(--highlight);border-left:3px solid var(--warning);padding:7px 10px;border-radius:0 3px 3px 0;margin-bottom:8px;font-size:11px;color:#5a3000;">
+          <strong>500 Index Fund <span style="background:var(--warning);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:100px;">WAIT &amp; SAVE</span></strong><br>
+          <em style="font-size:10px;">2 ST lots convert in 45–92 days · est. savings: $218</em>
+        </div>
+        Non-blocking. Shown in the Fund List table/card row. Savings below threshold. User can still proceed without acknowledging.
+        <div style="margin-top:6px;font-size:10px;font-style:italic;color:var(--text-muted);">Surfaces on: S2 Manual Table · S3 Manual Card</div>
+      </div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+      <div style="background:var(--col-a-light);color:var(--col-a);padding:8px 12px;font-size:11px;font-weight:700;border-bottom:1px solid var(--border);">Variant 2 — Banner (Medium severity)</div>
+      <div style="padding:10px 12px;font-size:11px;color:var(--text-mid);">
+        <div style="background:var(--highlight);border-left:3px solid var(--warning);padding:7px 10px;border-radius:0 3px 3px 0;margin-bottom:8px;font-size:11px;color:#5a3000;">
+          <strong>⏱ Waiting 45 days could save an additional $218 in taxes.</strong> Two lots in VFIAX convert on April 4 &amp; May 1, 2026. This recommendation avoids those lots.
+          <div style="margin-top:4px;display:flex;gap:5px;">
+            <span class="cta cta-alert" style="font-size:9px;">Remind me in 40 days</span>
+            <span class="cta cta-ghost" style="font-size:9px;">Proceed</span>
+          </div>
+        </div>
+        Non-blocking, dismissible. Appears below the stat bar on Auto mode Fund List. Threshold not met for blocking modal.
+        <div style="margin-top:6px;font-size:10px;font-style:italic;color:var(--text-muted);">Surfaces on: S1 Auto Fund List</div>
+      </div>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+      <div style="background:var(--col-alert-light);color:var(--col-alert);padding:8px 12px;font-size:11px;font-weight:700;border-bottom:1px solid var(--border);">Variant 3 — Blocking Modal <span class="scr scr5"><span class="scr-num">5</span>S5</span> (High severity)</div>
+      <div style="padding:10px 12px;font-size:11px;color:var(--text-mid);">
+        <div style="background:var(--highlight);border-left:3px solid var(--warning);padding:7px 10px;border-radius:0 3px 3px 0;margin-bottom:8px;font-size:11px;color:#5a3000;">
+          <strong>⏱ You could save $634 by waiting 67 days</strong><br>
+          <em style="font-size:10px;">3 lots · lot table · scrollable body · pinned footer</em>
+          <div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;">
+            <span class="cta cta-alert" style="font-size:9px;">Remind me in 60 days</span>
+            <span class="cta cta-ghost" style="font-size:9px;">Proceed anyway</span>
+            <span class="cta cta-primary" style="font-size:9px;">Adjust sale to avoid these lots</span>
+          </div>
+        </div>
+        Savings exceed threshold (default $500). <strong>Requires explicit choice</strong> before entering Scenario Analysis. ✕ button (upper-right) = Proceed anyway.
+        <div style="margin-top:6px;font-size:10px;font-style:italic;color:var(--text-muted);">Surfaces on: transition from Manual Fund List → Scenario Analysis</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:28px 0 8px;font-size:11px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:28px;">
+    Vanguard Sell &amp; Rebalance Tool · User Flow Diagram v4 · Synchronized with hifi wireframe set v3 · February 2026<br>
+    6 screens: S0 Portfolio Balances · S1 Fund List Auto · S2 Fund List Manual Table · S3 Fund List Manual Card · S4 Scenario Analysis · S5 Wait &amp; Save Alert
+  </div>
+
+</div>
+<script>
+function toggleRevHistory() {
+  const panel = document.getElementById('revHistory');
+  const btn   = document.getElementById('revBtn');
+  const open  = panel.style.display === 'none' || panel.style.display === '';
+  panel.style.display = open ? 'block' : 'none';
+  btn.classList.toggle('active', open);
+  btn.querySelector('svg').innerHTML = open
+    ? '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'  /* X icon when open */
+    : '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>';        /* clock icon when closed */
+  btn.childNodes[2].textContent = open ? ' Hide revision history' : ' Revision history';
+}
+</script>
+</body>
+</html>
