@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell &amp; Rebalance Tool — Data Model</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f6f8;
+  --paper: #ffffff;
+  --border: #e2e5ea;
+  --text: #1a1d23;
+  --text-mid: #4a5160;
+  --text-muted: #8a90a0;
+  --accent: #1a3a6c;
+  --accent-light: #dce8f8;
+  --warning-bg: #fffbf0;
+  --warning-border: #f0c040;
+  --warning-text: #7a5800;
+  --note-bg: #f0f7ff;
+  --note-border: #90c0f0;
+  --note-text: #1a4a7a;
+  --code-bg: #f0f2f5;
+  --green: #1a5c30;
+  --green-light: #d8eed8;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── HEADER ── */
+.pg-header {
+  background: var(--accent);
+  color: white;
+  padding: 28px 48px;
+}
+.pg-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.pg-header .meta {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.04em;
+}
+.pg-header .meta span { margin-right: 24px; }
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+}
+
+/* ── SECTION HEADERS ── */
+h2 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin: 48px 0 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Courier New', monospace;
+}
+h2:first-child { margin-top: 0; }
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 40px 0 6px;
+  font-family: 'Georgia', serif;
+}
+h3 .entity-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  background: var(--accent-light);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 10px;
+  font-weight: 700;
+  vertical-align: middle;
+  letter-spacing: 0.04em;
+}
+
+.entity-desc {
+  color: var(--text-mid);
+  font-size: 14px;
+  margin-bottom: 14px;
+  font-style: italic;
+}
+
+/* ── ENTITY HIERARCHY ── */
+.hierarchy {
+  background: var(--accent);
+  color: white;
+  border-radius: 8px;
+  padding: 20px 24px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.9;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── TABLES ── */
+.table-wrap { overflow-x: auto; margin: 12px 0 20px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+thead tr {
+  background: #2a3a50;
+  color: white;
+}
+thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+tbody tr { border-bottom: 1px solid var(--border); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:nth-child(even) { background: #fafbfc; }
+tbody td {
+  padding: 9px 14px;
+  vertical-align: top;
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+tbody td:first-child {
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+tbody td:nth-child(2) {
+  color: var(--green);
+  width: 80px;
+}
+tbody td strong { color: var(--text); }
+
+/* Summary table (challenges) */
+.summary-table thead tr { background: #1a3a6c; }
+.summary-table tbody td:nth-child(2) { color: var(--text-mid); width: auto; }
+
+/* ── CALLOUTS ── */
+.callout {
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 14px 0 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: 'Courier New', monospace;
+}
+.callout-warning {
+  background: var(--warning-bg);
+  border-left: 4px solid var(--warning-border);
+  color: var(--warning-text);
+}
+.callout-note {
+  background: var(--note-bg);
+  border-left: 4px solid var(--note-border);
+  color: var(--note-text);
+}
+.callout-icon { font-size: 14px; margin-right: 6px; }
+.callout strong { font-weight: 700; }
+
+/* ── CONVERGENCE BLOCK ── */
+.convergence {
+  background: #f5f0fc;
+  border: 1px solid #c8a8e8;
+  border-left: 4px solid #7040b0;
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin: 20px 0;
+  font-size: 14px;
+  color: #3a1a60;
+  line-height: 1.7;
+  font-family: Georgia, serif;
+}
+.convergence strong { color: #5a30a0; }
+
+/* ── OBSERVATIONS ── */
+.obs-list { list-style: none; padding: 0; }
+.obs-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.7;
+  padding-left: 20px;
+  position: relative;
+}
+.obs-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+.obs-list li:last-child { border-bottom: none; }
+.obs-list strong { color: var(--text); }
+
+/* ── FOOTER ── */
+.pg-footer {
+  background: var(--accent);
+  color: rgba(255,255,255,0.5);
+  font-size: 11px;
+  padding: 16px 48px;
+  font-family: 'Courier New', monospace;
+  font-style: italic;
+}
+
+/* ── DIVIDER ── */
+hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<div class="pg-header">
+  <h1>Sell &amp; Rebalance Tool — Data Model</h1>
+  <div class="meta">
+    <span>Generated: AI-assisted · Claude Sonnet 4.5</span>
+    <span>Revised: 02/17/2026</span>
+    <span>Grounded against: Vanguard unrealized gain/loss UI</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <h2>Entities Overview</h2>
+
+  <div class="hierarchy">Investor
+  └── Account (one or more)
+        └── FundHolding (one per fund per account)
+              └── TaxLot (one per purchase event)
+                    └── TaxLotDisposition (created when lot is sold)
+
+PortfolioTarget (investor's desired allocation)
+  └── TargetAllocation (one per asset class)
+
+SellRequest (workflow A entry point)
+  └── SellRecommendation (output of optimization engine)
+        └── RecommendedFundSale (one per fund)
+
+ManualSellScenario (workflow B entry point)
+  └── ManualFundSale (one per fund, user-entered)
+        └── ScenarioTaxImpact (calculated output)</div>
+
+  <h2>Entity Detail</h2>
+
+  <!-- INVESTOR -->
+  <h3>Investor <span class="entity-badge">PRIMARY</span></h3>
+  <div class="entity-desc">The authenticated user. Relatively simple — most complexity lives downstream.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>investor_id</td><td>UUID</td><td>Primary key</td></tr>
+      <tr><td>name</td><td>string</td><td>Display name</td></tr>
+      <tr><td>tax_filing_status</td><td>enum</td><td>single, married_joint, married_separate, head_of_household</td></tr>
+      <tr><td>federal_tax_bracket</td><td>decimal</td><td>Marginal rate, e.g. 0.22</td></tr>
+      <tr><td>state_tax_rate</td><td>decimal</td><td>Combined state + local rate</td></tr>
+      <tr><td>ltcg_tax_rate</td><td>decimal</td><td>Long-term capital gains rate (0, 0.15, or 0.20 federally)</td></tr>
+      <tr><td>stcg_tax_rate</td><td>decimal</td><td>Short-term rate — same as ordinary income bracket</td></tr>
+      <tr><td>niit_applies</td><td>boolean</td><td>Net Investment Income Tax (3.8%) applies above certain thresholds</td></tr>
+      <tr><td>ytd_realized_gains</td><td>decimal</td><td>Running total of realized gains this tax year — affects bracket</td></tr>
+      <tr><td>ytd_realized_losses</td><td>decimal</td><td>Running total of realized losses this tax year</td></tr>
+      <tr><td>preferred_accounting_method</td><td>enum</td><td>fifo, lifo, hifo, <strong>mintax</strong>, specific_identification — mintax is Vanguard's proprietary method that algorithmically selects lots to minimize tax impact</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-warning"><span class="callout-icon">⚠️</span><strong>Data challenge:</strong> Tax rates require either user input or integration with a tax estimation service. They change intra-year with significant income events. Must be treated as estimates, not guarantees — the UI must communicate this clearly.</div>
+
+  <!-- ACCOUNT -->
+  <h3>Account <span class="entity-badge">PRIMARY</span></h3>
+  <div class="entity-desc">Vanguard investors often hold funds across multiple account types with very different tax treatments.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>account_id</td><td>UUID</td><td>Primary key</td></tr>
+      <tr><td>investor_id</td><td>UUID</td><td>Foreign key → Investor</td></tr>
+      <tr><td>account_type</td><td>enum</td><td>taxable_brokerage, traditional_ira, roth_ira, 401k, 403b, inherited_ira</td></tr>
+      <tr><td>account_name</td><td>string</td><td>e.g. "Joint Brokerage", "Rollover IRA"</td></tr>
+      <tr><td>is_tax_advantaged</td><td>boolean</td><td>Derived from account_type</td></tr>
+      <tr><td>requires_rmd</td><td>boolean</td><td>Required Minimum Distributions apply (traditional IRA, 401k over age 73)</td></tr>
+      <tr><td>rmd_amount_current_year</td><td>decimal</td><td>If applicable — constrains or drives sell decisions</td></tr>
+      <tr><td>total_value</td><td>decimal</td><td>Calculated: sum of all FundHolding.current_value</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-warning"><span class="callout-icon">⚠️</span><strong>Data challenge:</strong> Account type is critical — capital gains rules only apply to taxable accounts. Sales from traditional IRAs are taxed as ordinary income; Roth IRA sales may be tax-free. The optimization engine must treat these very differently. This is one of the most complex aspects of the tool.</div>
+
+  <!-- FUNDHOLDING -->
+  <h3>FundHolding <span class="entity-badge">CORE</span></h3>
+  <div class="entity-desc">One record per fund per account. The core entity the user sees in Workflow B.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>holding_id</td><td>UUID</td><td>Primary key</td></tr>
+      <tr><td>account_id</td><td>UUID</td><td>Foreign key → Account</td></tr>
+      <tr><td>fund_id</td><td>UUID</td><td>Foreign key → Fund</td></tr>
+      <tr><td>total_shares</td><td>decimal</td><td>Sum of all open tax lots</td></tr>
+      <tr><td>current_nav</td><td>decimal</td><td>Net asset value per share, current</td></tr>
+      <tr><td>current_value</td><td>decimal</td><td>Calculated: total_shares × current_nav</td></tr>
+      <tr><td>total_cost_basis_fifo</td><td>decimal</td><td>Calculated from TaxLots using FIFO method</td></tr>
+      <tr><td>total_cost_basis_mintax</td><td>decimal</td><td>Vanguard MinTax method — suppresses single cost-per-share display (shown as "—" in Vanguard UI)</td></tr>
+      <tr><td>cost_per_share_display</td><td>decimal</td><td><strong>Nullable</strong> — suppressed when accounting method is mintax or specific_identification</td></tr>
+      <tr><td>stcg_unrealized</td><td>decimal</td><td>Short-term unrealized gain/loss — sum of lots held &lt; 1 year</td></tr>
+      <tr><td>ltcg_unrealized</td><td>decimal</td><td>Long-term unrealized gain/loss — sum of lots held ≥ 1 year</td></tr>
+      <tr><td>total_unrealized_gain_loss</td><td>decimal</td><td>stcg_unrealized + ltcg_unrealized — matches Vanguard UI "Total capital gain/loss"</td></tr>
+      <tr><td>has_any_unrealized_loss</td><td>boolean</td><td>Key flag for tax loss harvesting opportunities</td></tr>
+      <tr><td>asset_class</td><td>enum</td><td>us_equity, intl_equity, us_bond, intl_bond, reit, cash_equivalent</td></tr>
+      <tr><td>target_allocation_pct</td><td>decimal</td><td>From PortfolioTarget — used for rebalancing calculation</td></tr>
+      <tr><td>allocation_drift</td><td>decimal</td><td>current_allocation_pct − target_allocation_pct</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-warning"><span class="callout-icon">⚠️</span><strong>Data challenge:</strong> Vanguard's API must provide lot-level detail for cost basis to be accurate. Many years of reinvested dividends create dozens or hundreds of lots per fund. If unavailable programmatically, manual import is required — a significant UX friction point.</div>
+
+  <!-- TAXLOT -->
+  <h3>TaxLot <span class="entity-badge">CRITICAL</span></h3>
+  <div class="entity-desc">The most granular and most important entity for tax calculations. One record per purchase event, including dividend reinvestments.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>lot_id</td><td>UUID</td><td>Primary key</td></tr>
+      <tr><td>holding_id</td><td>UUID</td><td>Foreign key → FundHolding</td></tr>
+      <tr><td>acquisition_date</td><td>date</td><td><strong>The single most important field</strong> — determines short vs. long-term status</td></tr>
+      <tr><td>shares_acquired</td><td>decimal</td><td>Shares purchased in this lot</td></tr>
+      <tr><td>shares_remaining</td><td>decimal</td><td>Shares not yet sold — decremented as sold</td></tr>
+      <tr><td>cost_per_share</td><td>decimal</td><td>Price paid at acquisition</td></tr>
+      <tr><td>unrealized_gain_loss</td><td>decimal</td><td>current_value − total_cost_basis</td></tr>
+      <tr><td>holding_period</td><td>enum</td><td><strong>short_term</strong> (&lt; 1 year) or <strong>long_term</strong> (≥ 1 year) — mutually exclusive per lot, never both</td></tr>
+      <tr><td>days_until_long_term</td><td>integer</td><td>Null if already long_term. Strategically important — a lot 5 days from long-term status should not be sold short-term</td></tr>
+      <tr><td>stcg_amount</td><td>decimal</td><td><strong>Populated only if short_term.</strong> Null if long_term. Mirrors Vanguard's "Short term capital gain/loss" column (shows "—" for long-term lots)</td></tr>
+      <tr><td>ltcg_amount</td><td>decimal</td><td><strong>Populated only if long_term.</strong> Null if short_term. Mirrors Vanguard's "Long term capital gain/loss" column</td></tr>
+      <tr><td>is_harvestable_loss</td><td>boolean</td><td>True if unrealized_gain_loss &lt; 0 AND wash sale rules don't restrict sale</td></tr>
+      <tr><td>is_wash_sale_restricted</td><td>boolean</td><td>Cannot harvest loss if substantially identical fund purchased within 30 days</td></tr>
+      <tr><td>wash_sale_restriction_expires</td><td>date</td><td>If applicable</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-warning"><span class="callout-icon">⚠️</span><strong>Data challenge:</strong> Wash sale rules add significant complexity. If an investor sells a fund at a loss and buys a "substantially identical" fund within 30 days, the loss is disallowed. What counts as "substantially identical" for mutual funds is a grey area requiring careful handling and a legal disclaimer.</div>
+
+  <!-- FUND -->
+  <h3>Fund <span class="entity-badge">REFERENCE</span></h3>
+  <div class="entity-desc">Reference data about each mutual fund. Relatively static.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>fund_id</td><td>UUID</td><td>Primary key</td></tr>
+      <tr><td>ticker</td><td>string</td><td>e.g. VTSAX</td></tr>
+      <tr><td>name</td><td>string</td><td>e.g. "Vanguard Total Stock Market Index Fund"</td></tr>
+      <tr><td>asset_class</td><td>enum</td><td>Maps to asset_class on FundHolding</td></tr>
+      <tr><td>is_index_fund</td><td>boolean</td><td>Relevant for wash sale — index funds less likely to trigger wash sale rules</td></tr>
+      <tr><td>benchmark_index</td><td>string</td><td>e.g. "CRSP US Total Market Index"</td></tr>
+    </tbody>
+  </table></div>
+
+  <!-- PORTFOLIO TARGET -->
+  <h3>PortfolioTarget &amp; TargetAllocation <span class="entity-badge">REFERENCE</span></h3>
+  <div class="entity-desc">The investor's desired allocation. Used to calculate drift and drive rebalancing recommendations.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>target_id / allocation_id</td><td>UUID</td><td>Primary keys</td></tr>
+      <tr><td>investor_id</td><td>UUID</td><td>Foreign key → Investor</td></tr>
+      <tr><td>rebalancing_threshold_pct</td><td>decimal</td><td>How much drift triggers a rebalancing flag, e.g. 5%</td></tr>
+      <tr><td>asset_class</td><td>enum</td><td>Must match FundHolding.asset_class values</td></tr>
+      <tr><td>target_pct</td><td>decimal</td><td>e.g. 0.55 for 55% US equity</td></tr>
+      <tr><td>is_active</td><td>boolean</td><td>Current active target (targets can change over time)</td></tr>
+    </tbody>
+  </table></div>
+
+  <!-- WORKFLOW A ENTITIES -->
+  <h3>SellRequest / SellRecommendation / RecommendedFundSale <span class="entity-badge">WORKFLOW A</span></h3>
+  <div class="entity-desc">Workflow A entities. The user enters a dollar amount, the optimization engine generates a recommendation.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Key Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>requested_amount</td><td>decimal</td><td>Dollar amount the investor wants to sell — Workflow A entry</td></tr>
+      <tr><td>optimization_priority</td><td>enum</td><td>minimize_gains, maximize_rebalancing, balanced</td></tr>
+      <tr><td>total_estimated_tax_impact</td><td>decimal</td><td>Estimated tax owed on recommended sales</td></tr>
+      <tr><td>total_estimated_ltcg</td><td>decimal</td><td>Long-term capital gains portion</td></tr>
+      <tr><td>total_estimated_stcg</td><td>decimal</td><td>Short-term capital gains portion</td></tr>
+      <tr><td>estimated_portfolio_drift_after</td><td>decimal</td><td>How balanced the portfolio will be post-sale</td></tr>
+      <tr><td>explanation_summary</td><td>string</td><td>Plain-language explanation of why these funds were chosen — AI-generated natural language is a strong candidate</td></tr>
+      <tr><td>lots_selected</td><td>array[lot_id]</td><td>Specific lots chosen — critical for mintax and specific_identification methods</td></tr>
+      <tr><td>days_until_lt_on_next_lot</td><td>integer</td><td>Surfaces the "wait N days to save $X" opportunity for near-boundary short-term lots</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout callout-note"><span class="callout-icon">💡</span><strong>Design note:</strong> The explanation_summary field is important for trust. Users need to understand <em>why</em> the tool recommended selling fund X before fund Y. AI-generated natural language explanations are a strong candidate here.</div>
+
+  <!-- WORKFLOW B ENTITIES -->
+  <h3>ManualSellScenario / ManualFundSale / ScenarioTaxImpact <span class="entity-badge">WORKFLOW B</span></h3>
+  <div class="entity-desc">Workflow B entities. User manually enters amounts per fund; tax impact recalculates on every change.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Key Field</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>source_recommendation_id</td><td>UUID</td><td>Null if started fresh; populated if pre-filled from Workflow A recommendation — the convergence data handoff</td></tr>
+      <tr><td>user_entered_amount</td><td>decimal</td><td>Dollar amount entered by user per fund</td></tr>
+      <tr><td>estimated_stcg / estimated_ltcg</td><td>decimal</td><td>Short and long-term gain/loss based on lots that would be sold</td></tr>
+      <tr><td>total_stcg / total_ltcg</td><td>decimal</td><td>Rolled up across all funds in scenario</td></tr>
+      <tr><td>net_stcg_after_losses</td><td>decimal</td><td>Short-term gains net of loss offsets</td></tr>
+      <tr><td>estimated_niit</td><td>decimal</td><td>3.8% surcharge if investor.niit_applies and gains exceed threshold</td></tr>
+      <tr><td>estimated_total_tax</td><td>decimal</td><td>All federal, state, and NIIT combined</td></tr>
+      <tr><td>effective_tax_rate_on_sale</td><td>decimal</td><td><strong>The single most important summary number for the user</strong> — estimated_total_tax / total_sale_amount</td></tr>
+      <tr><td>portfolio_drift_after</td><td>decimal</td><td>How balanced the portfolio will be after this scenario executes</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Workflow Convergence Point</h2>
+
+  <div class="convergence">
+    The connection between Workflow A and Workflow B is the <strong>source_recommendation_id</strong> field on <strong>ManualSellScenario</strong>. When a user completes Workflow A and receives a SellRecommendation, the system instantiates a ManualSellScenario pre-populated with the recommended amounts. The user can then edit individual fund amounts and see the tax impact recalculate in real time.
+    <br><br>
+    This means the UI can present a single "Review &amp; Adjust" screen that serves as both the output of Workflow A and the input of Workflow B — <strong>the convergence is a data handoff, not a navigation event.</strong>
+  </div>
+
+  <h2>Key Data Challenges Summary</h2>
+
+  <div class="table-wrap"><table class="summary-table">
+    <thead><tr><th>Challenge</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Lot-level cost basis data availability</td><td>High</td><td>Require Vanguard API access or CSV import</td></tr>
+      <tr><td>Tax rate accuracy</td><td>Medium</td><td>User inputs + clear disclaimer that estimates are not tax advice</td></tr>
+      <tr><td>Wash sale rule determination</td><td>High</td><td>Conservative flagging + legal disclaimer</td></tr>
+      <tr><td>Account type tax treatment differences</td><td>High</td><td>Must be core to optimization logic, not an afterthought</td></tr>
+      <tr><td>MinTax cost-per-share suppression</td><td>Medium</td><td>Nullable cost_per_share_display field; conditional UI handling</td></tr>
+      <tr><td>Intra-year tax bracket changes</td><td>Low</td><td>Annual snapshot with note to revisit after income events</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Observations from Vanguard's Existing UI</h2>
+  <p style="color:var(--text-mid);font-size:13px;margin-bottom:16px;font-family:'Courier New',monospace;">VFIAX example · Grounded against live product · 02/17/2026</p>
+
+  <ul class="obs-list">
+    <li><strong>Short-term and long-term are mutually exclusive per lot.</strong> Vanguard's UI shows either a short-term or long-term value per lot row — never both. This confirmed that stcg_amount and ltcg_amount on TaxLot must be mutually exclusive, determined solely by acquisition_date.</li>
+    <li><strong>MinTax is a real accounting method users already use.</strong> The Vanguard screenshot shows "MinTax" selected for VFIAX. This should be the default for this tool since its target users are already optimizing for tax minimization. It was missing from the original data model draft.</li>
+    <li><strong>Cost-per-share is suppressed under MinTax.</strong> The holding-level "Cost per share" field shows "—" when MinTax is selected. This informs the UI: cost_per_share_display must be nullable and handled gracefully.</li>
+    <li><strong>Individual lots within a large-gain fund can have losses.</strong> A 12/22/2025 lot shows −$0.24 short-term loss despite the fund having +$26,142 total long-term gain. The tool should surface harvestable losses at the lot level even when the overall fund position is profitable.</li>
+    <li><strong>Dividend reinvestments create the lot complexity.</strong> Quarterly lot dates confirm that a long-term investor may have dozens of lots per fund — confirming lot-level data access is a hard requirement.</li>
+    <li><strong>The short-term/long-term boundary creates a "Wait &amp; Save" opportunity.</strong> Lots from 12/22/2025 are currently short-term but become long-term on 12/22/2026. The tool should flag when a short-term lot is within a configurable window of converting — surfacing "would you save meaningful tax by waiting?"</li>
+  </ul>
+
+</div>
+
+<div class="pg-footer">
+  This data model is a starting point for design and engineering alignment. It should be reviewed by a tax professional before any calculations are represented to users as financial advice. · Vanguard Sell &amp; Rebalance Tool · AI-Assisted Design Project · Michael Casey · 2026
+</div>
+
+</body>
+</html>
