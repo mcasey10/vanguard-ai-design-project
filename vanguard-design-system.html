@@ -11,16 +11,17 @@
 body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f2f2f2; color: #040505; font-size: 14px; line-height: 1.5; }
 
 /* ── PAGE CHROME ── */
-.ds-topbar { background: #040505; color: white; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.ds-topbar { background: #040505; color: white; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; }
 .ds-topbar-title { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
 .ds-topbar-meta  { font-size: 11px; opacity: 0.55; }
-.ds-nav { background: #1a1a1a; padding: 0 40px; display: flex; gap: 0; }
-.ds-nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 12px; font-weight: 600; padding: 11px 16px; display: block; letter-spacing: 0.05em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.15s; }
+.ds-nav { background: #1a1a1a; padding: 0 40px; display: flex; gap: 0; position: sticky; top: 52px; z-index: 99; }
+.ds-nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 12px; font-weight: 600; padding: 11px 16px; display: block; letter-spacing: 0.05em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.15s; cursor: pointer; }
 .ds-nav a:hover { color: white; }
 .ds-nav a.active { color: white; border-bottom-color: #C8102E; }
 
 .ds-body { max-width: 1120px; margin: 0 auto; padding: 40px; }
-.ds-section { margin-bottom: 60px; scroll-margin-top: 80px; }
+.ds-section { display: none; margin-bottom: 60px; }
+.ds-section.visible { display: block; }
 .ds-section-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #C8102E; margin-bottom: 8px; }
 .ds-section-title { font-size: 22px; font-weight: 700; color: #040505; margin-bottom: 6px; }
 .ds-section-desc { font-size: 13px; color: #555; margin-bottom: 28px; line-height: 1.6; }
@@ -92,15 +93,9 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 .vg-subnav-item.active { font-weight: 700; border-bottom-color: #C8102E; }
 .vg-subnav-item:hover { color: #1255CC; }
 
-/* Page hero / header banner
-   CONFIRMED from SVG asset extracted directly from Vanguard website (Banner_background.svg):
-   - Base layer:    solid #c20029 rect (full bleed)
-   - Overlay shape: solid #660026 diagonal polygon (left ~60%, creates dark-left look)
-   - NO CSS gradient — the dark-to-light effect is two flat fills, not a gradient.
-   Previous inferred values (#3D0010, #6B0020) were incorrect approximations. */
-.vg-hero { background: #c20029; color: white; padding: 28px 24px 32px; position: relative; overflow: hidden; }
-.vg-hero::before { content: ''; position: absolute; left: 0; top: 0; width: 60%; height: 100%; background: #660026; clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%); }
-.vg-hero::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; background: #c20029; border-radius: 50%; opacity: 0.4; }
+/* Page hero / header banner */
+.vg-hero { background: linear-gradient(135deg, #3D0010 0%, #6B0020 55%, #C8102E 100%); color: white; padding: 28px 24px 32px; position: relative; overflow: hidden; }
+.vg-hero::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; background: #C8102E; border-radius: 50%; opacity: 0.6; }
 .vg-hero-eyebrow { font-size: 13px; font-weight: 600; opacity: 0.8; margin-bottom: 4px; }
 .vg-hero-title   { font-size: 28px; font-weight: 700; line-height: 1.1; position: relative; z-index: 1; }
 
@@ -314,16 +309,16 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 <body>
 
 <div class="ds-topbar">
-  <div class="ds-topbar-title">Vanguard Design System — Investor Portal · Extracted Token Reference · v3</div>
-  <div class="ds-topbar-meta">Updated February 2026 · v3: hero banner + chart negative fill confirmed from SVG + DevTools</div>
+  <div class="ds-topbar-title">Vanguard Design System — Investor Portal · Extracted Token Reference · v2</div>
+  <div class="ds-topbar-meta">Updated February 2026 · 8 investor portal screenshots inspected</div>
 </div>
 <div class="ds-nav">
-  <a href="#foundation" class="active">Foundation</a>
-  <a href="#typography">Typography</a>
-  <a href="#spacing">Spacing</a>
-  <a href="#components">Components</a>
-  <a href="#patterns">Patterns</a>
-  <a href="#tokens">CSS Tokens</a>
+  <a data-tab="foundation" class="active">Foundation</a>
+  <a data-tab="typography">Typography</a>
+  <a data-tab="spacing">Spacing</a>
+  <a data-tab="components">Components</a>
+  <a data-tab="patterns">Patterns</a>
+  <a data-tab="tokens">CSS Tokens</a>
 </div>
 
 <div class="ds-body">
@@ -334,7 +329,7 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 <div class="ds-section" id="foundation">
   <div class="ds-section-eyebrow">Foundation</div>
   <div class="ds-section-title">Color System</div>
-  <div class="ds-section-desc">Extracted from 8 investor portal screenshots plus two additional confirmed sources: an SVG asset (<code>Banner_background.svg</code>) extracted directly from the Vanguard website, and DevTools inspection of the <code>.negative-area-investment</code> chart fill. Colors marked <strong>Confirmed</strong> were directly pixel-inspected, read from browser DevTools, or extracted from source SVG assets. Colors marked <strong>Inferred</strong> are close approximations from visual inspection where exact values were not available. Two previously-inferred hero colors (<code>#3D0010</code>, <code>#6B0020</code>) have been superseded — see Brand Primaries.</div>
+  <div class="ds-section-desc">Extracted from 8 investor portal screenshots. Colors marked <strong>Confirmed</strong> were directly pixel-inspected or read from browser DevTools. Colors marked <strong>Inferred</strong> are close approximations from visual inspection where exact hex was not available from DevTools.</div>
 
   <div class="conf-legend">
     <span><span class="conf conf-confirmed">Confirmed</span> Direct DevTools or pixel inspection</span>
@@ -363,24 +358,23 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#c20029;"></div>
+        <div class="swatch-color" style="background:#6B0020;"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Hero Red — Base <span class="conf conf-confirmed">Confirmed</span></div>
-          <div class="swatch-hex">#c20029</div>
-          <div class="swatch-token">--color-hero-red</div>
-          <div class="swatch-source">Source: Banner_background.svg · fill on base &lt;rect&gt; element (full bleed background)</div>
+          <div class="swatch-name">Burgundy / Hero BG <span class="conf conf-inferred">Inferred</span></div>
+          <div class="swatch-hex">#6B0020</div>
+          <div class="swatch-token">--color-brand-burgundy</div>
+          <div class="swatch-source">Source: Page hero banner gradient midpoint</div>
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#660026;"></div>
+        <div class="swatch-color" style="background:#3D0010;"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Hero Dark — Overlay Shape <span class="conf conf-confirmed">Confirmed</span></div>
-          <div class="swatch-hex">#660026</div>
-          <div class="swatch-token">--color-hero-dark</div>
-          <div class="swatch-source">Source: Banner_background.svg · fill on diagonal &lt;path&gt; overlay (left ~60% of banner)</div>
+          <div class="swatch-name">Maroon / Hero Dark <span class="conf conf-inferred">Inferred</span></div>
+          <div class="swatch-hex">#3D0010</div>
+          <div class="swatch-token">--color-brand-maroon</div>
+          <div class="swatch-source">Source: Hero banner gradient — dark end</div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -508,12 +502,12 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
         </div>
       </div>
       <div class="swatch">
-        <div class="swatch-color" style="background:#f9e6f2;border-bottom:1px solid #eee;"></div>
+        <div class="swatch-color" style="background:rgba(220,20,80,0.12);"></div>
         <div class="swatch-info">
-          <div class="swatch-name">Chart Fill — Negative <span class="conf conf-confirmed">Confirmed</span></div>
-          <div class="swatch-hex">#f9e6f2</div>
+          <div class="swatch-name">Chart Fill — Negative <span class="conf conf-inferred">Inferred</span></div>
+          <div class="swatch-hex">rgba(220,20,80,0.12)</div>
           <div class="swatch-token">--color-chart-loss-fill</div>
-          <div class="swatch-source">Source: DevTools · fill property on .negative-area-investment · rgb(249, 230, 242). Previous value rgba(220,20,80,0.12) was incorrect.</div>
+          <div class="swatch-source">Source: Pink/red area under negative return (Feb–May 25)</div>
         </div>
       </div>
       <div class="swatch">
@@ -792,8 +786,7 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
         <div class="vg-hero-title">Message Center</div>
       </div>
     </div>
-    <div class="component-spec"><strong style="color:#1a6e3a;">✓ Confirmed from Banner_background.svg (extracted directly from Vanguard website)</strong><br>
-      Background is <strong>NOT a CSS gradient</strong>. The SVG uses two flat fills: a base &lt;rect&gt; at <code>#c20029</code> (full bleed), and a diagonal &lt;path&gt; overlay at <code>#660026</code> covering the left ~60% of the banner — this creates the dark-left appearance. The previously inferred values (#3D0010, #6B0020) do not appear in the actual SVG asset. White text throughout · Name label 13–14px/400 above total amount · Meta text 12px right-aligned</div>
+    <div class="component-spec">Background: gradient #3D0010 → #6B0020 → #C8102E (left-to-right, diagonal) · Decorative red circle shape positioned top-right · White text throughout · Eyebrow 13px/600 · Title 26–30px/700</div>
   </div>
 
   <!-- Section tab nav -->
@@ -1097,10 +1090,9 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
   <div class="token-block">
 <span class="tk-comment">/* ═══════════════════════════════════════════════════════════════
    VANGUARD INVESTOR PORTAL — DESIGN TOKENS
-   v3 · February 2026 · Confirmed = DevTools or direct pixel inspection
-   v3 update: hero banner colors confirmed from Banner_background.svg (SVG extracted
-   from live site); chart negative fill confirmed from DevTools .negative-area-investment
-   Inferred = visual approximation, confirm with further inspection
+   v2 · February 2026 · Extracted from 8 authenticated portal screenshots
+   Confirmed = DevTools or direct pixel inspection
+   Inferred  = visual approximation, confirm with further inspection
 ═══════════════════════════════════════════════════════════════ */</span>
 
 :root {
@@ -1129,11 +1121,9 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
   <span class="tk-var">--line-height-relaxed</span>:      <span class="tk-val">1.6</span>;
 
 <span class="tk-section">  /* ── BRAND ──────────────────────────────────────────────────── */</span>
-  <span class="tk-var">--color-brand-red</span>:          <span class="tk-val">#C8102E</span>;  <span class="tk-comment">/* CONFIRMED — active tab indicator, nav badge, error states */</span>
-  <span class="tk-var">--color-hero-red</span>:            <span class="tk-val">#c20029</span>;  <span class="tk-comment">/* CONFIRMED — Banner_background.svg base &lt;rect&gt; fill (full bleed) */</span>
-  <span class="tk-var">--color-hero-dark</span>:           <span class="tk-val">#660026</span>;  <span class="tk-comment">/* CONFIRMED — Banner_background.svg diagonal overlay &lt;path&gt; fill */</span>
-  <span class="tk-comment">/* Note: hero is two flat fills, NOT a gradient. --color-brand-burgundy (#6B0020) and    */</span>
-  <span class="tk-comment">/* --color-brand-maroon (#3D0010) were previously inferred and are now retired/incorrect. */</span>
+  <span class="tk-var">--color-brand-red</span>:          <span class="tk-val">#C8102E</span>;  <span class="tk-comment">/* CONFIRMED — active tab, badge, nav dot */</span>
+  <span class="tk-var">--color-brand-burgundy</span>:     <span class="tk-val">#6B0020</span>;  <span class="tk-comment">/* INFERRED — hero gradient mid */</span>
+  <span class="tk-var">--color-brand-maroon</span>:       <span class="tk-val">#3D0010</span>;  <span class="tk-comment">/* INFERRED — hero gradient dark end */</span>
 
 <span class="tk-section">  /* ── TEXT ───────────────────────────────────────────────────── */</span>
   <span class="tk-var">--color-text-primary</span>:       <span class="tk-val">#040505</span>;  <span class="tk-comment">/* CONFIRMED — DevTools h2.holding-name */</span>
@@ -1169,7 +1159,7 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
   <span class="tk-var">--color-chart-other</span>:        <span class="tk-val">#767676</span>;  <span class="tk-comment">/* CONFIRMED — reserves/other */</span>
   <span class="tk-var">--color-chart-gain-line</span>:    <span class="tk-val">#00b464</span>;  <span class="tk-comment">/* CONFIRMED — positive performance line */</span>
   <span class="tk-var">--color-chart-gain-fill</span>:    <span class="tk-val">rgba(0,180,100,0.15)</span>;   <span class="tk-comment">/* CONFIRMED */</span>
-  <span class="tk-var">--color-chart-loss-fill</span>:    <span class="tk-val">#f9e6f2</span>;  <span class="tk-comment">/* CONFIRMED — DevTools: fill on .negative-area-investment = rgb(249,230,242) */</span>
+  <span class="tk-var">--color-chart-loss-fill</span>:    <span class="tk-val">rgba(220,20,80,0.12)</span>;   <span class="tk-comment">/* INFERRED */</span>
   <span class="tk-var">--color-chart-balance</span>:      <span class="tk-val">#3d7a6e</span>;  <span class="tk-comment">/* INFERRED — balance trendline */</span>
   <span class="tk-var">--color-chart-transactions</span>: <span class="tk-val">#4a7cc7</span>;  <span class="tk-comment">/* INFERRED — net deposits line */</span>
   <span class="tk-var">--color-chart-bar</span>:          <span class="tk-val">#4a6fa5</span>;  <span class="tk-comment">/* INFERRED — expense ratio bars */</span>
@@ -1253,5 +1243,40 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 </div>
 
 </div><!-- /ds-body -->
+<script>
+(function() {
+  // Show foundation tab by default
+  document.getElementById('foundation').classList.add('visible');
+
+  var tabs = document.querySelectorAll('.ds-nav a[data-tab]');
+  var sections = document.querySelectorAll('.ds-section');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var target = this.getAttribute('data-tab');
+
+      // Update active tab
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+
+      // Show target section, hide all others
+      sections.forEach(function(s) { s.classList.remove('visible'); });
+      var targetSection = document.getElementById(target);
+      if (targetSection) {
+        targetSection.classList.add('visible');
+        // Scroll page to top of content area so nav stays in view
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Handle hash in URL on load (e.g. when opened with #components)
+  var hash = window.location.hash.replace('#', '');
+  if (hash) {
+    var matchingTab = document.querySelector('.ds-nav a[data-tab="' + hash + '"]');
+    if (matchingTab) matchingTab.click();
+  }
+})();
+</script>
 </body>
 </html>
