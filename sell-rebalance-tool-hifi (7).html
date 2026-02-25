@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell &amp; Rebalance Tool — Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f2f2f2; --paper: #ffffff; --border: #e0e0e0; --border-dark: #767676;
+  --structure: #f2f2f2; --text: #040505; --text-mid: #555555; --text-muted: #767676;
+  --interactive: #1255CC; --annotation: #b05000; --alert: #C8102E;
+  --positive: #007A00; --negative: #C8102E; --highlight: #FFF8F0; --warning: #E07000;
+  --conv: #2bbfb3; --brand-red: #C8102E;
+  /* Hero banner — CONFIRMED from Banner_background.svg extracted from Vanguard website.
+     Two flat fills; NOT a gradient. #3D0010 / #6B0020 were incorrect inferred values. */
+  --hero-red: #c20029;   /* base <rect> fill */
+  --hero-dark: #660026;  /* diagonal overlay <path> fill */
+  /* Chart fill — CONFIRMED from DevTools: .negative-area-investment fill = rgb(249,230,242) */
+  --chart-loss-fill: #f9e6f2;
+  --chart-equity: #2bbfb3; --chart-bonds: #c8902a; --chart-other: #767676;
+  --screen-w: 1100px; --nav-h: 52px;
+}
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+/* ── CLEAN MODE (?clean in URL) ──
+   Hides wireframe debug UI and expands content to full width.
+   Use for Figma screenshot captures. */
+body.clean-mode .wf-nav-outer,
+body.clean-mode .wf-tabs,
+body.clean-mode .wf-label { display: none !important; }
+body.clean-mode .app-chrome {
+  max-width: 100% !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* -€-€ OUTER CHROME -€-€ */
+.app-chrome {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* -€-€ WIREFRAME NAV -€-€ */
+.wf-nav {
+  background: var(--text);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.wf-nav-logo {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #888; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; color: white; font-weight: 700;
+  flex-shrink: 0;
+}
+.wf-nav-links { display: flex; gap: 0; flex: 1; }
+.wf-nav-link {
+  padding: 0 16px; height: var(--nav-h); display: flex;
+  align-items: center; font-size: 12px; color: rgba(255,255,255,0.5);
+  border-bottom: 2px solid transparent; cursor: pointer;
+}
+.wf-nav-link.active { color: white; border-bottom-color: #aaa; }
+.wf-nav-user {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: #666; display: flex; align-items: center;
+  justify-content: center; font-size: 11px; color: white;
+}
+
+/* -€-€ SCREEN WRAPPER -€-€ */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* -€-€ TABS (wireframe set navigation) -€-€ */
+.wf-tabs {
+  background: var(--bg);
+  border-bottom: 2px solid var(--border-dark);
+  display: flex;
+  padding: 0;
+  overflow-x: auto;
+}
+.wf-tab {
+  padding: 10px 18px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  font-family: 'Inter', Arial, sans-serif;
+  letter-spacing: 0.03em;
+  margin-bottom: -2px;
+}
+.wf-tab:hover { color: var(--text-mid); }
+.wf-tab.active { color: var(--interactive); border-bottom-color: var(--interactive); font-weight: 700; }
+
+/* -€-€ PAGE HEADER -€-€ */
+.page-header {
+  background: var(--structure);
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.page-header-title { font-size: 16px; font-weight: 700; }
+.page-header-sub { font-size: 11px; color: var(--text-muted); }
+.page-header-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* -€-€ BUTTONS -€-€ */
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 9px 22px; border-radius: 100px; font-size: 13px;
+  font-family: 'Inter', Arial, sans-serif; cursor: pointer;
+  border: 1.5px solid; font-weight: 700; white-space: nowrap;
+}
+.btn-primary { background: var(--text); color: white; border-color: var(--text); }
+.btn-secondary { background: white; color: var(--text); border-color: var(--text); }
+.btn-ghost { background: transparent; color: var(--interactive); border-color: transparent; text-decoration: underline; }
+.btn-danger { background: #fff0f0; color: var(--alert); border-color: var(--alert); }
+.btn-sm { padding: 6px 16px; font-size: 12px; }
+
+/* -€-€ SECTION HEADER (account sections) -€-€ */
+.section-hdr {
+  background: var(--structure);
+  padding: 10px 20px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-hdr-title { font-size: 13px; font-weight: 700; }
+.section-hdr-meta { font-size: 11px; color: var(--text-muted); }
+.acct-type-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 100px;
+  font-size: 10px; font-weight: 700;
+  background: var(--text); color: white; margin-right: 8px;
+}
+.acct-type-badge.ira { background: #445577; }
+.acct-type-badge.roth { background: #335544; }
+
+/* -€-€ TABLE -€-€ */
+.wf-table { width: 100%; border-collapse: collapse; }
+.wf-table th {
+  background: var(--structure);
+  font-size: 12px; font-weight: 600; text-transform: none;
+  letter-spacing: 0; color: var(--text);
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  text-align: right; white-space: nowrap;
+}
+.wf-table th:first-child { text-align: left; }
+.wf-table td {
+  padding: 12px 12px; border-bottom: 1px solid var(--border);
+  vertical-align: middle; font-size: 13px;
+}
+.wf-table tr:hover td { background: #f8f8f8; }
+.wf-table td:not(:first-child) { text-align: right; }
+
+.fund-name-cell { display: flex; flex-direction: column; gap: 2px; }
+.fund-name { font-weight: 700; font-size: 14px; color: var(--interactive); cursor: pointer; text-decoration: underline; }
+.fund-ticker { font-size: 10px; color: var(--text-muted); letter-spacing: 0.04em; }
+.fund-method { font-size: 10px; color: var(--text-muted); }
+
+.pos { color: var(--positive); font-weight: 700; }
+.neg { color: var(--negative); font-weight: 700; }
+.dash { color: var(--text-muted); }
+
+/* wait-and-save row highlight */
+.wts-row td { background: var(--highlight) !important; }
+.wts-badge {
+  display: inline-block; background: var(--warning); color: white;
+  font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
+  letter-spacing: 0.04em; margin-left: 6px; vertical-align: middle;
+}
+.wts-note {
+  font-size: 10px; color: #7a4400; font-style: italic; margin-top: 2px;
+}
+
+/* input cell */
+.input-cell input {
+  width: 90px; padding: 8px 10px; border: 1.5px solid var(--interactive);
+  border-radius: 4px; font-family: 'Inter', Arial, sans-serif;
+  font-size: 13px; text-align: right; background: white;
+}
+.input-cell input:focus { outline: none; border-color: #0033aa; background: white; }
+.input-equiv { font-size: 10px; color: var(--text-muted); margin-top: 2px; text-align: right; }
+
+/* -€-€ CARD (guided layout) -€-€ */
+.fund-card {
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  margin: 12px 20px;
+  overflow: hidden;
+}
+.fund-card.wts-card { border-color: #ff8c00; background: #fffdf0; }
+.fund-card-header {
+  padding: 12px 16px;
+  background: var(--structure);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.fund-card-name { font-weight: 700; font-size: 13px; }
+.fund-card-ticker { font-size: 11px; color: var(--text-muted); margin-left: 8px; }
+.fund-card-body { padding: 12px 16px; display: grid; grid-template-columns: repeat(4, 1fr) 140px; gap: 12px; align-items: center; }
+.fund-card-metric { display: flex; flex-direction: column; gap: 3px; }
+.fund-card-metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.fund-card-metric-value { font-size: 14px; font-weight: 700; }
+.fund-card-input { display: flex; flex-direction: column; gap: 4px; }
+.fund-card-input label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.fund-card-input input {
+  width: 100%; padding: 7px 10px; border: 1.5px solid var(--interactive);
+  border-radius: 2px; font-family: 'Inter', Arial, sans-serif;
+  font-size: 13px; background: #f0f5ff;
+}
+.fund-card-bars { display: flex; gap: 8px; font-size: 11px; color: var(--text-muted); margin-top: 6px; padding: 8px 16px; border-top: 1px solid var(--border); background: #fafaf8; }
+.bar-item { display: flex; align-items: center; gap: 6px; }
+.mini-bar-bg { width: 60px; height: 5px; background: #ddd; border-radius: 2px; overflow: hidden; }
+.mini-bar-fill { height: 100%; border-radius: 2px; }
+
+/* -€-€ STICKY FOOTER -€-€ */
+.sticky-footer {
+  position: sticky; bottom: 0;
+  background: var(--text); color: white;
+  padding: 12px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 50;
+}
+.footer-stat { display: flex; flex-direction: column; gap: 2px; }
+.footer-stat-label { font-size: 9px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.06em; }
+.footer-stat-value { font-size: 15px; font-weight: 700; }
+.footer-stat-value.amber { color: #ffcc44; }
+.footer-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.15); }
+
+/* -€-€ REVIEW & ADJUST LAYOUT -€-€ */
+.ra-layout { display: flex; flex-direction: column; min-height: 0; }
+.ra-top { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--structure); flex-shrink: 0; }
+.ra-scenarios { display: flex; min-height: 0; }
+.ra-scenario-col {
+  flex: 1; min-width: 0; border-right: 2px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.ra-scenario-col:last-child { border-right: none; }
+.ra-scenario-header {
+  background: var(--structure); padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  flex-shrink: 0; min-height: 44px;
+}
+.ra-scenario-name { font-size: 12px; font-weight: 700; }
+.ra-scenario-badge {
+  font-size: 10px; color: var(--text-muted); font-style: italic;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+.ra-body { overflow-y: visible; }
+.ra-fund-row {
+  padding: 7px 14px; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr 80px 90px 80px;
+  gap: 8px; align-items: center; font-size: 12px;
+  min-height: 40px;
+}
+.ra-fund-row:hover { background: #f8f8f8; }
+.ra-fund-row > span { text-align: right; }
+.ra-fund-row > input { text-align: right; }
+.ra-fund-row-hdr {
+  padding: 8px 14px;
+  background: var(--structure);
+  display: grid; grid-template-columns: 1fr 80px 90px 80px;
+  gap: 8px; font-size: 12px; font-weight: 600; text-transform: none;
+  letter-spacing: 0; color: var(--text); border-bottom: 1px solid var(--border);
+  flex-shrink: 0; min-height: 36px; align-items: center;
+}
+.ra-fund-row-hdr span:not(:first-child) { text-align: right; }
+.ra-input {
+  width: 100%; padding: 8px 10px; border: 1.5px solid var(--interactive);
+  border-radius: 4px; font-family: 'Inter', Arial, sans-serif;
+  font-size: 13px; text-align: right; background: white;
+}
+.ra-total-row {
+  padding: 12px 14px; background: var(--structure);
+  display: grid; grid-template-columns: 1fr 80px 90px 80px;
+  gap: 8px; font-size: 12px; font-weight: 700; border-top: 2px solid var(--border-dark);
+  flex-shrink: 0;
+}
+.ra-total-row span:not(:first-child) { text-align: right; }
+.ra-tax-summary {
+  padding: 10px 14px; background: #f8f8f8;
+  border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.ra-tax-row {
+  display: flex; justify-content: space-between;
+  padding: 3px 0; font-size: 11px; color: var(--text-mid);
+  border-bottom: 1px dotted var(--border);
+}
+.ra-tax-row.total { font-weight: 700; color: var(--text); border-bottom: none; padding-top: 6px; font-size: 12px; }
+.ra-tax-row.rate { font-weight: 700; color: var(--annotation); border-bottom: none; font-size: 11px; }
+.add-scenario-col {
+  width: 80px; border-left: 2px dashed var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 8px; cursor: pointer; flex-shrink: 0;
+}
+.add-scenario-col:hover { background: #f0f5ff; }
+.add-icon { font-size: 24px; color: var(--border-dark); }
+.add-lbl { font-size: 10px; color: var(--text-muted); text-align: center; writing-mode: vertical-rl; transform: rotate(180deg); }
+
+/* -€-€ RECOMMENDATION SUMMARY -€-€ */
+.rec-summary-bar {
+  background: var(--text); color: white;
+  padding: 16px 24px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.rec-stat { padding: 0 20px; border-right: 1px solid rgba(255,255,255,0.1); }
+.rec-stat:first-child { padding-left: 0; }
+.rec-stat:last-child { border-right: none; }
+.rec-stat-label { font-size: 9px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.rec-stat-value { font-size: 18px; font-weight: 700; }
+.rec-stat-value.amber { color: #ffcc44; }
+.rec-stat-sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.rec-rationale {
+  margin: 16px 20px; padding: 12px 14px;
+  background: #f8f8f8; border: 1px solid var(--border);
+  border-left: 4px solid var(--interactive);
+  font-size: 12px; color: var(--text-mid); font-style: italic; line-height: 1.6;
+}
+.rec-table-wrap { padding: 0 0 0 0; }
+.rebal-arrow { font-size: 14px; }
+.rebal-arrow.better { color: var(--positive); }
+.rebal-arrow.worse { color: var(--negative); }
+.wts-banner {
+  margin: 12px 20px 0;
+  padding: 12px 16px;
+  background: var(--highlight);
+  border: 1px solid #e8c88a;
+  border-left: 3px solid var(--warning);
+  border-radius: 0 4px 4px 0;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.wts-banner-icon { font-size: 18px; flex-shrink: 0; }
+.wts-banner-text { font-size: 12px; line-height: 1.6; color: #5a3000; }
+.wts-banner-text strong { color: #3a2000; }
+.wts-banner-actions { display: flex; gap: 8px; margin-top: 6px; }
+
+/* -€-€ MODAL -€-€ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200; display: none;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  width: 580px; max-width: 95vw;
+  display: flex; flex-direction: column;
+  max-height: 90vh;
+  position: relative;
+}
+.modal-header {
+  padding: 24px 24px 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; flex-shrink: 0;
+}
+.modal-close-btn {
+  width: 28px; height: 28px; border-radius: 50%; border: none;
+  background: none; cursor: pointer; color: var(--text-muted);
+  font-size: 18px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: -2px;
+  font-family: 'Inter', Arial, sans-serif; line-height: 1;
+}
+.modal-close-btn:hover { background: var(--bg); color: var(--text); }
+.modal-scroll {
+  overflow-y: auto; padding: 16px 24px 0; flex: 1;
+}
+.modal-icon { font-size: 28px; margin-bottom: 10px; }
+.modal-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; line-height: 1.25; }
+.modal-body { font-size: 13px; color: var(--text-mid); line-height: 1.7; margin-bottom: 16px; }
+.modal-highlight {
+  background: var(--highlight); border: 1px solid #e8c88a;
+  border-left: 3px solid var(--warning);
+  padding: 12px 14px; border-radius: 0 4px 4px 0; margin: 12px 0;
+  font-size: 13px; color: #5a3000; line-height: 1.7;
+}
+.modal-footer {
+  padding: 16px 24px 20px; flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: white; border-radius: 0 0 6px 6px;
+}
+.modal-actions {
+  display: flex; gap: 10px; align-items: center;
+  flex-wrap: wrap;
+}
+.modal-sub { font-size: 10px; color: var(--text-muted); margin-top: 10px; font-style: italic; }
+
+/* -€-€ ANNOTATION SYSTEM -€-€ */
+.ann {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--annotation); color: white;
+  font-size: 9px; font-weight: 700; cursor: pointer;
+  flex-shrink: 0; vertical-align: middle; margin-left: 4px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+.ann:hover { background: #8a3800; }
+.ann-panel {
+  position: fixed; left: 20px; bottom: 20px;
+  background: #2a1800; color: white;
+  width: 320px; padding: 16px 18px;
+  border: 1px solid var(--annotation);
+  border-radius: 3px; z-index: 300;
+  font-size: 12px; line-height: 1.6;
+  display: none;
+}
+.ann-panel.open { display: block; }
+.ann-panel-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #ffaa66; margin-bottom: 8px; font-weight: 700; }
+.ann-close { float: right; background: none; border: none; color: #ffaa66; cursor: pointer; font-size: 14px; margin-top: -2px; }
+
+/* -€-€ WIREFRAME LABEL -€-€ */
+.wf-label {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.wf-label-name {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted);
+}
+.wf-label-note { font-size: 10px; color: var(--annotation); font-style: italic; }
+
+/* -€-€ LOT EXPANSION -€-€ */
+.lot-row { background: #f8f8f8; }
+.lot-row td { padding: 6px 10px 6px 24px; font-size: 11px; color: var(--text-mid); border-bottom: 1px dotted var(--border); }
+.lot-row td:not(:first-child) { text-align: right; }
+.lot-expand-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--interactive); font-size: 11px; font-family: 'Inter', Arial, sans-serif;
+  padding: 0; text-decoration: underline;
+}
+
+/* -€-€ SCROLL FIX -€-€ */
+.screen-scroll { overflow-y: auto; max-height: calc(100vh - 120px); }
+
+/* -€-€ APPROACHING-LT INDICATOR -€-€ */
+.lt-days {
+  display: inline-block; background: var(--highlight); border: 1px solid var(--warning);
+  color: #7a4400; font-size: 9px; font-weight: 700; padding: 2px 7px;
+  border-radius: 100px; margin-left: 4px;
+}
+
+/* -€-€ ASSET MIX REBALANCING SUMMARY -€-€ */
+.ra-rebal-summary {
+  padding: 12px 14px; background: var(--structure);
+  border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.rebal-summary-title {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted);
+  margin-bottom: 10px; padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.rebal-drill-link {
+  font-size: 9px; color: var(--interactive); cursor: pointer;
+  text-decoration: underline; font-weight: 400; text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Stacked bar */
+.mix-bar-wrap {
+  display: flex; height: 10px; border-radius: 2px;
+  overflow: hidden; margin-bottom: 3px; gap: 1px;
+}
+.mix-bar-seg { height: 100%; transition: width 0.3s; }
+.mix-bar-seg.equity   { background: var(--chart-equity); }
+.mix-bar-seg.intl     { background: #5ad5cf; }
+.mix-bar-seg.fixed    { background: var(--chart-bonds); }
+.mix-bar-seg.equity.target   { background: repeating-linear-gradient(135deg,#2e7d9e 0,#2e7d9e 3px,#a8d4e6 3px,#a8d4e6 6px); }
+.mix-bar-seg.intl.target     { background: repeating-linear-gradient(135deg,#5aabcc 0,#5aabcc 3px,#c4e4f0 3px,#c4e4f0 6px); }
+.mix-bar-seg.fixed.target    { background: repeating-linear-gradient(135deg,#c9a84c 0,#c9a84c 3px,#ede0bc 3px,#ede0bc 6px); }
+.mix-bar-label { font-size: 9px; color: var(--text-muted); margin-bottom: 8px; }
+.mix-bar-row { font-size: 9px; font-style: italic; color: var(--text-muted); display: flex; gap: 12px; margin-bottom: 8px; }
+.mix-bar-row span { display: flex; align-items: center; gap: 4px; }
+.mix-swatch { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
+
+/* Asset class table */
+.mix-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.mix-table th {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted);
+  padding: 3px 4px; border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+.mix-table th:first-child { text-align: left; }
+.mix-table td { padding: 4px 4px; border-bottom: 1px dotted var(--border); vertical-align: middle; }
+.mix-table td:not(:first-child) { text-align: right; }
+.mix-table tr:last-child td { border-bottom: none; }
+.mix-class-name { display: flex; align-items: center; gap: 5px; font-weight: 700; }
+.mix-diff-pos { color: var(--positive); font-weight: 700; }
+.mix-diff-neg { color: var(--negative); font-weight: 700; }
+.mix-diff-zero { color: var(--text-muted); }
+.mix-drill { display: none; background: #fafaf8; }
+.mix-drill.open { display: table-row-group; }
+.mix-drill td { padding: 3px 4px 3px 18px; font-size: 10px; color: var(--text-muted); border-bottom: 1px dotted var(--border); }
+.mix-drill td:not(:first-child) { text-align: right; }
+.mix-expand-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--interactive); font-size: 10px;
+  font-family: 'Inter', Arial, sans-serif; padding: 0;
+}
+.overall-drift {
+  margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 11px; font-weight: 700;
+}
+
+/* -€-€ GAIN/LOSS INLINE TOOLTIP -€-€ */
+.gl-cell { position: relative; text-align: right; cursor: pointer; }
+.gl-val { border-bottom: 1px dashed currentColor; display: inline-block; }
+.gl-val:hover { opacity: 0.75; }
+.gl-tooltip {
+  display: none;
+  position: absolute; right: 0; top: 100%; margin-top: 4px;
+  background: var(--text); color: white;
+  padding: 8px 12px; border-radius: 3px; z-index: 100;
+  white-space: nowrap; font-size: 11px; line-height: 1.8;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  pointer-events: none;
+}
+.gl-tooltip::before {
+  content: ''; position: absolute; right: 12px; top: -5px;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--text);
+}
+.gl-tooltip .tl-row { display: flex; justify-content: space-between; gap: 20px; }
+.gl-tooltip .tl-label { color: rgba(255,255,255,0.5); }
+.gl-tooltip .tl-divider { border-top: 1px solid rgba(255,255,255,0.15); margin: 4px 0; }
+.gl-cell.open .gl-tooltip { display: block; }
+
+/* ── KEBAB MENU ── Matches Vanguard 3-state pattern from screenshot:
+   State 1 — Resting: plain ⋮ dots, no circle
+   State 2 — Hover:   ⋮ dots inside a thin outline circle, pointer cursor
+   State 3 — Open:    filled black circle, white ⋮ dots (inverted)        */
+.kebab-wrap {
+  position: relative; display: inline-flex; align-items: center; flex-shrink: 0;
+}
+.kebab-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: transparent; color: var(--text);
+  border: 2px solid transparent;
+  cursor: pointer; font-size: 16px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 1px; line-height: 1;
+  font-family: 'Inter', Arial, sans-serif;
+  flex-shrink: 0;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+/* State 2 — hover: outline circle appears */
+.kebab-btn:hover {
+  border-color: var(--text);
+  background: transparent;
+  color: var(--text);
+}
+/* State 3 — open: filled circle, white dots */
+.kebab-btn.is-open {
+  background: var(--text);
+  border-color: var(--text);
+  color: white;
+}
+.kebab-menu {
+  display: none; position: absolute; left: 0; top: 100%; margin-top: 4px;
+  background: white; border: 1px solid #ccc;
+  border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+  z-index: 200; min-width: 150px; padding: 6px 0;
+}
+.kebab-menu.open { display: block; }
+.kebab-item {
+  padding: 10px 18px; font-size: 14px; cursor: pointer;
+  color: var(--text); white-space: nowrap;
+  font-family: 'Inter', Arial, sans-serif;
+}
+.kebab-item:hover { background: #f5f5f5; }
+.kebab-item.danger { color: var(--negative); }
+.kebab-item + .kebab-item { border-top: 1px solid var(--border); }
+
+/* ── SCENARIO NAME TOOLTIP ── */
+.sn-wrap {
+  position: relative; display: inline-flex; align-items: center; gap: 5px;
+  cursor: pointer;
+}
+.sn-name {
+  font-size: 13px; font-weight: 700;
+  border-bottom: 1px dashed var(--text-muted);
+}
+.sn-tooltip {
+  display: none; position: absolute; left: 0; top: 100%; margin-top: 6px;
+  background: var(--text); color: white;
+  padding: 10px 14px; border-radius: 3px; z-index: 150;
+  font-size: 11px; line-height: 1.7; white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25); pointer-events: none;
+  max-width: 320px; white-space: normal;
+}
+.sn-tooltip::before {
+  content: ''; position: absolute; left: 14px; top: -5px;
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--text);
+}
+.sn-tooltip-row { display: flex; gap: 6px; align-items: baseline; margin-bottom: 2px; }
+.sn-tooltip-label { color: rgba(255,255,255,0.5); font-size: 10px; white-space: nowrap; flex-shrink: 0; }
+.sn-wrap:hover .sn-tooltip { display: block; }
+.sn-wrap.open .sn-tooltip { display: block; }
+
+.vg-nav-wrap { background: white; }
+
+/* ── ROW 1: Right-aligned utility icons ── */
+.vg-top-bar {
+  display: flex; flex-direction: column;
+  border-bottom: 1px solid var(--border); background: white;
+}
+
+/* TOP ROW: utility icons flush right */
+.vg-top-bar-right {
+  display: flex; align-items: stretch; justify-content: flex-end;
+  height: 52px; border-bottom: 1px solid var(--border);
+  padding-right: 8px;
+}
+.vg-icon {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; min-width: 56px; padding: 0 4px; height: 52px;
+  cursor: pointer; position: relative; color: var(--text);
+}
+.vg-icon:hover { color: var(--brand-red); }
+.vg-icon svg { display: block; }
+.vg-icon-label { font-size: 10px; line-height: 1; white-space: nowrap; }
+.vg-icon-badge { position: relative; }
+.vg-badge {
+  position: absolute; top: 5px; right: 5px;
+  background: var(--brand-red); color: white;
+  font-size: 9px; font-weight: 700;
+  width: 15px; height: 15px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* BOTTOM ROW: logo + "Personal investors" + nav links */
+.vg-top-bar-left {
+  display: flex; align-items: stretch; height: 52px;
+}
+.vg-logo {
+  display: flex; align-items: center; flex-shrink: 0;
+  padding: 0 16px; border-right: 1px solid var(--border);
+}
+.vg-logo-v {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--brand-red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: white; font-weight: 900; font-style: italic;
+}
+.vg-pi {
+  font-size: 13px; color: var(--text-muted);
+  padding: 0 14px; border-right: 1px solid var(--border);
+  display: flex; align-items: center; white-space: nowrap; flex-shrink: 0;
+}
+.vg-top-links { display: flex; align-items: stretch; height: 52px; }
+.vg-tl {
+  font-size: 13px; color: var(--text); padding: 0 14px;
+  display: flex; align-items: center; cursor: pointer;
+  border-bottom: 3px solid transparent; white-space: nowrap;
+}
+.vg-tl:hover { color: var(--brand-red); }
+.vg-tl-active { font-weight: 700; }
+
+/* Hero banner — CONFIRMED from Banner_background.svg (extracted from Vanguard website).
+   Two flat fills: base #c20029 + diagonal overlay #660026. NOT a CSS gradient.
+   Previous values (#3D0010, #6B0020) were inferred and incorrect. */
+.vg-hero {
+  background: var(--hero-red);
+  padding: 16px 28px 20px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; overflow: hidden; min-height: 82px;
+}
+/* Dark overlay polygon — left ~60% of banner, diagonal right edge (matches SVG path geometry) */
+.vg-hero::before {
+  content: ''; position: absolute; left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: var(--hero-dark);
+  clip-path: polygon(0 0, 60% 0, 48% 100%, 0 100%);
+  pointer-events: none;
+}
+.vg-hero-left { position: relative; z-index: 1; }
+.vg-hero-name {
+  font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85);
+  margin-bottom: 4px;
+}
+.vg-hero-total {
+  font-size: 32px; font-weight: 700; color: white; line-height: 1.1;
+}
+/* Keep old .vg-hero-text mapped to .vg-hero-name sizing for screens that use it */
+.vg-hero-text {
+  font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85);
+  position: relative; z-index: 1; margin-bottom: 4px;
+}
+.vg-hero-meta {
+  text-align: right; font-size: 12px;
+  color: rgba(255,255,255,0.85); line-height: 1.8;
+  position: relative; z-index: 1;
+}
+.vg-hero-meta u { color: rgba(255,255,255,0.85); }
+
+/* Second-level section tabs */
+.vg-section-tabs {
+  display: flex; border-bottom: 1px solid var(--border);
+  padding: 0 28px; background: white; overflow: visible;
+}
+.vg-st {
+  font-size: 14px; color: var(--text); padding: 12px 14px 10px;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  white-space: nowrap; margin-bottom: -1px;
+}
+.vg-st:hover { color: var(--interactive); }
+.vg-st-active { font-weight: 700; border-bottom-color: var(--brand-red); }
+
+/* Sub-tabs row (Fund List / Scenario Analysis + Print/Help) */
+.vg-sub-tabs-row {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding: 0 28px; background: white;
+  border-bottom: 1px solid var(--border);
+}
+.vg-sub-tabs { display: flex; }
+.vg-pt {
+  font-size: 14px; color: var(--text); padding: 10px 18px 10px 0;
+  margin-right: 4px; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  white-space: nowrap;
+}
+.vg-pt:hover { color: var(--interactive); }
+.vg-pt-active { font-weight: 700; border-bottom-color: var(--brand-red); }
+.vg-page-utils {
+  display: flex; gap: 16px; font-size: 13px; padding-bottom: 10px;
+}
+.vg-page-utils span { cursor: pointer; color: var(--text); }
+.vg-page-utils span:hover { text-decoration: underline; }
+
+/* Page H1 area */
+.vg-page-header {
+  padding: 20px 28px 16px; background: white;
+}
+.vg-ph-title {
+  font-size: 28px; font-weight: 700; color: var(--text); margin-bottom: 10px;
+}
+.vg-ph-row {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px;
+}
+.vg-ph-sub { font-size: 13px; color: var(--text-muted); }
+.vg-ph-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* View toggle (Table/Card) */
+.vg-view-toggle {
+  display: inline-flex; border: 1.5px solid var(--text);
+  border-radius: 100px; overflow: hidden;
+}
+.vg-vtbtn {
+  padding: 6px 16px; font-size: 12px; font-weight: 600; cursor: pointer;
+  border: none; background: white; color: var(--text);
+  font-family: 'Inter', Arial, sans-serif;
+}
+.vg-vtbtn-active { background: var(--text); color: white; }
+
+/* -€-€ AUTO / MANUAL MODE TOGGLE -€-€ */
+.mode-toggle-wrap {
+  display: flex; align-items: center; gap: 0;
+  background: #f0f0f0; border-radius: 100px;
+  padding: 2px; border: 1px solid var(--border);
+}
+.mode-toggle-btn {
+  padding: 5px 16px; font-size: 12px; font-weight: 600;
+  border-radius: 100px; border: none; background: none;
+  cursor: pointer; font-family: 'Inter', Arial, sans-serif;
+  color: var(--text-muted); transition: all 0.15s;
+  white-space: nowrap;
+}
+.mode-toggle-btn.active-auto {
+  background: var(--interactive); color: white;
+}
+.mode-toggle-btn.active-manual {
+  background: var(--text); color: white;
+}
+
+/* Auto mode total-sell input bar */
+.auto-total-bar {
+  background: #eef4ff; border-bottom: 1px solid #c0d0e8;
+  padding: 14px 28px; display: flex; align-items: center; gap: 16px;
+}
+.auto-total-label {
+  font-size: 13px; font-weight: 700; color: var(--wf-a, #1a3a5c);
+  white-space: nowrap;
+}
+.auto-total-input {
+  display: flex; align-items: center; gap: 8px;
+}
+.auto-total-input input {
+  width: 140px; padding: 8px 12px;
+  border: 2px solid var(--interactive); border-radius: 4px;
+  font-family: 'Inter', Arial, sans-serif; font-size: 16px;
+  font-weight: 700; text-align: right; background: white;
+  color: var(--text);
+}
+.auto-total-input input:focus { outline: none; border-color: #0033aa; }
+.auto-total-hint {
+  font-size: 11px; color: var(--text-muted); flex: 1;
+}
+.auto-total-accounts {
+  font-size: 11px; color: var(--text-muted);
+  display: flex; gap: 8px; align-items: center;
+  flex-wrap: wrap;
+}
+.acct-chip {
+  background: white; border: 1px solid var(--border);
+  border-radius: 100px; padding: 2px 10px;
+  font-size: 11px; color: var(--text-mid); white-space: nowrap;
+}
+.acct-chip.selected { border-color: var(--interactive); color: var(--interactive); font-weight: 700; }
+
+/* -€-€ PORTFOLIO BALANCES PAGE -€-€ */
+.bal-page-utils {
+  display: flex; gap: 20px; align-items: center;
+  padding: 10px 28px; justify-content: flex-end;
+  border-bottom: 1px solid var(--border);
+}
+.bal-page-utils span {
+  font-size: 13px; color: var(--text); cursor: pointer;
+}
+.bal-page-utils span:hover { text-decoration: underline; }
+.bal-intro {
+  padding: 12px 28px 16px;
+  font-size: 13px; color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.bal-intro a { color: var(--interactive); text-decoration: underline; cursor: pointer; font-weight: 700; }
+.bal-group-header {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  padding: 20px 28px 12px;
+}
+.bal-group-title {
+  font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+}
+.bal-group-collapse {
+  font-size: 16px; color: var(--text-muted); cursor: pointer;
+  background: none; border: none; font-family: inherit;
+  display: flex; align-items: center; gap: 6px;
+}
+.bal-group-total { font-size: 16px; font-weight: 400; color: var(--text); }
+.bal-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 28px; border-top: 1px solid var(--border);
+  cursor: pointer;
+}
+.bal-row:hover { background: #fafafa; }
+.bal-row-name {
+  font-size: 14px; color: var(--interactive); text-decoration: underline;
+  cursor: pointer;
+}
+.bal-row-acct { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+.bal-row-amount { font-size: 14px; font-weight: 400; color: var(--text); min-width: 110px; text-align: right; }
+.bal-sell-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 14px; border-radius: 100px; font-size: 11px;
+  font-family: 'Inter', Arial, sans-serif; cursor: pointer;
+  border: 1.5px solid var(--interactive); font-weight: 700;
+  background: white; color: var(--interactive);
+  opacity: 0; transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.bal-row:hover .bal-sell-btn { opacity: 1; }
+.bal-row-right { display: flex; align-items: center; gap: 16px; }
+.bal-sell-placeholder { min-width: 160px; height: 1px; }
+.bal-total-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 16px 28px 20px;
+  border-top: 2px solid var(--text);
+}
+.bal-total-label { font-size: 13px; font-weight: 700; }
+.bal-total-amount { font-size: 16px; font-weight: 700; }
+
+</style>
+</head>
+<body>
+
+<!-- ══ WIREFRAME NAVIGATION ══ -->
+<div class="wf-nav-outer" style="background:var(--text);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;">
+  <div style="color:white;font-size:11px;font-family:'Inter',Arial,sans-serif;letter-spacing:0.06em;">
+    WIREFRAME SET v3.0 — Sell &amp; Rebalance Tool · Navigation Integrated into Vanguard Portal
+  </div>
+  <div style="color:#888;font-size:10px;font-family:'Inter',Arial,sans-serif;">
+    6 screens: Portfolio Balances (entry), Fund List (Auto + Manual × Table/Card), Scenario Analysis, Wait &amp; Save Alert · click <span style="background:var(--annotation);color:white;padding:0 4px;border-radius:50%;">A</span> markers for annotations
+  </div>
+</div>
+
+<div class="wf-tabs">
+  <div class="wf-tab active" onclick="switchWF(0)">0 · Portfolio — Balances</div>
+  <div class="wf-tab" onclick="switchWF(1)">1 · Fund List — Auto · Table</div>
+  <div class="wf-tab" onclick="switchWF(2)">2 · Fund List — Manual · Table</div>
+  <div class="wf-tab" onclick="switchWF(3)">3 · Fund List — Manual · Card</div>
+  <div class="wf-tab" onclick="switchWF(4)">4 · Scenario Analysis</div>
+  <div class="wf-tab" onclick="switchWF(5)">5 · Wait &amp; Save Alert</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 0 — PORTFOLIO BALANCES
+     Entry point for Workflow A (Guided/Auto sell)
+═══════════════════════════════════════ -->
+<div class="screen active" id="wf-0">
+  <div class="app-chrome">
+    <div class="wf-label">
+      <span class="wf-label-name">Screen 0 — Portfolio · Balances</span>
+      <span class="wf-label-note">Entry point for Workflow A · user initiates a tax-optimized sell from any account row · hover to reveal "Sell" action</span>
+    </div>
+    <div class="vg-nav-wrap">
+      <div class="vg-top-bar">
+        <div class="vg-top-bar-right">
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg><span class="vg-icon-label">Search</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg><span class="vg-icon-label">Support</span></span>
+          <span class="vg-icon vg-icon-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="vg-badge">3</span><span class="vg-icon-label">Messages</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="vg-icon-label">Documents</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="vg-icon-label">Profile</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="vg-icon-label">Log off</span></span>
+        </div>
+        <div class="vg-top-bar-left">
+          <div class="vg-logo"><span class="vg-logo-v">V</span></div>
+          <span class="vg-pi">Personal investors</span>
+          <div class="vg-top-links">
+            <span class="vg-tl">Advice services</span>
+            <span class="vg-tl">Dashboard</span>
+            <span class="vg-tl vg-tl-active">Portfolio ∨</span>
+            <span class="vg-tl">Transact ∨</span>
+            <span class="vg-tl">Products &amp; services ∨</span>
+            <span class="vg-tl">Resources &amp; education ∨</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hero with portfolio total -->
+      <div class="vg-hero">
+        <div class="vg-hero-left">
+          <div class="vg-hero-name">Welcome back, Michael</div>
+          <div class="vg-hero-total">$580,745.29</div>
+        </div>
+        <div class="vg-hero-meta">
+          <div><u>Value as of:</u> February 19, 2026, 4:15 p.m., Eastern time</div>
+          <div><u>Last login:</u> February 19, 2026, 4:38 p.m., Eastern time</div>
+        </div>
+      </div>
+      <!-- Section tabs — Portfolio active -->
+      <div class="vg-section-tabs">
+        <div class="vg-st">Dashboard</div>
+        <div class="vg-st vg-st-active">Balances</div>
+        <div class="vg-st">Holdings</div>
+        <div class="vg-st">Activity</div>
+        <div class="vg-st">Performance</div>
+        <div class="vg-st">Portfolio Watch</div>
+      </div>
+    </div>
+
+    <!-- Page utilities -->
+    <div class="bal-page-utils">
+      <span>Print</span>
+      <span>Download center</span>
+    </div>
+
+    <!-- Intro text -->
+    <div class="bal-intro">
+      Visit <a href="#">customized view</a> to personalize the accounts you'd like to display or hide.
+    </div>
+
+    <!-- Self-managed accounts group -->
+    <div class="bal-group-header">
+      <div class="bal-group-title">
+        <button class="bal-group-collapse" style="font-size:18px;">◉</button>
+        <strong>Self-managed accounts</strong>
+      </div>
+      <div class="bal-group-total">$580,745.29</div>
+    </div>
+
+    <!-- Account rows — hover reveals "Sell" button to the LEFT of the balance amount -->
+    <!-- Row: Cash Plus (not sellable — no Sell button) -->
+    <div class="bal-row" style="cursor:default;">
+      <div class="bal-row-name">Cash Plus Account — 72981482**</div>
+      <div class="bal-row-right">
+        <!-- no sell button — spacer keeps amount aligned -->
+        <div class="bal-sell-placeholder"></div>
+        <div class="bal-row-amount">$30,011.01</div>
+      </div>
+    </div>
+
+    <!-- Row: Brokerage (sellable) — hover state shown -->
+    <div class="bal-row" style="background:#f0f5ff;" title="Hover state shown — Sell button revealed">
+      <div>
+        <div class="bal-row-name">Brokerage Account — 72981482*</div>
+        <div class="bal-row-acct" style="color:#1255CC;font-size:11px;font-style:italic;">↗ hover reveals Sell button</div>
+      </div>
+      <div class="bal-row-right">
+        <button class="bal-sell-btn" onclick="switchWF(1)" style="opacity:1;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Sell from this account
+        </button>
+        <div class="bal-row-amount">$453,019.15</div>
+      </div>
+    </div>
+
+    <!-- Row: Traditional IRA (sellable) -->
+    <div class="bal-row">
+      <div class="bal-row-name">Traditional IRA Brokerage Account — 72981482*</div>
+      <div class="bal-row-right">
+        <button class="bal-sell-btn" onclick="switchWF(1)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Sell from this account
+        </button>
+        <div class="bal-row-amount">$21,665.38</div>
+      </div>
+    </div>
+
+    <!-- Row: Roth IRA (sellable) -->
+    <div class="bal-row">
+      <div class="bal-row-name">Roth IRA Brokerage Account — 72981482*</div>
+      <div class="bal-row-right">
+        <button class="bal-sell-btn" onclick="switchWF(1)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Sell from this account
+        </button>
+        <div class="bal-row-amount">$68,894.48</div>
+      </div>
+    </div>
+
+    <!-- Row: 529 (not directly sellable) -->
+    <div class="bal-row" style="cursor:default;">
+      <div class="bal-row-name">Individual 529 College Savings Account — 72981482*</div>
+      <div class="bal-row-right">
+        <div class="bal-sell-placeholder"></div>
+        <div class="bal-row-amount">$17,775.71</div>
+      </div>
+    </div>
+
+    <!-- Annotation note about the sell action -->
+    <div style="margin:0 28px 24px;padding:10px 14px;background:var(--highlight);border-left:3px solid var(--warning);border-radius:0 3px 3px 0;font-size:11px;color:#5a3000;display:flex;align-items:flex-start;gap:8px;">
+      <span style="font-size:16px;flex-shrink:0;">💡</span>
+      <div><strong>Design note:</strong> "Sell from this account" appears on hover for any investment account (brokerage, IRA). Clicking it routes to the <strong>Fund List in Auto (Automated) mode</strong> with that account pre-selected — entering Workflow A. Cash and 529 accounts do not expose the sell action. The button uses a subtle downward-trend icon to signal a sale/withdrawal context without alarming language.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — FUND LIST · AUTO MODE · TABLE VIEW
+     (formerly "Recommendation Summary" — reframed as Fund List in Automated mode)
+═══════════════════════════════════════ -->
+<div class="screen" id="wf-1">
+  <div class="app-chrome">
+    <div class="wf-label">
+      <span class="wf-label-name">Screen 1 — Fund List · Automated Mode (Workflow A)</span>
+      <span class="wf-label-note">Entered from Portfolio Balances · optimization engine pre-allocates sell amounts · user reviews and can switch to Manual</span>
+    </div>
+    <div class="vg-nav-wrap">
+      <div class="vg-top-bar">
+        <div class="vg-top-bar-right">
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg><span class="vg-icon-label">Search</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg><span class="vg-icon-label">Support</span></span>
+          <span class="vg-icon vg-icon-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="vg-badge">3</span><span class="vg-icon-label">Messages</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="vg-icon-label">Documents</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="vg-icon-label">Profile</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="vg-icon-label">Log off</span></span>
+        </div>
+        <div class="vg-top-bar-left">
+          <div class="vg-logo"><span class="vg-logo-v">V</span></div>
+          <span class="vg-pi">Personal investors</span>
+          <div class="vg-top-links">
+            <span class="vg-tl">Advice services</span>
+            <span class="vg-tl">Dashboard</span>
+            <span class="vg-tl">Portfolio ∨</span>
+            <span class="vg-tl vg-tl-active">Transact ∨</span>
+            <span class="vg-tl">Products &amp; services ∨</span>
+            <span class="vg-tl">Resources &amp; education ∨</span>
+          </div>
+        </div>
+      </div>
+      <div class="vg-hero">
+        <div class="vg-hero-left">
+          <div class="vg-hero-name">Welcome back, Michael</div>
+          <div class="vg-hero-total">$580,745.29</div>
+        </div>
+        <div class="vg-hero-meta">
+          <div><u>Value as of:</u> February 19, 2026, 4:15 p.m., Eastern time</div>
+          <div><u>Last login:</u> February 19, 2026, 4:38 p.m., Eastern time</div>
+        </div>
+      </div>
+      <div class="vg-section-tabs"><div class="vg-st">Dashboard</div><div class="vg-st">Balances</div><div class="vg-st">Holdings</div><div class="vg-st vg-st-active">Sell &amp; Rebalance</div><div class="vg-st">Activity</div><div class="vg-st">Performance</div><div class="vg-st">Portfolio Watch</div></div>
+      <div class="vg-sub-tabs-row">
+        <div class="vg-sub-tabs"><div class="vg-pt vg-pt-active" onclick="return false">Fund List</div><div class="vg-pt" onclick="return false">Scenario Analysis</div></div>
+        <div class="vg-page-utils"><span>Print</span><span>Page help ?</span></div>
+      </div>
+    </div>
+
+    <div class="screen-scroll">
+      <!-- Page header with mode toggle -->
+      <div class="vg-page-header">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div class="vg-ph-title" style="margin-bottom:0;">Fund List</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <!-- Auto/Manual mode toggle -->
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Fund selection:</span>
+              <div class="mode-toggle-wrap">
+                <button class="mode-toggle-btn active-auto">⚡ Automated</button>
+                <button class="mode-toggle-btn" onclick="switchWF(2)">Manual</button>
+              </div>
+            </div>
+            <!-- View toggle (Auto mode = Table only, no card toggle needed) -->
+            <div class="vg-view-toggle">
+              <button class="vg-vtbtn vg-vtbtn-active" title="Table view">⊞ Table</button>
+              <button class="vg-vtbtn" title="Card view">⊟ Cards</button>
+            </div>
+            <button class="btn btn-secondary btn-sm">Save Scenario</button>
+          </div>
+        </div>
+        <div class="vg-ph-sub" style="margin-top:6px;">Brokerage Account — 72981482* · Amounts automatically optimized to minimize taxes <span class="ann" onclick="showAnn('a1')">A</span></div>
+      </div>
+
+      <!-- Total Amount to Sell input bar — Auto mode only -->
+      <div class="auto-total-bar">
+        <div class="auto-total-label">Total Amount to Sell:</div>
+        <div class="auto-total-input">
+          <input type="text" value="$10,000" id="autoTotalInput" />
+          <button class="btn btn-secondary btn-sm" style="border-radius:4px;">Recalculate</button>
+        </div>
+        <div class="auto-total-hint">
+          The optimization engine will allocate this amount across your funds to minimize taxes while improving your portfolio balance.
+        </div>
+      </div>
+
+      <!-- Dark summary stats bar (from Recommendation Summary) -->
+      <div class="rec-summary-bar">
+        <div class="rec-stat">
+          <div class="rec-stat-label">Sale Amount</div>
+          <div class="rec-stat-value">$10,000</div>
+          <div class="rec-stat-sub">Requested by you</div>
+        </div>
+        <div class="rec-stat">
+          <div class="rec-stat-label">Estimated Tax</div>
+          <div class="rec-stat-value amber">$511</div>
+          <div class="rec-stat-sub">After loss harvesting</div>
+        </div>
+        <div class="rec-stat">
+          <div class="rec-stat-label">Eff. Tax Rate</div>
+          <div class="rec-stat-value amber">5.11%</div>
+          <div class="rec-stat-sub">vs 13.1% without optimization</div>
+        </div>
+        <div class="rec-stat">
+          <div class="rec-stat-label">Rebalancing Impact</div>
+          <div class="rec-stat-value" style="color:#88ffaa;">Improved ←</div>
+          <div class="rec-stat-sub">US equity drift: 4.9% → 3.2%</div>
+        </div>
+      </div>
+
+      <!-- Wait and save banner (medium severity) -->
+      <div class="wts-banner">
+        <div class="wts-banner-icon">⏱</div>
+        <div style="flex:1;">
+          <div class="wts-banner-text">
+            <strong>Waiting 45 days could save an additional $218 in taxes.</strong> Two lots in VFIAX convert from short-term to long-term on April 4 and May 1, 2026. This recommendation avoids those lots — but if you can delay this sale by 45 days, you'd save $218 more.
+          </div>
+          <div class="wts-banner-actions">
+            <button class="btn btn-secondary btn-sm">Remind me in 40 days</button>
+            <button class="btn btn-ghost btn-sm">Proceed with today's recommendation</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rationale -->
+      <div class="rec-rationale">
+        <strong>Why this allocation:</strong> We recommend selling $6,000 from VTSAX and $4,000 from VBTLX. VTSAX is currently over your 32% US equity target by 4.9%, so selling reduces drift. VBTLX has an unrealized long-term loss of $4,210 — harvesting $1,820 of this loss offsets gains from VTSAX, reducing your estimated tax from $1,307 to $511.
+        <span class="ann" onclick="showAnn('c1')">A</span>
+      </div>
+
+      <!-- Fund breakdown table (automated allocations shown, read-only amounts) -->
+      <div class="rec-table-wrap">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Fund <span class="ann" onclick="showAnn('a3')">A</span></th>
+              <th>Method</th>
+              <th>Recommended Sell</th>
+              <th>ST Gain/Loss</th>
+              <th>LT Gain/Loss</th>
+              <th>Est. Tax</th>
+              <th>Rebalancing</th>
+              <th>Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="fund-name-cell"><span class="fund-name">Total Stock Mkt Index</span><span class="fund-ticker">VTSAX · Admiral</span></div></td>
+              <td><button class="btn btn-secondary btn-sm">MinTax ▾</button></td>
+              <td style="font-weight:700;">$6,000</td>
+              <td class="pos">+$21</td>
+              <td class="pos">+$5,226</td>
+              <td>$784</td>
+              <td><span class="rebal-arrow better">←</span> 4.9%→3.7%</td>
+              <td style="font-size:11px;color:var(--text-muted);">Over-allocated; LT lots used</td>
+            </tr>
+            <tr>
+              <td><div class="fund-name-cell"><span class="fund-name">Total Bond Mkt</span><span class="fund-ticker">VBTLX · Admiral</span></div></td>
+              <td><button class="btn btn-secondary btn-sm">FIFO ▾</button></td>
+              <td style="font-weight:700;">$4,000</td>
+              <td class="dash">—</td>
+              <td class="neg">−$1,820</td>
+              <td class="pos">−$273</td>
+              <td><span class="rebal-arrow better">←</span> at target</td>
+              <td style="font-size:11px;color:var(--text-muted);">Harvests LT loss; offsets gains</td>
+            </tr>
+            <tr style="background:#f8f8f8;">
+              <td><div class="fund-name-cell"><span style="font-size:12px;color:var(--text-muted);">500 Index Fund</span><span class="fund-ticker">VFIAX — not recommended</span></div></td>
+              <td><button class="btn btn-secondary btn-sm" style="opacity:0.4;">MinTax ▾</button></td>
+              <td class="dash">$0</td>
+              <td class="dash">—</td>
+              <td class="dash">—</td>
+              <td class="dash">—</td>
+              <td><span style="font-size:11px;color:var(--text-muted);">—</span></td>
+              <td style="font-size:11px;color:var(--text-muted);">ST lots pending LT conversion</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer actions -->
+      <div style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--border);">
+        <button class="btn btn-ghost btn-sm" onclick="switchWF(0)" style="color:var(--interactive);border:none;background:none;text-decoration:underline;font-size:13px;">← Back to Balances</button>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-secondary" onclick="switchWF(2)">Switch to Manual</button>
+          <button class="btn btn-ghost" onclick="switchWF(4)" style="color:var(--interactive);">Analyze Scenarios</button>
+          <button class="btn btn-primary">Execute This Recommendation →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — FUND LIST · MANUAL MODE · TABLE VIEW
+═══════════════════════════════════════ -->
+<div class="screen" id="wf-2">
+  <div class="app-chrome">
+    <div class="wf-label">
+      <span class="wf-label-name">Screen 2 — Fund List · Manual Mode · Table View (Workflow B)</span>
+      <span class="wf-label-note">Extends Vanguard's existing cost basis report convention · user enters sell amounts directly</span>
+    </div>
+    <div class="vg-nav-wrap">
+      <!-- Global top bar -->
+      <div class="vg-top-bar">
+        <div class="vg-top-bar-right">
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg><span class="vg-icon-label">Search</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg><span class="vg-icon-label">Support</span></span>
+          <span class="vg-icon vg-icon-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="vg-badge">3</span><span class="vg-icon-label">Messages</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="vg-icon-label">Documents</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="vg-icon-label">Profile</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="vg-icon-label">Log off</span></span>
+        </div>
+        <div class="vg-top-bar-left">
+          <div class="vg-logo"><span class="vg-logo-v">V</span></div>
+          <span class="vg-pi">Personal investors</span>
+          <div class="vg-top-links">
+            <span class="vg-tl">Advice services</span>
+            <span class="vg-tl">Dashboard</span>
+            <span class="vg-tl">Portfolio ∨</span>
+            <span class="vg-tl vg-tl-active">Transact ∨</span>
+            <span class="vg-tl">Products &amp; services ∨</span>
+            <span class="vg-tl">Resources &amp; education ∨</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hero banner -->
+      <div class="vg-hero">
+        <div class="vg-hero-left">
+          <div class="vg-hero-name">Welcome back, Michael</div>
+          <div class="vg-hero-total">$580,745.29</div>
+        </div>
+        <div class="vg-hero-meta">
+          <div><u>Value as of:</u> February 19, 2026, 4:15 p.m., Eastern time</div>
+          <div><u>Last login:</u> February 19, 2026, 4:38 p.m., Eastern time</div>
+        </div>
+      </div>
+      <!-- Second-level section tabs -->
+      <div class="vg-section-tabs"><div class="vg-st">Dashboard</div><div class="vg-st">Balances</div><div class="vg-st">Holdings</div><div class="vg-st vg-st-active">Sell &amp; Rebalance</div><div class="vg-st">Activity</div><div class="vg-st">Performance</div><div class="vg-st">Portfolio Watch</div></div>
+      <!-- Sub-tabs (Fund List / Scenario Analysis) -->
+      <div class="vg-sub-tabs-row">
+        <div class="vg-sub-tabs"><div class="vg-pt vg-pt-active" onclick="return false">Fund List</div><div class="vg-pt" onclick="return false">Scenario Analysis</div></div>
+        <div class="vg-page-utils"><span>Print</span><span>Page help ?</span></div>
+      </div>
+    </div>
+    <div class="screen-scroll">
+      <div class="vg-page-header">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div class="vg-ph-title" style="margin-bottom:0;">Fund List</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <!-- Auto/Manual mode toggle — Manual is active -->
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Fund selection:</span>
+              <div class="mode-toggle-wrap">
+                <button class="mode-toggle-btn" onclick="switchWF(1)">⚡ Automated</button>
+                <button class="mode-toggle-btn active-manual">Manual</button>
+              </div>
+            </div>
+            <div class="vg-view-toggle">
+              <button class="vg-vtbtn vg-vtbtn-active" title="Table view">⊞ Table</button>
+              <button class="vg-vtbtn" onclick="switchWF(3)" title="Card view">⊟ Cards</button>
+            </div>
+            <button class="btn btn-secondary btn-sm">Save Scenario</button>
+          </div>
+        </div>
+        <div class="vg-ph-sub" style="margin-top:6px;">Select amounts to sell from each fund · Tax impact updates in real time <span class="ann" onclick="showAnn('a1')">A</span></div>
+      </div>
+
+      <!-- TAXABLE BROKERAGE -->
+      <div class="section-hdr">
+        <div>
+          <span class="acct-type-badge">TAXABLE</span>
+          <span class="section-hdr-title">Joint Brokerage Account</span>
+          <span class="ann" onclick="showAnn('a2')">A</span>
+        </div>
+        <div class="section-hdr-meta">Total value: $623,893 · 3 funds</div>
+      </div>
+      <table class="wf-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;">Fund <span class="ann" onclick="showAnn('a3')">A</span></th>
+            <th>Method</th>
+            <th>Total Value</th>
+            <th>ST Gain/Loss</th>
+            <th>LT Gain/Loss</th>
+            <th>Total Gain/Loss</th>
+            <th>Sell ($) <span class="ann" onclick="showAnn('a4')">A</span></th>
+            <th>≈ Shares</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- VTSAX — normal row -->
+          <tr>
+            <td>
+              <div class="fund-name-cell">
+                <span class="fund-name">Total Stock Mkt Index</span>
+                <span class="fund-ticker">VTSAX · Admiral</span>
+                <span class="fund-method">Method: MinTax <span class="ann" onclick="showAnn('a5')">A</span></span>
+              </div>
+            </td>
+            <td><button class="btn btn-secondary btn-sm">MinTax ▾</button></td>
+            <td>$312,400</td>
+            <td class="pos">+$35.30</td>
+            <td class="pos">+$68,210</td>
+            <td class="pos">+$68,245</td>
+            <td class="input-cell">
+              <input type="text" value="$10,000" />
+              <div class="input-equiv">≈ 12.74 shares</div>
+            </td>
+            <td>12.74</td>
+          </tr>
+          <!-- VTSAX lot expansion -->
+          <tr class="lot-row">
+            <td colspan="8" style="padding:0;">
+              <div style="padding:6px 12px 2px;">
+                <button class="lot-expand-btn" onclick="toggleLots('lots-vtsax')">▼ Hide lot details</button>
+              </div>
+              <table id="lots-vtsax" style="width:100%;border-collapse:collapse;">
+                <thead>
+                  <tr style="background:#ede9e0;">
+                    <td style="padding:5px 24px;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Date Acquired</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">Qty</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">Cost/Share</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">Total Cost</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">Mkt Value</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">ST Gain/Loss</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">LT Gain/Loss</td>
+                    <td style="padding:5px 10px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:right;">% Gain</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="lot-row"><td style="padding:5px 24px;font-size:11px;color:var(--text-mid);">12/22/2025 <span class="lt-days">LT in 307d</span></td><td style="text-align:right;padding:5px 10px;">0.164</td><td style="text-align:right;padding:5px 10px;">$633.96</td><td style="text-align:right;padding:5px 10px;">$103.97</td><td style="text-align:right;padding:5px 10px;">$103.73</td><td style="text-align:right;padding:5px 10px;" class="neg">−$0.24</td><td style="text-align:right;padding:5px 10px;" class="dash">—</td><td style="text-align:right;padding:5px 10px;" class="neg">−0.23%</td></tr>
+                  <tr class="lot-row"><td style="padding:5px 24px;font-size:11px;color:var(--text-mid);">09/29/2025 <span class="lt-days">LT in 223d</span></td><td style="text-align:right;padding:5px 10px;">0.166</td><td style="text-align:right;padding:5px 10px;">$613.49</td><td style="text-align:right;padding:5px 10px;">$101.84</td><td style="text-align:right;padding:5px 10px;">$105.00</td><td style="text-align:right;padding:5px 10px;" class="pos">+$3.16</td><td style="text-align:right;padding:5px 10px;" class="dash">—</td><td style="text-align:right;padding:5px 10px;" class="pos">+3.10%</td></tr>
+                  <tr class="lot-row"><td style="padding:5px 24px;font-size:11px;color:var(--text-mid);">06/28/2024</td><td style="text-align:right;padding:5px 10px;">0.261</td><td style="text-align:right;padding:5px 10px;">$504.44</td><td style="text-align:right;padding:5px 10px;">$131.66</td><td style="text-align:right;padding:5px 10px;">$165.09</td><td style="text-align:right;padding:5px 10px;" class="dash">—</td><td style="text-align:right;padding:5px 10px;" class="pos">+$33.43</td><td style="text-align:right;padding:5px 10px;" class="pos">+25.39%</td></tr>
+                  <tr class="lot-row"><td style="padding:5px 24px;font-size:11px;color:var(--text-mid);" colspan="8" style="font-style:italic;color:var(--text-muted);">... 48 more lots (dating to 2008) · <button class="lot-expand-btn">Show all</button></td></tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <!-- VFIAX — wait and save row -->
+          <tr class="wts-row">
+            <td>
+              <div class="fund-name-cell">
+                <span class="fund-name">500 Index Fund <span class="wts-badge">WAIT &amp; SAVE</span></span>
+                <span class="fund-ticker">VFIAX · Admiral</span>
+                <span class="wts-note">2 ST lots convert to LT in 45–92 days · estimated savings: $218 <span class="ann" onclick="showAnn('a6')">A</span></span>
+              </div>
+            </td>
+            <td><button class="btn btn-secondary btn-sm">MinTax ▾</button></td>
+            <td>$218,600</td>
+            <td class="pos">+$38.46</td>
+            <td class="pos">+$26,107</td>
+            <td class="pos">+$26,146</td>
+            <td class="input-cell">
+              <input type="text" placeholder="$0" />
+              <div class="input-equiv" style="color:transparent;">—</div>
+            </td>
+            <td class="dash">—</td>
+          </tr>
+
+          <!-- VBTLX -->
+          <tr>
+            <td>
+              <div class="fund-name-cell">
+                <span class="fund-name">Total Bond Market</span>
+                <span class="fund-ticker">VBTLX · Admiral</span>
+                <span class="fund-method">Method: FIFO</span>
+              </div>
+            </td>
+            <td><button class="btn btn-secondary btn-sm">FIFO ▾</button></td>
+            <td>$92,893</td>
+            <td class="dash">—</td>
+            <td class="neg">−$4,210</td>
+            <td class="neg">−$4,210</td>
+            <td class="input-cell">
+              <input type="text" placeholder="$0" />
+              <div class="input-equiv" style="color:transparent;">—</div>
+            </td>
+            <td class="dash">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- TRADITIONAL IRA -->
+      <div class="section-hdr" style="margin-top:4px;">
+        <div>
+          <span class="acct-type-badge ira">TRAD IRA</span>
+          <span class="section-hdr-title">Rollover IRA</span>
+          <span class="ann" onclick="showAnn('a7')">A</span>
+        </div>
+        <div class="section-hdr-meta">Total value: $223,400 · 2 funds · Withdrawals taxed as ordinary income</div>
+      </div>
+      <table class="wf-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;">Fund</th>
+            <th>Method</th>
+            <th>Total Value</th>
+            <th colspan="3" style="text-align:center;color:#888;font-style:italic;">Capital gains N/A — IRA withdrawals taxed as ordinary income</th>
+            <th>Sell ($)</th>
+            <th>≈ Shares</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="fund-name-cell">
+                <span class="fund-name">Total Intl Stock Index</span>
+                <span class="fund-ticker">VTIAX · Admiral</span>
+              </div>
+            </td>
+            <td><span class="dash">N/A</span></td>
+            <td>$142,800</td>
+            <td class="dash" style="text-align:center;" colspan="3"><em style="font-size:11px;color:var(--text-muted);">Capital gains tracking not applicable in tax-advantaged accounts</em></td>
+            <td class="input-cell">
+              <input type="text" placeholder="$0" />
+            </td>
+            <td class="dash">—</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="fund-name-cell">
+                <span class="fund-name">Total Bond Market</span>
+                <span class="fund-ticker">VBTLX · Admiral</span>
+              </div>
+            </td>
+            <td><span class="dash">N/A</span></td>
+            <td>$80,600</td>
+            <td class="dash" style="text-align:center;" colspan="3"><em style="font-size:11px;color:var(--text-muted);">Capital gains tracking not applicable in tax-advantaged accounts</em></td>
+            <td class="input-cell">
+              <input type="text" placeholder="$0" />
+            </td>
+            <td class="dash">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- STICKY FOOTER -->
+      <div class="sticky-footer">
+        <div class="footer-stat">
+          <span class="footer-stat-label">Total Sale</span>
+          <span class="footer-stat-value">$10,000</span>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">ST Capital Gains</span>
+          <span class="footer-stat-value">$35</span>
+        </div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">LT Capital Gains</span>
+          <span class="footer-stat-value">$8,710</span>
+        </div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">Losses Harvested</span>
+          <span class="footer-stat-value pos" style="color:#88ffaa;">−$0</span>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">Est. Total Tax</span>
+          <span class="footer-stat-value amber">$1,307</span>
+        </div>
+        <div class="footer-stat">
+          <span class="footer-stat-label">Eff. Tax Rate</span>
+          <span class="footer-stat-value amber">13.07%</span>
+        </div>
+        <div class="footer-divider"></div>
+        <button class="btn btn-primary">Analyze Scenario →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — FUND LIST GUIDED CARDS
+═══════════════════════════════════════ -->
+<div class="screen" id="wf-3">
+  <div class="app-chrome">
+    <div class="wf-label">
+      <span class="wf-label-name">Screen 3 — Fund List · Manual Mode · Card View (Workflow B)</span>
+      <span class="wf-label-note">Less dense · surfaces key metrics per fund · same Manual mode as Table view · toggle returns to Table</span>
+    </div>
+    <div class="vg-nav-wrap">
+      <!-- Global top bar -->
+      <div class="vg-top-bar">
+        <div class="vg-top-bar-right">
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg><span class="vg-icon-label">Search</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg><span class="vg-icon-label">Support</span></span>
+          <span class="vg-icon vg-icon-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="vg-badge">3</span><span class="vg-icon-label">Messages</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="vg-icon-label">Documents</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="vg-icon-label">Profile</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="vg-icon-label">Log off</span></span>
+        </div>
+        <div class="vg-top-bar-left">
+          <div class="vg-logo"><span class="vg-logo-v">V</span></div>
+          <span class="vg-pi">Personal investors</span>
+          <div class="vg-top-links">
+            <span class="vg-tl">Advice services</span>
+            <span class="vg-tl">Dashboard</span>
+            <span class="vg-tl">Portfolio ∨</span>
+            <span class="vg-tl vg-tl-active">Transact ∨</span>
+            <span class="vg-tl">Products &amp; services ∨</span>
+            <span class="vg-tl">Resources &amp; education ∨</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hero banner -->
+      <div class="vg-hero">
+        <div class="vg-hero-left">
+          <div class="vg-hero-name">Welcome back, Michael</div>
+          <div class="vg-hero-total">$580,745.29</div>
+        </div>
+        <div class="vg-hero-meta">
+          <div><u>Value as of:</u> February 19, 2026, 4:15 p.m., Eastern time</div>
+          <div><u>Last login:</u> February 19, 2026, 4:38 p.m., Eastern time</div>
+        </div>
+      </div>
+      <!-- Second-level section tabs -->
+      <div class="vg-section-tabs"><div class="vg-st">Dashboard</div><div class="vg-st">Balances</div><div class="vg-st">Holdings</div><div class="vg-st vg-st-active">Sell &amp; Rebalance</div><div class="vg-st">Activity</div><div class="vg-st">Performance</div><div class="vg-st">Portfolio Watch</div></div>
+      <!-- Sub-tabs (Fund List / Scenario Analysis) -->
+      <div class="vg-sub-tabs-row">
+        <div class="vg-sub-tabs"><div class="vg-pt vg-pt-active" onclick="return false">Fund List</div><div class="vg-pt" onclick="return false">Scenario Analysis</div></div>
+        <div class="vg-page-utils"><span>Print</span><span>Page help ?</span></div>
+      </div>
+    </div>
+    <div class="screen-scroll">
+      <div class="vg-page-header">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div class="vg-ph-title" style="margin-bottom:0;">Fund List</div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;">Fund selection:</span>
+              <div class="mode-toggle-wrap">
+                <button class="mode-toggle-btn" onclick="switchWF(1)">⚡ Automated</button>
+                <button class="mode-toggle-btn active-manual">Manual</button>
+              </div>
+            </div>
+            <div class="vg-view-toggle">
+              <button class="vg-vtbtn" onclick="switchWF(2)" title="Table view">⊞ Table</button>
+              <button class="vg-vtbtn vg-vtbtn-active" title="Card view">⊟ Cards</button>
+            </div>
+            <button class="btn btn-secondary btn-sm">Save Scenario</button>
+          </div>
+        </div>
+        <div class="vg-ph-sub" style="margin-top:6px;">Enter how much you'd like to sell from each fund · Tax impact updates in real time</div>
+      </div>
+
+      <!-- Taxable section -->
+      <div class="section-hdr" style="margin-top:0;">
+        <div><span class="acct-type-badge">TAXABLE</span><span class="section-hdr-title">Joint Brokerage</span></div>
+        <div class="section-hdr-meta">$623,893 · Capital gains apply</div>
+      </div>
+
+      <!-- VTSAX card -->
+      <div class="fund-card">
+        <div class="fund-card-header">
+          <div>
+            <span class="fund-card-name">Total Stock Mkt Index</span>
+            <span class="fund-card-ticker">VTSAX</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn btn-secondary btn-sm">MinTax ▾</button>
+            <button class="lot-expand-btn" style="font-size:11px;">▶ Show lots</button>
+          </div>
+        </div>
+        <div class="fund-card-body">
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">Current Value</span>
+            <span class="fund-card-metric-value">$312,400</span>
+          </div>
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">ST Gain/Loss</span>
+            <span class="fund-card-metric-value pos">+$35</span>
+          </div>
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">LT Gain/Loss</span>
+            <span class="fund-card-metric-value pos">+$68,210</span>
+          </div>
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">Total Gain</span>
+            <span class="fund-card-metric-value pos">+21.9%</span>
+          </div>
+          <div class="fund-card-input">
+            <label>Sell Amount</label>
+            <input type="text" value="$10,000" />
+          </div>
+        </div>
+        <div class="fund-card-bars">
+          <div class="bar-item">
+            <span>Portfolio weight:</span>
+            <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:50%;background:var(--text);"></div></div>
+            <span>36.9% <span style="color:var(--negative);">← +4.9% over target</span></span>
+          </div>
+          <div style="flex:1;"></div>
+          <div class="bar-item" style="color:var(--text-mid);">After sale: 35.7% <span style="color:var(--positive);">▲ closer to target</span></div>
+        </div>
+      </div>
+
+      <!-- VFIAX card — wait and save -->
+      <div class="fund-card wts-card">
+        <div class="fund-card-header" style="background:#fff3cd;">
+          <div>
+            <span class="fund-card-name">500 Index Fund</span>
+            <span class="fund-card-ticker">VFIAX</span>
+            <span class="wts-badge">WAIT &amp; SAVE $218</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn btn-secondary btn-sm">MinTax ▾</button>
+            <button class="lot-expand-btn" style="font-size:11px;">▶ Show lots</button>
+          </div>
+        </div>
+        <div class="fund-card-body" style="background:#fffdf5;">
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">Current Value</span>
+            <span class="fund-card-metric-value">$218,600</span>
+          </div>
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">ST Gain/Loss</span>
+            <span class="fund-card-metric-value pos">+$38</span>
+          </div>
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">LT Gain/Loss</span>
+            <span class="fund-card-metric-value pos">+$26,107</span>
+          </div>
+          <div class="fund-card-metric">
+            <span class="fund-card-metric-label">Total Gain</span>
+            <span class="fund-card-metric-value pos">+234.9%</span>
+          </div>
+          <div class="fund-card-input">
+            <label>Sell Amount</label>
+            <input type="text" placeholder="$0 (consider waiting)" />
+          </div>
+        </div>
+        <div class="fund-card-bars" style="background:#fff8e0;border-top-color:#ffd080;">
+          <span style="color:#7a4400;">⏱ 2 lots convert to long-term in 45–92 days · waiting could save ~$218 in taxes · <button class="lot-expand-btn" style="color:#7a4400;">view lots</button></span>
+        </div>
+      </div>
+
+      <!-- VBTLX card -->
+      <div class="fund-card">
+        <div class="fund-card-header">
+          <div><span class="fund-card-name">Total Bond Market</span><span class="fund-card-ticker">VBTLX</span></div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-secondary btn-sm">FIFO ▾</button>
+            <button class="lot-expand-btn" style="font-size:11px;">▶ Show lots</button>
+          </div>
+        </div>
+        <div class="fund-card-body">
+          <div class="fund-card-metric"><span class="fund-card-metric-label">Current Value</span><span class="fund-card-metric-value">$92,893</span></div>
+          <div class="fund-card-metric"><span class="fund-card-metric-label">ST Gain/Loss</span><span class="fund-card-metric-value dash">—</span></div>
+          <div class="fund-card-metric"><span class="fund-card-metric-label">LT Gain/Loss</span><span class="fund-card-metric-value neg">−$4,210</span></div>
+          <div class="fund-card-metric"><span class="fund-card-metric-label">Harvestable Loss</span><span class="fund-card-metric-value neg" style="font-size:11px;">Selling harvests $4,210 loss</span></div>
+          <div class="fund-card-input"><label>Sell Amount</label><input type="text" placeholder="$0" /></div>
+        </div>
+      </div>
+
+      <!-- IRA section -->
+      <div class="section-hdr" style="margin-top:4px;">
+        <div><span class="acct-type-badge ira">TRAD IRA</span><span class="section-hdr-title">Rollover IRA</span></div>
+        <div class="section-hdr-meta">$223,400 · Withdrawals taxed as ordinary income — no capital gains treatment</div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-card-header">
+          <div><span class="fund-card-name">Total Intl Stock Index</span><span class="fund-card-ticker">VTIAX</span></div>
+        </div>
+        <div class="fund-card-body">
+          <div class="fund-card-metric"><span class="fund-card-metric-label">Current Value</span><span class="fund-card-metric-value">$142,800</span></div>
+          <div class="fund-card-metric" style="grid-column:span 2;"><span class="fund-card-metric-label">Tax treatment</span><span class="fund-card-metric-value" style="font-size:12px;color:var(--text-muted);">IRA sale — 100% ordinary income</span></div>
+          <div class="fund-card-metric"></div>
+          <div class="fund-card-input"><label>Sell Amount</label><input type="text" placeholder="$0" /></div>
+        </div>
+      </div>
+
+      <div class="sticky-footer">
+        <div class="footer-stat"><span class="footer-stat-label">Total Sale</span><span class="footer-stat-value">$10,000</span></div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat"><span class="footer-stat-label">ST Gains</span><span class="footer-stat-value">$35</span></div>
+        <div class="footer-stat"><span class="footer-stat-label">LT Gains</span><span class="footer-stat-value">$8,710</span></div>
+        <div class="footer-stat"><span class="footer-stat-label">Losses Harvested</span><span class="footer-stat-value" style="color:#88ffaa;">$0</span></div>
+        <div class="footer-divider"></div>
+        <div class="footer-stat"><span class="footer-stat-label">Est. Total Tax</span><span class="footer-stat-value amber">$1,307</span></div>
+        <div class="footer-stat"><span class="footer-stat-label">Eff. Tax Rate</span><span class="footer-stat-value amber">13.07%</span></div>
+        <div class="footer-divider"></div>
+        <button class="btn btn-primary">Analyze Scenario →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — REVIEW & ADJUST
+═══════════════════════════════════════ -->
+<div class="screen" id="wf-4">
+  <div class="app-chrome">
+    <div class="wf-label">
+      <span class="wf-label-name">Screen 4 — Scenario Analysis</span>
+      <span class="wf-label-note">Reached from Workflow A ("Adjust") or Workflow B (direct) · source_recommendation_id determines "Reset" button visibility</span>
+    </div>
+    <div class="vg-nav-wrap">
+      <!-- Global top bar -->
+      <div class="vg-top-bar">
+        <div class="vg-top-bar-right">
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg><span class="vg-icon-label">Search</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg><span class="vg-icon-label">Support</span></span>
+          <span class="vg-icon vg-icon-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="vg-badge">3</span><span class="vg-icon-label">Messages</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="vg-icon-label">Documents</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="vg-icon-label">Profile</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="vg-icon-label">Log off</span></span>
+        </div>
+        <div class="vg-top-bar-left">
+          <div class="vg-logo"><span class="vg-logo-v">V</span></div>
+          <span class="vg-pi">Personal investors</span>
+          <div class="vg-top-links">
+            <span class="vg-tl">Advice services</span>
+            <span class="vg-tl">Dashboard</span>
+            <span class="vg-tl">Portfolio ∨</span>
+            <span class="vg-tl vg-tl-active">Transact ∨</span>
+            <span class="vg-tl">Products &amp; services ∨</span>
+            <span class="vg-tl">Resources &amp; education ∨</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hero banner -->
+      <div class="vg-hero">
+        <div class="vg-hero-left">
+          <div class="vg-hero-name">Welcome back, Michael</div>
+          <div class="vg-hero-total">$580,745.29</div>
+        </div>
+        <div class="vg-hero-meta">
+          <div><u>Value as of:</u> February 19, 2026, 4:15 p.m., Eastern time</div>
+          <div><u>Last login:</u> February 19, 2026, 4:38 p.m., Eastern time</div>
+        </div>
+      </div>
+      <!-- Second-level section tabs -->
+      <div class="vg-section-tabs"><div class="vg-st">Dashboard</div><div class="vg-st">Balances</div><div class="vg-st">Holdings</div><div class="vg-st vg-st-active">Sell &amp; Rebalance</div><div class="vg-st">Activity</div><div class="vg-st">Performance</div><div class="vg-st">Portfolio Watch</div></div>
+      <!-- Sub-tabs (Fund List / Scenario Analysis) -->
+      <div class="vg-sub-tabs-row">
+        <div class="vg-sub-tabs"><div class="vg-pt" onclick="return false">Fund List</div><div class="vg-pt vg-pt-active" onclick="return false">Scenario Analysis</div></div>
+        <div class="vg-page-utils"><span>Print</span><span>Page help ?</span></div>
+      </div>
+    </div>
+    <div class="vg-page-header" style="padding-bottom:0;">
+        <div class="vg-ph-title">Scenario Analysis</div>
+      </div>
+      <div class="ra-layout">
+      <div class="ra-top">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:11px;color:var(--text-muted);">Pre-filled from Recommendation · Edit any amount to recalculate</div>
+          <button class="btn btn-ghost btn-sm" onclick="showAnn('b2')">↺ Reset to Recommendation <span class="ann" style="pointer-events:none;">A</span></button>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary btn-sm">Save All Scenarios</button>
+          <button class="btn btn-primary" onclick="showAnn('b3')">Execute Best Scenario <span class="ann" style="pointer-events:none;">A</span></button>
+        </div>
+      </div>
+
+      <div class="ra-scenarios">
+
+        <!-- -€-€ SCENARIO A — Minimize Tax -€-€ -->
+        <div class="ra-scenario-col">
+          <div class="ra-scenario-header">
+            <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+              <div class="sn-wrap" onclick="this.classList.toggle('open')">
+                <span class="sn-name">Scenario A — Minimize Tax <span class="ann" onclick="event.stopPropagation();showAnn('b4')" style="border-bottom:none;">A</span></span>
+                <div class="sn-tooltip">
+                  <div class="sn-tooltip-row"><span class="sn-tooltip-label">Sell:</span><span>VTSAX $6,000 + VBTLX $4,000</span></div>
+                  <div class="sn-tooltip-row"><span class="sn-tooltip-label">Tax:</span><span>$532 est. (5.32% effective rate)</span></div>
+                  <div class="sn-tooltip-row"><span class="sn-tooltip-label">Note:</span><span>Harvests full available loss · recommended</span></div>
+                </div>
+              </div>
+              <div class="kebab-wrap">
+                <button class="kebab-btn" onclick="toggleKebab('kebab-sa')">⋮</button>
+                <div class="kebab-menu" id="kebab-sa">
+                  <div class="kebab-item" onclick="closeKebab('kebab-sa')">Rename</div>
+                  <div class="kebab-item" onclick="closeKebab('kebab-sa')">Duplicate</div>
+                  <div class="kebab-item danger" onclick="closeKebab('kebab-sa')">Delete</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ra-fund-row-hdr">
+            <span>Fund</span>
+            <span>Sell</span>
+            <span>G/L <span class="ann" onclick="event.stopPropagation();showAnn('gl1')">A</span></span>
+            <span style="text-align:right;">Est. Tax</span>
+            
+          </div>
+          <div class="ra-body">
+            <div class="ra-fund-row" style="background:#f0faf0;">
+              <div><div style="font-weight:700;font-size:12px;">VTSAX</div></div>
+              <input class="ra-input" value="$6,000" />
+              <div class="gl-cell" onclick="toggleGL(this)" id="gl-a-vtsax">
+              <span class="gl-val"><span class="pos">+$5,247</span></span>
+              <div class="gl-tooltip">
+                <div class="tl-row"><span class="tl-label">Short-term</span><span class="pos">+$21</span></div>
+                <div class="tl-row"><span class="tl-label">Long-term</span><span class="pos">+$5,226</span></div>
+                <div class="tl-divider"></div>
+                <div class="tl-row"><span class="tl-label">Net gain/loss</span><span class="pos">+$5,247</span></div>
+              </div>
+            </div>
+              <span style="text-align:right;">$784</span>
+            </div>
+            <div class="ra-fund-row" style="background:#f0faf0;">
+              <div><div style="font-weight:700;font-size:12px;">VBTLX</div></div>
+              <input class="ra-input" value="$4,000" style="border-color:var(--positive);" />
+              <div class="gl-cell" onclick="toggleGL(this)" id="gl-a-vbtlx">
+              <span class="gl-val"><span class="neg">−$1,684</span></span>
+              <div class="gl-tooltip">
+                <div class="tl-row"><span class="tl-label">Short-term</span><span class="dash">—</span></div>
+                <div class="tl-row"><span class="tl-label">Long-term</span><span class="neg">−$1,684</span></div>
+                <div class="tl-divider"></div>
+                <div class="tl-row"><span class="tl-label">Net gain/loss</span><span class="neg">−$1,684</span></div>
+              </div>
+            </div>
+              <span class="pos" style="text-align:right;">−$252</span>
+            </div>
+            <div class="ra-fund-row">
+              <div><div style="font-weight:700;font-size:12px;">VFIAX</div></div>
+              <input class="ra-input" value="$0" />
+              <div class="gl-cell" onclick="toggleGL(this)" id="gl-a-vfiax">
+              <span class="gl-val"><span class="dash">—</span></span>
+              <div class="gl-tooltip">
+                <div class="tl-row"><span class="tl-label">Short-term</span><span class="dash">—</span></div>
+                <div class="tl-row"><span class="tl-label">Long-term</span><span class="dash">—</span></div>
+                <div class="tl-divider"></div>
+                <div class="tl-row"><span class="tl-label">Net gain/loss</span><span class="dash">—</span></div>
+              </div>
+            </div>
+              <span class="dash">—</span>
+            </div>
+            <div class="ra-fund-row">
+              <div><div style="font-weight:700;font-size:12px;">VTIAX (IRA)</div></div>
+              <input class="ra-input" value="$0" />
+              <div style="text-align:right;font-size:10px;color:var(--text-muted);font-style:italic;">N/A — IRA</div>
+              <span class="dash">—</span>
+            </div>
+          </div>
+          <div class="ra-total-row">
+            <span>Total</span>
+            <span>$10,000</span>
+            <span class="pos">+$3,563</span>
+            <span style="color:var(--positive);">$532</span>
+            
+          </div>
+          <div class="ra-tax-summary">
+            <div class="ra-tax-row"><span>ST Capital Gains</span><span class="pos">+$21</span></div>
+            <div class="ra-tax-row"><span>LT Capital Gains</span><span class="pos">+$5,226</span></div>
+            <div class="ra-tax-row"><span>Losses Harvested</span><span class="pos" style="color:var(--positive);">−$1,684</span></div>
+            <div class="ra-tax-row"><span>Net Taxable Gain</span><span>$3,563</span></div>
+            <div class="ra-tax-row"><span>Est. Federal Tax</span><span>$448</span></div>
+            <div class="ra-tax-row"><span>Est. State Tax</span><span>$84</span></div>
+            <div class="ra-tax-row total"><span>Est. Total Tax</span><span style="color:var(--positive);">$532</span></div>
+            <div class="ra-tax-row rate"><span>Effective Rate on Sale</span><span style="color:var(--positive);">5.32%</span></div>
+            <div class="ra-tax-row" style="font-size:10px;font-style:italic;border-bottom:none;padding-top:2px;"><span style="color:var(--positive);">← lowest achievable</span><span></span></div>
+          </div>
+          <div class="ra-rebal-summary">
+            <div class="rebal-summary-title">
+              Asset Mix Impact
+              <span class="rebal-drill-link" onclick="toggleDrill('sa')">▶ Fund detail</span>
+            </div>
+
+            <div class="mix-bar-label">Current after sale:</div>
+            <div class="mix-bar-wrap">
+              <div class="mix-bar-seg equity"   style="width:62.6%;"></div>
+              <div class="mix-bar-seg intl"     style="width:17.1%;"></div>
+              <div class="mix-bar-seg fixed"    style="width:20.3%;"></div>
+            </div>
+            <div class="mix-bar-label">Target:</div>
+            <div class="mix-bar-wrap">
+              <div class="mix-bar-seg equity target" style="width:65.0%;"></div>
+              <div class="mix-bar-seg intl target"   style="width:15.0%;"></div>
+              <div class="mix-bar-seg fixed target"  style="width:20.0%;"></div>
+            </div>
+            <div class="mix-bar-row">
+              <span><span class="mix-swatch" style="background:#2e7d9e;"></span>US Equity</span>
+              <span><span class="mix-swatch" style="background:#5aabcc;"></span>Intl Equity</span>
+              <span><span class="mix-swatch" style="background:#c9a84c;"></span>Fixed Income</span>
+            </div>
+
+            <table class="mix-table">
+              <thead><tr>
+                <th>Asset Class</th>
+                <th>Before</th>
+                <th>After</th>
+                <th>Target</th>
+                <th>Diff.</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="mix-class-name">
+                      <span class="mix-swatch" style="background:#2e7d9e;"></span>
+                      <button class="mix-expand-btn" onclick="toggleDrill('sa-eq')">▶</button>
+                      US Equity
+                    </div>
+                  </td>
+                  <td>62.6%</td>
+                  <td>62.6%</td>
+                  <td>65.0%</td>
+                  <td class="mix-diff-neg">-2.4%</td>
+                </tr>
+                <tbody id="sa-eq" class="mix-drill">
+                  <tr><td>VTSAX — Total Stock Mkt</td><td colspan="3" style="color:var(--text-muted);">US Large/Mid Blend</td><td>—</td></tr>
+                  <tr><td>VFIAX — 500 Index</td><td colspan="3" style="color:var(--text-muted);">US Large Blend</td><td>—</td></tr>
+                </tbody>
+                <tr>
+                  <td>
+                    <div class="mix-class-name">
+                      <span class="mix-swatch" style="background:#5aabcc;"></span>
+                      <button class="mix-expand-btn" onclick="toggleDrill('sa-intl')">▶</button>
+                      Intl Equity
+                    </div>
+                  </td>
+                  <td>16.9%</td>
+                  <td>17.1%</td>
+                  <td>15.0%</td>
+                  <td class="mix-diff-pos">+2.1%</td>
+                </tr>
+                <tbody id="sa-intl" class="mix-drill">
+                  <tr><td>VTIAX — Total Intl Stock (IRA)</td><td colspan="3" style="color:var(--text-muted);">Intl Diversified</td><td>—</td></tr>
+                </tbody>
+                <tr>
+                  <td>
+                    <div class="mix-class-name">
+                      <span class="mix-swatch" style="background:#c9a84c;"></span>
+                      <button class="mix-expand-btn" onclick="toggleDrill('sa-fi')">▶</button>
+                      Fixed Income
+                    </div>
+                  </td>
+                  <td>20.5%</td>
+                  <td>20.3%</td>
+                  <td>20.0%</td>
+                  <td class="mix-diff-pos">+0.3%</td>
+                </tr>
+                <tbody id="sa-fi" class="mix-drill">
+                  <tr><td>VBTLX — Total Bond Mkt (Taxable)</td><td colspan="3" style="color:var(--text-muted);">US Broad Bond</td><td>—</td></tr>
+                  <tr><td>VBTLX — Total Bond Mkt (IRA)</td><td colspan="3" style="color:var(--text-muted);">US Broad Bond</td><td>—</td></tr>
+                </tbody>
+              </tbody>
+            </table>
+
+            <div class="overall-drift">
+              <span>Overall drift from target:</span>
+              <span style="color:var(--text-muted);">Minor drift improvement · US Equity remains 2.4% below target</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- -€-€ SCENARIO B — Rebalance Priority -€-€ -->
+        <div class="ra-scenario-col">
+          <div class="ra-scenario-header" style="background:#e8eaf0;">
+            <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+              <div class="sn-wrap" onclick="this.classList.toggle('open')">
+                <span class="sn-name">Scenario B — Rebalance Priority</span>
+                <div class="sn-tooltip">
+                  <div class="sn-tooltip-row"><span class="sn-tooltip-label">Sell:</span><span>VTSAX $9,000 + VBTLX $1,000</span></div>
+                  <div class="sn-tooltip-row"><span class="sn-tooltip-label">Tax:</span><span>$1,114 est. (11.14% effective rate)</span></div>
+                  <div class="sn-tooltip-row"><span class="sn-tooltip-label">Note:</span><span>User-modified · prioritizes reducing US equity drift</span></div>
+                </div>
+              </div>
+              <div class="kebab-wrap">
+                <button class="kebab-btn" onclick="toggleKebab('kebab-sb')">⋮</button>
+                <div class="kebab-menu" id="kebab-sb">
+                  <div class="kebab-item" onclick="closeKebab('kebab-sb')">Rename</div>
+                  <div class="kebab-item" onclick="closeKebab('kebab-sb')">Duplicate</div>
+                  <div class="kebab-item danger" onclick="closeKebab('kebab-sb')">Delete</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ra-fund-row-hdr">
+            <span>Fund</span>
+            <span>Sell</span>
+            <span>G/L</span>
+            <span style="text-align:right;">Est. Tax</span>
+            
+          </div>
+          <div class="ra-body">
+            <div class="ra-fund-row">
+              <div><div style="font-weight:700;font-size:12px;">VTSAX</div></div>
+              <input class="ra-input" value="$9,000" />
+              <div class="gl-cell" onclick="toggleGL(this)" id="gl-b-vtsax">
+              <span class="gl-val"><span class="pos">+$7,870</span></span>
+              <div class="gl-tooltip">
+                <div class="tl-row"><span class="tl-label">Short-term</span><span class="pos">+$31</span></div>
+                <div class="tl-row"><span class="tl-label">Long-term</span><span class="pos">+$7,839</span></div>
+                <div class="tl-divider"></div>
+                <div class="tl-row"><span class="tl-label">Net gain/loss</span><span class="pos">+$7,870</span></div>
+              </div>
+            </div>
+              <span style="text-align:right;">$1,177</span>
+            </div>
+            <div class="ra-fund-row">
+              <div><div style="font-weight:700;font-size:12px;">VBTLX</div></div>
+              <input class="ra-input" value="$1,000" style="border-color:var(--positive);" />
+              <div class="gl-cell" onclick="toggleGL(this)" id="gl-b-vbtlx">
+              <span class="gl-val"><span class="neg">−$421</span></span>
+              <div class="gl-tooltip">
+                <div class="tl-row"><span class="tl-label">Short-term</span><span class="dash">—</span></div>
+                <div class="tl-row"><span class="tl-label">Long-term</span><span class="neg">−$421</span></div>
+                <div class="tl-divider"></div>
+                <div class="tl-row"><span class="tl-label">Net gain/loss</span><span class="neg">−$421</span></div>
+              </div>
+            </div>
+              <span class="pos" style="text-align:right;">−$63</span>
+            </div>
+            <div class="ra-fund-row">
+              <div><div style="font-weight:700;font-size:12px;">VFIAX</div></div>
+              <input class="ra-input" value="$0" />
+              <div class="gl-cell" onclick="toggleGL(this)" id="gl-b-vfiax">
+              <span class="gl-val"><span class="dash">—</span></span>
+              <div class="gl-tooltip">
+                <div class="tl-row"><span class="tl-label">Short-term</span><span class="dash">—</span></div>
+                <div class="tl-row"><span class="tl-label">Long-term</span><span class="dash">—</span></div>
+                <div class="tl-divider"></div>
+                <div class="tl-row"><span class="tl-label">Net gain/loss</span><span class="dash">—</span></div>
+              </div>
+            </div>
+              <span class="dash">—</span>
+            </div>
+            <div class="ra-fund-row">
+              <div><div style="font-weight:700;font-size:12px;">VTIAX (IRA)</div></div>
+              <input class="ra-input" value="$0" />
+              <div style="text-align:right;font-size:10px;color:var(--text-muted);font-style:italic;">N/A — IRA</div>
+              <span class="dash">—</span>
+            </div>
+          </div>
+          <div class="ra-total-row">
+            <span>Total</span>
+            <span>$10,000</span>
+            <span>+$7,449</span>
+            <span>$1,114</span>
+            
+          </div>
+          <div class="ra-tax-summary">
+            <div class="ra-tax-row"><span>ST Capital Gains</span><span class="pos">+$31</span></div>
+            <div class="ra-tax-row"><span>LT Capital Gains</span><span class="pos">+$7,839</span></div>
+            <div class="ra-tax-row"><span>Losses Harvested</span><span class="pos" style="color:var(--positive);">−$421</span></div>
+            <div class="ra-tax-row"><span>Net Taxable Gain</span><span>$7,449</span></div>
+            <div class="ra-tax-row"><span>Est. Federal Tax</span><span>$936</span></div>
+            <div class="ra-tax-row"><span>Est. State Tax</span><span>$178</span></div>
+            <div class="ra-tax-row total"><span>Est. Total Tax</span><span>$1,114</span></div>
+            <div class="ra-tax-row rate"><span>Effective Rate on Sale</span><span>11.14%</span></div>
+            <div class="ra-tax-row" style="font-size:10px;font-style:italic;border-bottom:none;padding-top:2px;"><span style="color:var(--text-muted);">costs $582 more than Scenario A</span><span></span></div>
+          </div>
+          <div class="ra-rebal-summary">
+            <div class="rebal-summary-title">
+              Asset Mix Impact
+              <span class="rebal-drill-link" onclick="toggleDrill('sb')">▶ Fund detail</span>
+            </div>
+
+            <div class="mix-bar-label">Current after sale:</div>
+            <div class="mix-bar-wrap">
+              <div class="mix-bar-seg equity"   style="width:62.3%;"></div>
+              <div class="mix-bar-seg intl"     style="width:17.1%;"></div>
+              <div class="mix-bar-seg fixed"    style="width:20.6%;"></div>
+            </div>
+            <div class="mix-bar-label">Target:</div>
+            <div class="mix-bar-wrap">
+              <div class="mix-bar-seg equity target" style="width:65.0%;"></div>
+              <div class="mix-bar-seg intl target"   style="width:15.0%;"></div>
+              <div class="mix-bar-seg fixed target"  style="width:20.0%;"></div>
+            </div>
+            <div class="mix-bar-row">
+              <span><span class="mix-swatch" style="background:#2e7d9e;"></span>US Equity</span>
+              <span><span class="mix-swatch" style="background:#5aabcc;"></span>Intl Equity</span>
+              <span><span class="mix-swatch" style="background:#c9a84c;"></span>Fixed Income</span>
+            </div>
+
+            <table class="mix-table">
+              <thead><tr>
+                <th>Asset Class</th>
+                <th>Before</th>
+                <th>After</th>
+                <th>Target</th>
+                <th>Diff.</th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="mix-class-name">
+                      <span class="mix-swatch" style="background:#2e7d9e;"></span>
+                      <button class="mix-expand-btn" onclick="toggleDrill('sb-eq')">▶</button>
+                      US Equity
+                    </div>
+                  </td>
+                  <td>62.6%</td>
+                  <td>62.3%</td>
+                  <td>65.0%</td>
+                  <td class="mix-diff-neg">-2.7%</td>
+                </tr>
+                <tbody id="sb-eq" class="mix-drill">
+                  <tr><td>VTSAX — Total Stock Mkt</td><td colspan="3" style="color:var(--text-muted);">US Large/Mid Blend</td><td>—</td></tr>
+                  <tr><td>VFIAX — 500 Index</td><td colspan="3" style="color:var(--text-muted);">US Large Blend</td><td>—</td></tr>
+                </tbody>
+                <tr>
+                  <td>
+                    <div class="mix-class-name">
+                      <span class="mix-swatch" style="background:#5aabcc;"></span>
+                      <button class="mix-expand-btn" onclick="toggleDrill('sb-intl')">▶</button>
+                      Intl Equity
+                    </div>
+                  </td>
+                  <td>16.9%</td>
+                  <td>17.1%</td>
+                  <td>15.0%</td>
+                  <td class="mix-diff-pos">+2.1%</td>
+                </tr>
+                <tbody id="sb-intl" class="mix-drill">
+                  <tr><td>VTIAX — Total Intl Stock (IRA)</td><td colspan="3" style="color:var(--text-muted);">Intl Diversified</td><td>—</td></tr>
+                </tbody>
+                <tr>
+                  <td>
+                    <div class="mix-class-name">
+                      <span class="mix-swatch" style="background:#c9a84c;"></span>
+                      <button class="mix-expand-btn" onclick="toggleDrill('sb-fi')">▶</button>
+                      Fixed Income
+                    </div>
+                  </td>
+                  <td>20.5%</td>
+                  <td>20.6%</td>
+                  <td>20.0%</td>
+                  <td class="mix-diff-pos">+0.6%</td>
+                </tr>
+                <tbody id="sb-fi" class="mix-drill">
+                  <tr><td>VBTLX — Total Bond Mkt (Taxable)</td><td colspan="3" style="color:var(--text-muted);">US Broad Bond</td><td>—</td></tr>
+                  <tr><td>VBTLX — Total Bond Mkt (IRA)</td><td colspan="3" style="color:var(--text-muted);">US Broad Bond</td><td>—</td></tr>
+                </tbody>
+              </tbody>
+            </table>
+
+            <div class="overall-drift">
+              <span>Overall drift from target:</span>
+              <span style="color:var(--negative);">US Equity moves further from target · consider selling bonds instead</span>
+            </div>
+          </div></div>
+
+        <!-- -€-€ Add Scenario -€-€ -->
+        <div class="add-scenario-col" onclick="showAnn('b5')">
+          <div class="add-icon">+</div>
+          <div class="add-lbl">Add Scenario</div>
+        </div>
+
+      </div>
+
+      <div style="background:var(--structure);border-top:2px solid var(--border-dark);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <div style="font-size:12px;color:var(--text-muted);font-style:italic;">
+          Select a scenario to execute, or edit amounts above to create a custom scenario
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary">Execute Scenario A ← saves $582 in tax</button>
+          <button class="btn btn-secondary">Execute Scenario B · better rebalancing</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — WAIT & SAVE MODAL
+═══════════════════════════════════════ -->
+<div class="screen" id="wf-5">
+  <div class="app-chrome">
+    <div class="wf-label">
+      <span class="wf-label-name">Screen 5 — Wait &amp; Save Alert</span>
+      <span class="wf-label-note">Blocking modal triggered when tax savings from waiting exceed configurable threshold · shown before Review &amp; Adjust screen</span>
+    </div>
+    <div class="vg-nav-wrap">
+      <!-- Global top bar -->
+      <div class="vg-top-bar">
+        <div class="vg-top-bar-right">
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg><span class="vg-icon-label">Search</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg><span class="vg-icon-label">Support</span></span>
+          <span class="vg-icon vg-icon-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="vg-badge">3</span><span class="vg-icon-label">Messages</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="vg-icon-label">Documents</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="vg-icon-label">Profile</span></span>
+          <span class="vg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span class="vg-icon-label">Log off</span></span>
+        </div>
+        <div class="vg-top-bar-left">
+          <div class="vg-logo"><span class="vg-logo-v">V</span></div>
+          <span class="vg-pi">Personal investors</span>
+          <div class="vg-top-links">
+            <span class="vg-tl">Advice services</span>
+            <span class="vg-tl">Dashboard</span>
+            <span class="vg-tl">Portfolio ∨</span>
+            <span class="vg-tl vg-tl-active">Transact ∨</span>
+            <span class="vg-tl">Products &amp; services ∨</span>
+            <span class="vg-tl">Resources &amp; education ∨</span>
+          </div>
+        </div>
+      </div>
+      <!-- Hero banner -->
+      <div class="vg-hero">
+        <div class="vg-hero-left">
+          <div class="vg-hero-name">Welcome back, Michael</div>
+          <div class="vg-hero-total">$580,745.29</div>
+        </div>
+        <div class="vg-hero-meta">
+          <div><u>Value as of:</u> February 19, 2026, 4:15 p.m., Eastern time</div>
+          <div><u>Last login:</u> February 19, 2026, 4:38 p.m., Eastern time</div>
+        </div>
+      </div>
+      <!-- Second-level section tabs -->
+      <div class="vg-section-tabs"><div class="vg-st">Dashboard</div><div class="vg-st">Balances</div><div class="vg-st">Holdings</div><div class="vg-st vg-st-active">Sell &amp; Rebalance</div><div class="vg-st">Activity</div><div class="vg-st">Performance</div><div class="vg-st">Portfolio Watch</div></div>
+      <!-- Sub-tabs (Fund List / Scenario Analysis) -->
+      <div class="vg-sub-tabs-row">
+        <div class="vg-sub-tabs"><div class="vg-pt vg-pt-active" onclick="return false">Fund List</div><div class="vg-pt" onclick="return false">Scenario Analysis</div></div>
+        <div class="vg-page-utils"><span>Print</span><span>Page help ?</span></div>
+      </div>
+    </div>
+
+    <!-- Dimmed background content (context) -->
+    <div class="vg-page-header">
+        <div class="vg-ph-title">Fund List</div>
+      </div>
+      <div style="filter:blur(2px);opacity:0.4;pointer-events:none;padding:20px;">
+      <div style="font-size:13px;color:var(--text-muted);text-align:center;padding:40px;">Review &amp; Adjust screen (behind modal)</div>
+    </div>
+
+    <!-- Modal (shown inline here for wireframe purposes) -->
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:20px;">
+      <div class="modal">
+        <!-- Modal header: icon + title + close X -->
+        <div class="modal-header">
+          <div style="flex:1;">
+            <div class="modal-icon">⏱</div>
+            <div class="modal-title">You could save $634 by waiting 67 days</div>
+          </div>
+          <button class="modal-close-btn" title="Dismiss">&#x2715;</button>
+        </div>
+
+        <!-- Scrollable body -->
+        <div class="modal-scroll">
+          <div class="modal-body">
+            Three lots in your VFIAX and VTSAX holdings are currently short-term and will convert to long-term between April 4 and May 26, 2026.
+            <div class="modal-highlight">
+              <strong>If you sell today:</strong> Est. tax = $1,307 (13.1% effective rate)<br>
+              <strong>If you wait until May 27:</strong> Est. tax = $673 (6.7% effective rate)<br>
+              <strong>Potential savings: $634</strong>
+            </div>
+            Waiting is not always possible — if you need these funds now, proceed. This alert will not prevent you from selling today.
+          </div>
+          <div style="margin-bottom:16px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Lots that will convert:</div>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead>
+                <tr style="background:var(--structure);">
+                  <th style="padding:7px 8px;font-weight:700;text-align:left;border-bottom:1px solid var(--border);">Fund</th>
+                  <th style="padding:7px 8px;font-weight:700;text-align:right;border-bottom:1px solid var(--border);">Lot Date</th>
+                  <th style="padding:7px 8px;font-weight:700;text-align:right;border-bottom:1px solid var(--border);">Converts LT</th>
+                  <th style="padding:7px 8px;font-weight:700;text-align:right;border-bottom:1px solid var(--border);">Tax Saving</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding:7px 8px;border-bottom:1px solid var(--border);">VFIAX</td><td style="padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);">12/22/2025</td><td style="padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);">Dec 22, 2026</td><td style="padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);" class="pos">$218</td></tr>
+                <tr style="background:#f8f8f8;"><td style="padding:7px 8px;border-bottom:1px solid var(--border);">VTSAX</td><td style="padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);">04/04/2025</td><td style="padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);">Apr 4, 2026</td><td style="padding:7px 8px;text-align:right;border-bottom:1px solid var(--border);" class="pos">$274</td></tr>
+                <tr><td style="padding:7px 8px;">VTSAX</td><td style="padding:7px 8px;text-align:right;">05/26/2025</td><td style="padding:7px 8px;text-align:right;">May 26, 2026</td><td style="padding:7px 8px;text-align:right;" class="pos">$142</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Pinned footer: action buttons -->
+        <div class="modal-footer">
+          <div class="modal-actions">
+            <button class="btn btn-secondary">Remind me in 60 days</button>
+            <button class="btn btn-ghost" style="color:var(--interactive);text-decoration:underline;border:none;background:none;">Proceed anyway</button>
+            <button class="btn btn-primary" style="margin-left:auto;">Adjust sale to avoid these lots</button>
+          </div>
+          <div class="modal-sub">
+            Alert threshold: savings &gt; $500 · <button class="lot-expand-btn">Change my threshold</button> <span class="ann" onclick="showAnn('d1')">A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ANNOTATION PANEL -->
+<div class="ann-panel" id="annPanel">
+  <button class="ann-close" onclick="closeAnn()">✕</button>
+  <div class="ann-panel-title">Designer Annotation</div>
+  <div id="annContent"></div>
+</div>
+
+<script>
+const ANNOTATIONS = {
+  // Screen 1
+  a1: 'The "Get Recommendation" CTA at top-right gives Workflow B users an escape hatch to Workflow A if they feel the manual approach is too complex. Important for user confidence.',
+  a2: 'Account section headers solve the problem of different tax rules for different account types. Capital gains ST/LT columns are meaningful only in taxable accounts — the IRA section must handle this differently to avoid misleading users.',
+  a3: 'The fund name is linked (blue) to a fund detail page — consistent with Vanguard\'s existing UI convention. Familiarity reduces cognitive load.',
+  a4: 'The sell input column is the novel addition to Vanguard\'s existing table format. Positioned rightmost to mirror the natural reading direction: "here is the fund... here are its tax characteristics... here is where I decide how much to take."',
+  a5: 'Cost basis method shown inline with the fund name (not just in the Method column) because it affects interpretation of the cost-per-share figure. When MinTax is selected, cost-per-share is suppressed — consistent with Vanguard\'s own UI behavior confirmed in the uploaded screenshot.',
+  a6: 'The "WAIT & SAVE" badge on a table row is the inline annotation variant — appropriate for low-to-medium severity. The amber row highlight draws attention without blocking the workflow. Exact threshold for inline vs. banner vs. modal should be user-configurable.',
+  a7: 'IRA section uses the same visual structure as the taxable section but with capital gains columns suppressed. The section header explicitly states "Withdrawals taxed as ordinary income" — this is the most important disambiguation in the entire tool.',
+  // Screen 3 (Review & Adjust)
+  gl1: 'The Gain/Loss column shows the net gain or loss that would be realized by this sale. Click any figure to see the short-term vs. long-term breakdown — this matters because ST gains are taxed at ordinary income rates (higher) while LT gains get the preferential capital gains rate.',
+  b1: 'Review & Adjust" is the convergence screen title — it appears identically whether the user arrived from Workflow A or Workflow B. The only visible difference is whether the "Reset to Recommendation" button appears (only if source_recommendation_id is populated).',
+  b2: '"Reset to Recommendation" button is only shown when the user arrived from Workflow A. If the user arrived fresh from Workflow B, this button is hidden entirely to avoid implying there\'s a "correct" answer they\'re deviating from.',
+  b3: '"Execute Best Scenario" is the primary CTA when multiple scenarios exist. It should highlight the scenario with the lowest effective tax rate — but allow the user to override. Button label updates dynamically based on which scenario currently has the lowest tax.',
+  b4: 'Scenario A is pre-labeled "Recommended" if it was populated from Workflow A\'s optimization engine. User-created scenarios have no badge. This maintains the authority of the recommendation while giving users freedom to deviate.',
+  b5: 'The "Add Scenario" column has a maximum of 3 scenarios for v1 — side-by-side comparison breaks down beyond this width without horizontal scroll. A "more scenarios" pattern (tabs or dropdown) should be considered if user research shows demand for more than 3.',
+  // Screen 4 (Recommendation)
+  c1: 'The plain-language rationale is the most important trust-building element in Workflow A. It must explain BOTH the rebalancing reason AND the tax reason for each fund. AI-generated natural language is the best candidate here — templated strings become unnatural with many edge cases.',
+  // Screen 5 (Modal)
+  d1: 'The configurable threshold ("alert me only when savings exceed $X") is critical for power users who will find repeated low-stakes alerts annoying. Default: $500. Should be accessible from account settings as well as inline here.',
+};
+
+function toggleDrill(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('open');
+  // flip the expand button arrow
+  const btn = el.previousElementSibling ? el.previousElementSibling.querySelector('.mix-expand-btn') : null;
+  if (btn) btn.textContent = el.classList.contains('open') ? '▼' : '▶';
+  // also handle the top-level "Fund detail" link
+  const link = document.querySelector(`.rebal-drill-link[onclick="toggleDrill('${id}')"]`);
+  if (link) link.textContent = el.classList.contains('open') ? '▼ Fund detail' : '▶ Fund detail';
+}
+
+function toggleGL(el) {
+  // close all others first
+  document.querySelectorAll('.gl-cell.open').forEach(c => { if (c !== el) c.classList.remove('open'); });
+  el.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.gl-cell')) {
+    document.querySelectorAll('.gl-cell.open').forEach(c => c.classList.remove('open'));
+  }
+});
+
+function toggleKebab(id) {
+  const menu = document.getElementById(id);
+  const btn  = menu.previousElementSibling; // the .kebab-btn
+  const isOpening = !menu.classList.contains('open');
+  // Close all other open menus + reset their buttons
+  document.querySelectorAll('.kebab-menu.open').forEach(m => {
+    m.classList.remove('open');
+    m.previousElementSibling.classList.remove('is-open');
+  });
+  if (isOpening) {
+    menu.classList.add('open');
+    btn.classList.add('is-open');
+  }
+}
+function closeKebab(id) {
+  const menu = document.getElementById(id);
+  menu.classList.remove('open');
+  menu.previousElementSibling.classList.remove('is-open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.kebab-wrap')) {
+    document.querySelectorAll('.kebab-menu.open').forEach(m => {
+      m.classList.remove('open');
+      m.previousElementSibling.classList.remove('is-open');
+    });
+  }
+});
+
+function switchWF(i) {
+  document.querySelectorAll('.wf-tab').forEach((t,j) => t.classList.toggle('active', i===j));
+  document.querySelectorAll('.screen').forEach((s,j) => s.classList.toggle('active', i===j));
+  closeAnn();
+}
+
+// ── CLEAN MODE — add ?clean or ?screen=N to URL ──
+// ?clean        → hides debug UI, expands to full width, stays on screen 0
+// ?screen=1     → shows screen N in clean mode
+// ?clean&screen=3 → both
+//
+// FIGMA CAPTURE COMPATIBILITY:
+// The Figma MCP capture script uses window.location.hash (#figmacapture=...)
+// to communicate with the capture server. We must NOT modify the hash, and
+// we defer our screen switching until after the capture script has had time
+// to read the hash. This prevents our code from interfering with the capture.
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const isClean = params.has('clean') || params.has('screen');
+  if (isClean) document.body.classList.add('clean-mode');
+  const screenNum = parseInt(params.get('screen'));
+
+  // Check if a figmacapture hash is present — if so, defer screen switching
+  // until after the capture script has initialized (500ms grace period)
+  const hasFigmaCapture = window.location.hash.includes('figmacapture');
+
+  if (!isNaN(screenNum)) {
+    if (hasFigmaCapture) {
+      // Defer to let the Figma capture script read the hash first
+      window.addEventListener('load', function() {
+        setTimeout(function() { switchWF(screenNum); }, 500);
+      });
+    } else {
+      switchWF(screenNum);
+    }
+  }
+})();
+
+function showAnn(id) {
+  const txt = ANNOTATIONS[id];
+  if (!txt) return;
+  document.getElementById('annContent').textContent = txt;
+  document.getElementById('annPanel').classList.add('open');
+}
+
+function closeAnn() {
+  document.getElementById('annPanel').classList.remove('open');
+}
+
+function toggleLots(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAnn(); });
+</script>
+</body>
+</html>
