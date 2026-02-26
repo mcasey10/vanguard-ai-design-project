@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f1a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <!-- Concentric ring gradients — outside to inside, constraining inward -->
+    <radialGradient id="ring1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#1d6fa4; stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:#1d6fa4; stop-opacity:0.08"/>
+    </radialGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#7B5EA7; stop-opacity:0.25"/>
+      <stop offset="100%" style="stop-color:#7B5EA7; stop-opacity:0"/>
+    </radialGradient>
+    <linearGradient id="trad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#444455"/>
+      <stop offset="100%" style="stop-color:#333344"/>
+    </linearGradient>
+    <filter id="softshadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="560" fill="url(#bg)" rx="12"/>
+
+  <!-- Title bar -->
+  <text x="600" y="36" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="400" letter-spacing="3" opacity="0.45">IDEATION APPROACH</text>
+  <text x="600" y="64" text-anchor="middle" fill="#ffffff" font-size="21" font-weight="700" letter-spacing="0.3">Structure Before Sketches</text>
+
+  <!-- ═══════════════════════
+       LEFT SIDE — Traditional path (greyed out, labelled)
+  ═══════════════════════ -->
+  <rect x="30" y="92" width="210" height="400" rx="8" fill="#222233" opacity="0.5"/>
+  <rect x="30" y="92" width="210" height="400" rx="8" fill="none" stroke="#444455" stroke-width="1" opacity="0.5"/>
+
+  <text x="135" y="116" text-anchor="middle" fill="#666677" font-size="10" font-weight="700" letter-spacing="2">TRADITIONAL PATH</text>
+  <line x1="55" y1="124" x2="215" y2="124" stroke="#444455" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- Traditional steps — faded, struck through feel -->
+  <g opacity="0.45">
+    <!-- Step 1 -->
+    <rect x="50" y="136" width="170" height="52" rx="5" fill="#333344"/>
+    <text x="135" y="155" text-anchor="middle" fill="#888899" font-size="11" font-weight="600">Competitive teardowns</text>
+    <text x="135" y="170" text-anchor="middle" fill="#666677" font-size="10">Screenshot 20 apps</text>
+    <text x="135" y="183" text-anchor="middle" fill="#666677" font-size="10">identify visual patterns</text>
+
+    <!-- Step 2 -->
+    <rect x="50" y="200" width="170" height="52" rx="5" fill="#333344"/>
+    <text x="135" y="219" text-anchor="middle" fill="#888899" font-size="11" font-weight="600">Mood boards</text>
+    <text x="135" y="234" text-anchor="middle" fill="#666677" font-size="10">Gather visual inspiration</text>
+    <text x="135" y="247" text-anchor="middle" fill="#666677" font-size="10">define aesthetic direction</text>
+
+    <!-- Step 3 -->
+    <rect x="50" y="264" width="170" height="52" rx="5" fill="#333344"/>
+    <text x="135" y="283" text-anchor="middle" fill="#888899" font-size="11" font-weight="600">Sketch explorations</text>
+    <text x="135" y="298" text-anchor="middle" fill="#666677" font-size="10">Many layout options</text>
+    <text x="135" y="311" text-anchor="middle" fill="#666677" font-size="10">divergent visual ideas</text>
+
+    <!-- Step 4 -->
+    <rect x="50" y="328" width="170" height="52" rx="5" fill="#333344"/>
+    <text x="135" y="347" text-anchor="middle" fill="#888899" font-size="11" font-weight="600">Wireframe concepts</text>
+    <text x="135" y="362" text-anchor="middle" fill="#666677" font-size="10">Visual layout first</text>
+    <text x="135" y="375" text-anchor="middle" fill="#666677" font-size="10">logic follows later</text>
+
+    <!-- Output -->
+    <rect x="50" y="392" width="170" height="44" rx="5" fill="#1a1a2a" stroke="#333344" stroke-width="1"/>
+    <text x="135" y="411" text-anchor="middle" fill="#666677" font-size="10" font-weight="600">Output: visual options</text>
+    <text x="135" y="426" text-anchor="middle" fill="#555566" font-size="10">to narrow down later</text>
+  </g>
+
+  <!-- X mark over traditional -->
+  <line x1="50" y1="136" x2="210" y2="448" stroke="#c84444" stroke-width="1.5" opacity="0.25"/>
+  <line x1="210" y1="136" x2="50" y2="448" stroke="#c84444" stroke-width="1.5" opacity="0.25"/>
+
+  <!-- Arrow from traditional to actual -->
+  <line x1="242" y1="292" x2="278" y2="292" stroke="#7B5EA7" stroke-width="2" marker-end="url(#arr-right)" opacity="0.7"/>
+  <text x="260" y="285" text-anchor="middle" fill="#9977bb" font-size="9" letter-spacing="1">INSTEAD</text>
+
+  <defs>
+    <marker id="arr-right" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#7B5EA7" opacity="0.8"/>
+    </marker>
+    <marker id="arr-inward" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 z" fill="#7B5EA7" opacity="0.6"/>
+    </marker>
+  </defs>
+
+  <!-- ═══════════════════════
+       CENTER — Constraint map (the actual approach)
+  ═══════════════════════ -->
+
+  <!-- Center solution space -->
+  <circle cx="690" cy="295" r="195" fill="none" stroke="#1d6fa4" stroke-width="0.5" stroke-dasharray="3,4" opacity="0.2"/>
+  <circle cx="690" cy="295" r="145" fill="none" stroke="#7B5EA7" stroke-width="0.5" stroke-dasharray="3,4" opacity="0.25"/>
+  <circle cx="690" cy="295" r="88" fill="url(#centerGlow)"/>
+  <circle cx="690" cy="295" r="88" fill="none" stroke="#7B5EA7" stroke-width="1.2" opacity="0.4"/>
+
+  <!-- Center core -->
+  <circle cx="690" cy="295" r="52" fill="#12102a" stroke="#7B5EA7" stroke-width="1.8" opacity="0.9"/>
+  <text x="690" y="286" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700" letter-spacing="0.5">SOLUTION</text>
+  <text x="690" y="301" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700" letter-spacing="0.5">SPACE</text>
+  <text x="690" y="316" text-anchor="middle" fill="#9977bb" font-size="9" opacity="0.7">defined by constraints</text>
+
+  <!-- ═══ 5 constraint nodes positioned around the circle ═══ -->
+
+  <!-- Constraint 1 — TOP — Dual workflow (12 o'clock) -->
+  <line x1="690" y1="100" x2="690" y2="207" stroke="#7B5EA7" stroke-width="1" stroke-dasharray="3,3" opacity="0.35" marker-end="url(#arr-inward)"/>
+  <rect x="572" y="80" width="236" height="62" rx="7" fill="#1e1030" stroke="#7B5EA7" stroke-width="1.4" filter="url(#softshadow)"/>
+  <text x="690" y="100" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700">Dual-workflow architecture</text>
+  <text x="690" y="116" text-anchor="middle" fill="#bbaadd" font-size="10">Single-path design untenable —</text>
+  <text x="690" y="130" text-anchor="middle" fill="#bbaadd" font-size="10">both entry modes must be first-class</text>
+
+  <!-- Constraint 2 — UPPER RIGHT — Single convergence (2 o'clock) -->
+  <line x1="838" y1="158" x2="757" y2="232" stroke="#7B5EA7" stroke-width="1" stroke-dasharray="3,3" opacity="0.35" marker-end="url(#arr-inward)"/>
+  <rect x="848" y="112" width="226" height="62" rx="7" fill="#1e1030" stroke="#7B5EA7" stroke-width="1.4" filter="url(#softshadow)"/>
+  <text x="961" y="132" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700">Single convergence screen</text>
+  <text x="961" y="148" text-anchor="middle" fill="#bbaadd" font-size="10">Both workflows arrive at Scenario</text>
+  <text x="961" y="162" text-anchor="middle" fill="#bbaadd" font-size="10">Analysis — same interface, always</text>
+
+  <!-- Constraint 3 — LOWER RIGHT — Three scenario max (4–5 o'clock) -->
+  <line x1="855" y1="390" x2="773" y2="345" stroke="#7B5EA7" stroke-width="1" stroke-dasharray="3,3" opacity="0.35" marker-end="url(#arr-inward)"/>
+  <rect x="848" y="390" width="226" height="62" rx="7" fill="#1e1030" stroke="#7B5EA7" stroke-width="1.4" filter="url(#softshadow)"/>
+  <text x="961" y="410" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700">Three-scenario maximum</text>
+  <text x="961" y="426" text-anchor="middle" fill="#bbaadd" font-size="10">Choice overload research —</text>
+  <text x="961" y="440" text-anchor="middle" fill="#bbaadd" font-size="10">≥4 options degrades decision quality</text>
+
+  <!-- Constraint 4 — LOWER LEFT — Pre-transaction modeling (7–8 o'clock) -->
+  <line x1="527" y1="390" x2="614" y2="345" stroke="#7B5EA7" stroke-width="1" stroke-dasharray="3,3" opacity="0.35" marker-end="url(#arr-inward)"/>
+  <rect x="306" y="390" width="220" height="62" rx="7" fill="#1e1030" stroke="#7B5EA7" stroke-width="1.4" filter="url(#softshadow)"/>
+  <text x="416" y="410" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700">Pre-transaction modeling</text>
+  <text x="416" y="426" text-anchor="middle" fill="#bbaadd" font-size="10">Show full outcome before any</text>
+  <text x="416" y="440" text-anchor="middle" fill="#bbaadd" font-size="10">transaction is initiated — non-negotiable</text>
+
+  <!-- Constraint 5 — UPPER LEFT — Taxable accounts scope (10 o'clock) -->
+  <line x1="543" y1="160" x2="625" y2="234" stroke="#7B5EA7" stroke-width="1" stroke-dasharray="3,3" opacity="0.35" marker-end="url(#arr-inward)"/>
+  <rect x="306" y="112" width="220" height="62" rx="7" fill="#1e1030" stroke="#7B5EA7" stroke-width="1.4" filter="url(#softshadow)"/>
+  <text x="416" y="132" text-anchor="middle" fill="#ddaaff" font-size="11" font-weight="700">Taxable accounts scope only</text>
+  <text x="416" y="148" text-anchor="middle" fill="#bbaadd" font-size="10">IRA/401k complexity would require</text>
+  <text x="416" y="162" text-anchor="middle" fill="#bbaadd" font-size="10">a fundamentally different data model</text>
+
+  <!-- ═══ Label the constraint lines ═══ -->
+  <text x="595" y="172" text-anchor="middle" fill="#7B5EA7" font-size="9" opacity="0.6" letter-spacing="1" transform="rotate(-42, 595, 172)">CONSTRAINT</text>
+  <text x="782" y="195" text-anchor="middle" fill="#7B5EA7" font-size="9" opacity="0.6" letter-spacing="1" transform="rotate(40, 782, 195)">CONSTRAINT</text>
+  <text x="778" y="380" text-anchor="middle" fill="#7B5EA7" font-size="9" opacity="0.6" letter-spacing="1" transform="rotate(-35, 778, 380)">CONSTRAINT</text>
+  <text x="586" y="385" text-anchor="middle" fill="#7B5EA7" font-size="9" opacity="0.6" letter-spacing="1" transform="rotate(35, 586, 385)">CONSTRAINT</text>
+  <text x="690" y="225" text-anchor="middle" fill="#7B5EA7" font-size="9" opacity="0.6" letter-spacing="1">CONSTRAINT</text>
+
+  <!-- Output label at right side -->
+  <rect x="30" y="497" width="1140" height="44" rx="7" fill="#0e1628" stroke="#1d6fa4" stroke-width="1" opacity="0.8"/>
+  <text x="600" y="515" text-anchor="middle" fill="#88aacc" font-size="10" font-weight="700" letter-spacing="2">OUTPUT OF THIS IDEATION PHASE</text>
+  <text x="600" y="532" text-anchor="middle" fill="#6688aa" font-size="12">A brief precise enough to drive every downstream artifact — data model, user flows, wireframes — from a shared, explicit understanding of the problem</text>
+
+  <!-- Footer -->
+  <text x="600" y="554" text-anchor="middle" fill="#1e1e33" font-size="10">Vanguard Sell &amp; Rebalance Tool · Ideation · Michael Casey · 2026</text>
+</svg>
