@@ -1,0 +1,72 @@
+{
+  "brand": {
+    "red": { "value": "#C8102E", "type": "color" },
+    "hero-red": { "value": "#c20029", "type": "color" },
+    "hero-dark": { "value": "#660026", "type": "color" }
+  },
+  "text": {
+    "primary": { "value": "#040505", "type": "color" },
+    "secondary": { "value": "#555555", "type": "color" },
+    "muted": { "value": "#767676", "type": "color" }
+  },
+  "interactive": {
+    "default": { "value": "#1255CC", "type": "color" },
+    "hover": { "value": "#0d3d9e", "type": "color" }
+  },
+  "semantic": {
+    "positive": { "value": "#007A00", "type": "color" },
+    "negative": { "value": "#C8102E", "type": "color" },
+    "warning": { "value": "#E07000", "type": "color" },
+    "warning-bg": { "value": "#FFF8F0", "type": "color" },
+    "info-bg": { "value": "#E8F5F0", "type": "color" }
+  },
+  "surface": {
+    "page": { "value": "#f2f2f2", "type": "color" },
+    "card": { "value": "#FFFFFF", "type": "color" },
+    "hover": { "value": "#f8f8f8", "type": "color" }
+  },
+  "border": {
+    "default": { "value": "#e0e0e0", "type": "color" },
+    "dark": { "value": "#767676", "type": "color" },
+    "input-focus": { "value": "#1255CC", "type": "color" },
+    "input-error": { "value": "#C8102E", "type": "color" }
+  },
+  "chart": {
+    "equity": { "value": "#2bbfb3", "type": "color" },
+    "bonds": { "value": "#c8902a", "type": "color" },
+    "other": { "value": "#767676", "type": "color" },
+    "gain-line": { "value": "#00b464", "type": "color" },
+    "gain-fill": { "value": "rgba(0,180,100,0.15)", "type": "color" },
+    "loss-fill": { "value": "#f9e6f2", "type": "color" }
+  },
+  "spacing": {
+    "1": { "value": "4", "type": "spacing" },
+    "2": { "value": "8", "type": "spacing" },
+    "3": { "value": "12", "type": "spacing" },
+    "4": { "value": "16", "type": "spacing" },
+    "5": { "value": "20", "type": "spacing" },
+    "6": { "value": "24", "type": "spacing" },
+    "8": { "value": "32", "type": "spacing" },
+    "10": { "value": "40", "type": "spacing" }
+  },
+  "radius": {
+    "sm": { "value": "2", "type": "borderRadius" },
+    "md": { "value": "4", "type": "borderRadius" },
+    "pill": { "value": "100", "type": "borderRadius" },
+    "circle": { "value": "9999", "type": "borderRadius" }
+  },
+  "typography": {
+    "family": { "value": "Inter", "type": "fontFamilies" },
+    "size-xs": { "value": "11", "type": "fontSizes" },
+    "size-sm": { "value": "12", "type": "fontSizes" },
+    "size-md": { "value": "13", "type": "fontSizes" },
+    "size-base": { "value": "14", "type": "fontSizes" },
+    "size-lg": { "value": "16", "type": "fontSizes" },
+    "size-xl": { "value": "22", "type": "fontSizes" },
+    "size-2xl": { "value": "28", "type": "fontSizes" },
+    "size-hero": { "value": "32", "type": "fontSizes" },
+    "weight-regular": { "value": "400", "type": "fontWeights" },
+    "weight-semibold": { "value": "600", "type": "fontWeights" },
+    "weight-bold": { "value": "700", "type": "fontWeights" }
+  }
+}
