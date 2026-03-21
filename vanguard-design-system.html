@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Vanguard Design System — v2 · Investor Portal Inspection</title>
+<title>Vanguard Design System — v3 · Investor Portal Inspection</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,17 +11,16 @@
 body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f2f2f2; color: #040505; font-size: 14px; line-height: 1.5; }
 
 /* ── PAGE CHROME ── */
-.ds-topbar { background: #040505; color: white; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; position: sticky; top: 0; z-index: 100; }
+.ds-topbar { background: #040505; color: white; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
 .ds-topbar-title { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; }
 .ds-topbar-meta  { font-size: 11px; opacity: 0.55; }
-.ds-nav { background: #1a1a1a; padding: 0 40px; display: flex; gap: 0; position: sticky; top: 52px; z-index: 99; }
-.ds-nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 12px; font-weight: 600; padding: 11px 16px; display: block; letter-spacing: 0.05em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.15s; cursor: pointer; }
+.ds-nav { background: #1a1a1a; padding: 0 40px; display: flex; gap: 0; }
+.ds-nav a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 12px; font-weight: 600; padding: 11px 16px; display: block; letter-spacing: 0.05em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.15s; }
 .ds-nav a:hover { color: white; }
 .ds-nav a.active { color: white; border-bottom-color: #C8102E; }
 
 .ds-body { max-width: 1120px; margin: 0 auto; padding: 40px; }
-.ds-section { display: none; margin-bottom: 60px; }
-.ds-section.visible { display: block; }
+.ds-section { margin-bottom: 60px; scroll-margin-top: 80px; }
 .ds-section-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #C8102E; margin-bottom: 8px; }
 .ds-section-title { font-size: 22px; font-weight: 700; color: #040505; margin-bottom: 6px; }
 .ds-section-desc { font-size: 13px; color: #555; margin-bottom: 28px; line-height: 1.6; }
@@ -93,11 +92,27 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 .vg-subnav-item.active { font-weight: 700; border-bottom-color: #C8102E; }
 .vg-subnav-item:hover { color: #1255CC; }
 
-/* Page hero / header banner */
-.vg-hero { background: linear-gradient(135deg, #3D0010 0%, #6B0020 55%, #C8102E 100%); color: white; padding: 28px 24px 32px; position: relative; overflow: hidden; }
-.vg-hero::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; background: #C8102E; border-radius: 50%; opacity: 0.6; }
+/* Page hero / header banner — CONFIRMED from Vanguard portal DevTools inspection */
+/* Implementation: inline SVG (curved swoosh path) + linear-gradient as background-image layers */
+.vg-hero {
+  background-color: #660026;
+  background-image:
+    url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2560' height='1440' fill-rule='evenodd'%3E%3Cpath fill='%23c20029' d='M0 0h2560v1440H0z'/%3E%3Cpath d='M0 1440V0h975.0068c41.879 6.147 78.247 21.823 109.055 47.018 30.766 25.195 59.764 64.246 86.84 117.051L1858.593 1440H0z' fill='%23660026'/%3E%3C/svg%3E"),
+    linear-gradient(60deg, rgb(102,0,38) 50%, rgb(194,0,41) 50%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  padding: 28px 24px 32px;
+  height: 132px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* NOTE: Do NOT use clip-path, flat fills, or CSS-only gradient approximations.
+   The curved swoosh is defined by an SVG path with bezier curves — it cannot be
+   accurately reproduced with clip-path polygon points. Use the exact SVG above. */
 .vg-hero-eyebrow { font-size: 13px; font-weight: 600; opacity: 0.8; margin-bottom: 4px; }
-.vg-hero-title   { font-size: 28px; font-weight: 700; line-height: 1.1; position: relative; z-index: 1; }
+.vg-hero-title   { font-size: 28px; font-weight: 700; line-height: 1.1; }
 
 /* Buttons — CONFIRMED: primary = black pill, secondary = outlined pill */
 .vg-btn-primary {
@@ -310,15 +325,15 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 
 <div class="ds-topbar">
   <div class="ds-topbar-title">Vanguard Design System — Investor Portal · Extracted Token Reference · v2</div>
-  <div class="ds-topbar-meta">Updated February 2026 · 8 investor portal screenshots inspected</div>
+  <div class="ds-topbar-meta">Updated March 2026 · v3 · Hero banner SVG confirmed from DevTools · Input field rules added</div>
 </div>
 <div class="ds-nav">
-  <a data-tab="foundation" class="active">Foundation</a>
-  <a data-tab="typography">Typography</a>
-  <a data-tab="spacing">Spacing</a>
-  <a data-tab="components">Components</a>
-  <a data-tab="patterns">Patterns</a>
-  <a data-tab="tokens">CSS Tokens</a>
+  <a href="#foundation" class="active">Foundation</a>
+  <a href="#typography">Typography</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#components">Components</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#tokens">CSS Tokens</a>
 </div>
 
 <div class="ds-body">
@@ -774,7 +789,7 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
         <div class="vg-subnav-item">Resources & education ∨</div>
       </div>
     </div>
-    <div class="component-spec">Top bar: white bg, 52px height · Icons: 18px, black, label below at 11px · Active nav: bold, 2px red bottom border · Hover: blue text #1255CC</div>
+    <div class="component-spec">Top bar: white bg, 52px height · Icons: 18px, <strong>monochrome black</strong> (do NOT colorise icons — no coloured emoji or tinted SVGs), label below at 11px · Active nav: bold, 2px red bottom border · Hover: blue text #1255CC · Emoji placeholders shown above for reference only — implement with monochrome SVG icons</div>
   </div>
 
   <!-- Hero banner -->
@@ -786,7 +801,7 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
         <div class="vg-hero-title">Message Center</div>
       </div>
     </div>
-    <div class="component-spec">Background: gradient #3D0010 → #6B0020 → #C8102E (left-to-right, diagonal) · Decorative red circle shape positioned top-right · White text throughout · Eyebrow 13px/600 · Title 26–30px/700</div>
+    <div class="component-spec">Background: inline SVG (curved swoosh path) + linear-gradient(60deg, rgb(102,0,38) 50%, rgb(194,0,41) 50%) · The SVG defines a curved diagonal divider between #660026 (dark) and #C20029 (bright red) — NOT a CSS gradient approximation · Height: 132px · White text throughout · Eyebrow 13px/600 · Title 26–30px/700 · <strong>Do not use clip-path or CSS-only gradients</strong> — use the exact SVG data URI from the CSS Tokens section</div>
   </div>
 
   <!-- Section tab nav -->
@@ -878,7 +893,11 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
       <strong>Default border:</strong> 1px solid #767676 · <strong>Focus:</strong> 2px solid #1255CC (border increases, padding compensates) · <strong>Error:</strong> 2px solid #C8102E<br>
       <strong>Label:</strong> 12px, black, above field · <strong>Helper label:</strong> same line, 11px, #555, italic<br>
       <strong>Error message:</strong> 12px bold #C8102E, filled circle icon prefix, below the field<br>
-      <strong>Inline amount input:</strong> right-aligned text, 1.5px #1255CC active border — used directly in data table rows
+      <strong>Inline amount input:</strong> right-aligned text, 1.5px #1255CC active border — used directly in data table rows<br>
+      <strong>Dollar amount inputs (withdrawal, sell amounts):</strong> Use <code>type="text"</code> — do NOT use <code>type="number"</code> (prevents spinner/increment controls from appearing) ·
+      Dollar sign prefix ($) must be a separate positioned element with sufficient <code>padding-left</code> on the input to prevent overlap —
+      never place the $ inside the input value or as an overlapping element ·
+      Placeholder: <code>e.g. $10,000</code> · Display-only amounts (recommended sell in Auto mode) are rendered as formatted text, not input fields
     </div>
   </div>
 
@@ -1122,8 +1141,8 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 
 <span class="tk-section">  /* ── BRAND ──────────────────────────────────────────────────── */</span>
   <span class="tk-var">--color-brand-red</span>:          <span class="tk-val">#C8102E</span>;  <span class="tk-comment">/* CONFIRMED — active tab, badge, nav dot */</span>
-  <span class="tk-var">--color-brand-burgundy</span>:     <span class="tk-val">#6B0020</span>;  <span class="tk-comment">/* INFERRED — hero gradient mid */</span>
-  <span class="tk-var">--color-brand-maroon</span>:       <span class="tk-val">#3D0010</span>;  <span class="tk-comment">/* INFERRED — hero gradient dark end */</span>
+  <span class="tk-var">--color-brand-burgundy</span>:     <span class="tk-val">#6B0020</span>;  <span class="tk-comment">/* legacy gradient reference only — not used in hero banner */</span>
+  <span class="tk-var">--color-brand-maroon</span>:       <span class="tk-val">#3D0010</span>;  <span class="tk-comment">/* legacy gradient reference only — not used in hero banner */</span>
 
 <span class="tk-section">  /* ── TEXT ───────────────────────────────────────────────────── */</span>
   <span class="tk-var">--color-text-primary</span>:       <span class="tk-val">#040505</span>;  <span class="tk-comment">/* CONFIRMED — DevTools h2.holding-name */</span>
@@ -1243,40 +1262,5 @@ body { font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; background: #f
 </div>
 
 </div><!-- /ds-body -->
-<script>
-(function() {
-  // Show foundation tab by default
-  document.getElementById('foundation').classList.add('visible');
-
-  var tabs = document.querySelectorAll('.ds-nav a[data-tab]');
-  var sections = document.querySelectorAll('.ds-section');
-
-  tabs.forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      var target = this.getAttribute('data-tab');
-
-      // Update active tab
-      tabs.forEach(function(t) { t.classList.remove('active'); });
-      this.classList.add('active');
-
-      // Show target section, hide all others
-      sections.forEach(function(s) { s.classList.remove('visible'); });
-      var targetSection = document.getElementById(target);
-      if (targetSection) {
-        targetSection.classList.add('visible');
-        // Scroll page to top of content area so nav stays in view
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-  });
-
-  // Handle hash in URL on load (e.g. when opened with #components)
-  var hash = window.location.hash.replace('#', '');
-  if (hash) {
-    var matchingTab = document.querySelector('.ds-nav a[data-tab="' + hash + '"]');
-    if (matchingTab) matchingTab.click();
-  }
-})();
-</script>
 </body>
 </html>
